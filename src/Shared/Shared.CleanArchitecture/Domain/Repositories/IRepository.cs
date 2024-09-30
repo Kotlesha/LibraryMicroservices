@@ -3,6 +3,8 @@ using System.Linq.Expressions;
 
 namespace Shared.CleanArchitecture.Domain.Repositories;
 
+public interface IRepository<T> : IRepository<T, Guid> where T : AggregateRoot<Guid>;
+
 public interface IRepository<T, Tkey> where T : AggregateRoot<Tkey>
 {
     Task AddAsync(T entity, CancellationToken cancellationToken = default);
