@@ -1,14 +1,11 @@
 ﻿using Shared.CleanArchitecture.Domain.Entities;
-using System.Diagnostics;
 
 namespace Order.Domain.Entities;
 
 public sealed class Book : AggregateRoot
 {
-
-    public string Title {  get; private set; }
-
-    public decimal Price {  get; private set; }
+    public string Title { get; private set; }
+    public decimal Price { get; private set; }
 
     private readonly List<Order> _orders = [];
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
@@ -29,7 +26,6 @@ public sealed class Book : AggregateRoot
 
     public void Update(Book book)
     {
-        Id = book.Id;
         Title = book.Title;
         Price = book.Price;
     }
