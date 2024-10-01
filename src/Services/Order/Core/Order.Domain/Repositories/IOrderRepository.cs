@@ -5,7 +5,7 @@ using Shared.CleanArchitecture.Domain.Repositories;
 
 using Order = Entities.Order;
 
-internal interface IOrderRepository : IRepository<Order, Guid>
+internal interface IOrderRepository : IRepository<Order>
 {
     Task<Order> GetOrderByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
