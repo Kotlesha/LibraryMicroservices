@@ -2,7 +2,7 @@
 
 namespace Book.Domain.Entities;
 
-public sealed class Category : AggregateRoot<Guid>
+public sealed class Category : AggregateRoot
 {
     private const int NameMaxLength = 50;
 
@@ -16,26 +16,33 @@ public sealed class Category : AggregateRoot<Guid>
 
     public string Name { get; private set; }
 
-    private Category(Guid id, string name)
+    private Category(Guid id, string name) : base(id)
     {
-        Id = id;
         Name = name;
     }
 
     public static Category Create(string name)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
+        var category = new Category(Guid.NewGuid(), name);
 
-        if (name.Length > NameMaxLength)
-            throw new ArgumentException($"Название категории должно быть не больше " +
-                $"{NameMaxLength} количества слов.", nameof(name));
+        category.Validate();
 
-        return new(Guid.NewGuid(), name);
+        return category;
     }
 
     public void Update(Category category)
     {
-        Id = category.Id;
+        ArgumentNullException.ThrowIfNull(category, nameof(category));
+
         Name = category.Name;
+    }
+
+    public override void Validate()
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
+
+        if (Name.Length > NameMaxLength)
+            throw new ArgumentException($"Название категории должно быть не больше " +
+                $"{NameMaxLength} количества слов.", nameof(Name));
     }
 }

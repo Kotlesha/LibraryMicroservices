@@ -2,39 +2,46 @@
 
 namespace Book.Domain.Entities;
 
-public sealed class Genre : AggregateRoot<Guid>
+public sealed class Genre : AggregateRoot
 {
     private const int NameMaxLength = 100;
 
     public string Name { get; private set; }
 
-    public Guid BookId { get; private set; }
+    private readonly List<Book> _books = [];
 
-    public Book Book { get; private set; }
+    public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
     private readonly List<Category> _categories = [];
 
     public IReadOnlyList<Category> Categories => _categories.AsReadOnly();
 
-    private Genre(Guid id, string name)
+    private Genre(Guid id, string name) : base(id)
     {
-        Id = id;
         Name = name;
     }
     public static Genre Create(string name)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
+        var genre = new Genre(Guid.NewGuid(), name);
 
-        if (name.Length > NameMaxLength)
-            throw new ArgumentException($"Название жанра должно быть не больше " +
-                $"{NameMaxLength} количества слов.", nameof(name));
+        genre.Validate();
 
-        return new(Guid.NewGuid(), name);
+        return genre;
     }
 
     public void Update(Genre genre)
     {
-        Id = genre.Id;
+        ArgumentNullException.ThrowIfNull(genre, nameof(genre));
+
         Name = genre.Name;
+    }
+
+    public override void Validate()
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
+
+        if (Name.Length > NameMaxLength)
+            throw new ArgumentException($"Название жанра должно быть не больше " +
+                $"{NameMaxLength} количества слов.", nameof(Name));
     }
 }

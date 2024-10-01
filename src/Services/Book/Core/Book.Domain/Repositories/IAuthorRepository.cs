@@ -3,7 +3,7 @@ using Shared.CleanArchitecture.Domain.Repositories;
 
 namespace Book.Domain.Repositories;
 
-public interface IAuthorRepository : IRepository<Author, Guid>
+public interface IAuthorRepository : IRepository<Author>
 {
     Task<Author> GetAuthorByNameAsync(string name, CancellationToken cancellationToken = default);
 

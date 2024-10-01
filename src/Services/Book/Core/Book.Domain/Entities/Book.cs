@@ -2,7 +2,7 @@
 
 namespace Book.Domain.Entities;
 
-public sealed class Book : AggregateRoot<Guid>
+public sealed class Book : AggregateRoot
 {
     private const int TitleMaxLength = 500;
     private const int DescriptionMaxLength = 1000;
@@ -21,22 +21,31 @@ public sealed class Book : AggregateRoot<Guid>
 
     public AgeRating AgeRating { get; private set; }
 
-    public Guid CategoryId { get; private set; }
 
-    public Category Category { get; private set; }
+    private readonly List<Category> _category = [];
 
-    public Guid AuthorId { get; private set; }
+    public IReadOnlyList<Category> Categories => _category.AsReadOnly();
 
-    public Author Author { get; private set; }
 
-    public Guid GenreId { get; private set; }
+    private readonly List<Author> _author = [];
 
-    public Genre Genre { get; private set; }
+    public IReadOnlyList<Author> Authors => _author.AsReadOnly();
 
-    private Book(Guid id, string title, string description, decimal price, 
-        DateTimeOffset publicationDate, bool isAvailable, short pages, AgeRating ageRating)
+
+    private readonly List<Genre> _genre = [];
+
+    public IReadOnlyList<Genre> Genres => _genre.AsReadOnly();
+
+    private Book(
+        Guid id, 
+        string title, 
+        string description, 
+        decimal price, 
+        DateTimeOffset publicationDate, 
+        bool isAvailable, 
+        short pages, 
+        AgeRating ageRating) : base(id)
     {
-        Id = id;
         Title = title;
         Description = description;
         Price = price;
@@ -46,33 +55,34 @@ public sealed class Book : AggregateRoot<Guid>
         AgeRating = ageRating;
     }
 
-    public static Book Create(string title, string description, decimal price, 
-        DateTimeOffset publicationDate, bool isAvailable, short pages, AgeRating ageRating)
+    public static Book Create(
+        string title, 
+        string description, 
+        decimal price, 
+        DateTimeOffset publicationDate, 
+        bool isAvailable, 
+        short pages, 
+        AgeRating ageRating)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
+        var book = new Book(
+            Guid.NewGuid(), 
+            title, 
+            description, 
+            price, 
+            publicationDate, 
+            isAvailable,
+            pages, 
+            ageRating);
 
-        if (title.Length > TitleMaxLength)
-            throw new ArgumentException($"Название книги должно быть не больше " +
-                $"{TitleMaxLength} количества слов.", nameof(title));
+        book.Validate();
 
-        if (description.Length > DescriptionMaxLength)
-            throw new ArgumentException($"Описание не может содержать больше " +
-                $"{DescriptionMaxLength} слов.", nameof(description));
-
-        ArgumentOutOfRangeException.ThrowIfNegative(price, nameof(price));
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pages, nameof(pages));
-
-        if (!Enum.IsDefined(typeof(AgeRating), ageRating))
-            throw new ArgumentException("Недопустимое значение возрастного рейтинга.", 
-                nameof(ageRating));
-
-        return new(Guid.NewGuid(), title, description, price, publicationDate, isAvailable, 
-            pages, ageRating);
+        return book;
     }
 
     public void Update(Book book)
     {
-        Id = book.Id;
+        ArgumentNullException.ThrowIfNull(book, nameof(book));
+
         Title = book.Title;
         Description = book.Description;
         Price = book.Price;
@@ -85,6 +95,26 @@ public sealed class Book : AggregateRoot<Guid>
     public string GetAgeRatingString()
     {
         return $"{(byte)AgeRating}+";
+    }
+
+    public override void Validate()
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
+
+        if (Title.Length > TitleMaxLength)
+            throw new ArgumentException($"Название книги должно быть не больше " +
+                $"{TitleMaxLength} количества слов.", nameof(Title));
+
+        if (Description.Length > DescriptionMaxLength)
+            throw new ArgumentException($"Описание не может содержать больше " +
+                $"{DescriptionMaxLength} слов.", nameof(Description));
+
+        ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(Pages, nameof(Pages));
+
+        if (!Enum.IsDefined(typeof(AgeRating), AgeRating))
+            throw new ArgumentException("Недопустимое значение возрастного рейтинга.",
+                nameof(AgeRating));
     }
 }
 public enum AgeRating : byte

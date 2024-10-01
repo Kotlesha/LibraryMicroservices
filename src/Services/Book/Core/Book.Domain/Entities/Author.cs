@@ -2,7 +2,7 @@
 
 namespace Book.Domain.Entities;
 
-public sealed class Author : AggregateRoot<Guid>
+public sealed class Author : AggregateRoot
 {
     private const int NameMaxLength = 100;
     private const int SurnameMaxLength = 100;
@@ -11,36 +11,43 @@ public sealed class Author : AggregateRoot<Guid>
 
     public string Name { get; private set; }
 
-    public Guid BookId { get; private set; }
+    private readonly List<Book> _books = [];
 
-    public Book Book { get; private set; }
+    public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
-    private Author(Guid id, string surname, string name)
+    private Author(Guid id, string surname, string name) : base(id)
     {
-        Id = id;
         Surname = surname;
         Name = name;
     }
 
     public static Author Create(string surname, string name)
     {
-        if (surname.Length > SurnameMaxLength)
-            throw new ArgumentException($"Фамилия автора должна быть не больше " +
-                $"{SurnameMaxLength} количеств слов.", nameof(surname));
+        var author = new Author(Guid.NewGuid(), surname, name);
 
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
+        author.Validate();
 
-        if (name.Length > NameMaxLength)
-            throw new ArgumentException($"Имя автора должно быть не больше " +
-                $"{NameMaxLength} количества слов.", nameof(name));
-
-        return new(Guid.NewGuid(), surname, name);
+        return author;
     }
 
     public void Update(Author author)
     {
-        Id = author.Id;
+        ArgumentNullException.ThrowIfNull(author, nameof(author));
+
         Surname = author.Surname;
         Name = author.Name;
+    }
+
+    public override void Validate()
+    {
+        if (Surname.Length > SurnameMaxLength)
+            throw new ArgumentException($"Фамилия автора должна быть не больше " +
+                $"{SurnameMaxLength} количеств слов.", nameof(Surname));
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
+
+        if (Name.Length > NameMaxLength)
+            throw new ArgumentException($"Имя автора должно быть не больше " +
+                $"{NameMaxLength} количества слов.", nameof(Name));
     }
 }

@@ -4,7 +4,7 @@ using Book.Domain.Entities;
 namespace Book.Domain.Repositories;
 
 
-public interface ICategoryRepository : IRepository<Category, Guid>
+public interface ICategoryRepository : IRepository<Category>
 {
     Task<Category> GetCategoryByNameAsync(string name, CancellationToken cancellationToken = default);
 
