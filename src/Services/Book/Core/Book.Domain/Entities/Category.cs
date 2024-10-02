@@ -4,14 +4,10 @@ namespace Book.Domain.Entities;
 
 public sealed class Category : AggregateRoot
 {
-    private const int NameMaxLength = 50;
-
     private readonly List<Book> _books = [];
-
     public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
     private readonly List<Genre> _genries = [];
-
     public IReadOnlyList<Genre> Genries => _genries.AsReadOnly();
 
     public string Name { get; private set; }
@@ -24,7 +20,6 @@ public sealed class Category : AggregateRoot
     public static Category Create(string name)
     {
         var category = new Category(Guid.NewGuid(), name);
-
         category.Validate();
 
         return category;
@@ -40,9 +35,5 @@ public sealed class Category : AggregateRoot
     public override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
-
-        if (Name.Length > NameMaxLength)
-            throw new ArgumentException($"Название категории должно быть не больше " +
-                $"{NameMaxLength} количества слов.", nameof(Name));
     }
 }
