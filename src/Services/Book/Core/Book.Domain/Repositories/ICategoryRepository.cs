@@ -9,7 +9,7 @@ public interface ICategoryRepository : IRepository<Category>
 {
     Task<Category> GetCategoryByNameAsync(string categoryName, 
         CancellationToken cancellationToken = default);
-    Task<IEnumerable<Genre>> GetCategoryByGenreAsync(string categoryName, 
+    Task<IEnumerable<Genre>> GetGenresByCategoryAsync(string categoryName, 
         CancellationToken cancellationToken = default);
     Task<IEnumerable<Book>> GetBooksByCategoryAsync(string categoryName, 
         CancellationToken cancellationToken = default);
