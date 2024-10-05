@@ -13,9 +13,8 @@ public sealed class Book : AggregateRoot
     public short Pages { get; private set; }
     public AgeRating AgeRating { get; private set; }
     public string ISBN { get; private set; }
-
-    public Guid? CategoryId;
-    public Category? Category;
+    public Guid? CategoryId { get; private set; }
+    public Category? Category { get; private set; }
 
     private readonly List<Author> _author = [];
     public IReadOnlyList<Author> Authors => _author.AsReadOnly();
