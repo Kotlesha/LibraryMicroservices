@@ -4,13 +4,13 @@ namespace Book.Domain.Entities;
 
 public sealed class Category : AggregateRoot
 {
+    public string Name { get; private set; }
+
     private readonly List<Book> _books = [];
     public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
     private readonly List<Genre> _genries = [];
     public IReadOnlyList<Genre> Genries => _genries.AsReadOnly();
-
-    public string Name { get; private set; }
 
     private Category(Guid id, string name) : base(id)
     {
@@ -29,6 +29,7 @@ public sealed class Category : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(category, nameof(category));
 
+        category.Validate();
         Name = category.Name;
     }
 

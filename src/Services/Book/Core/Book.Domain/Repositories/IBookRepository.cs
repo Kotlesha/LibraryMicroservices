@@ -8,25 +8,11 @@ public interface IBookRepository : IRepository<Book>
 {
     Task<Book> GetBookByTitleAsync(string title, 
         CancellationToken cancellationToken = default);
-
     Task<Book> GetBookByAuthorAsync(Author author, 
         CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByCategoryAsync(Category category, 
+    Task<IEnumerable<Book>> GetBooksByCategoryAsync(string categoryName, 
         CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByGenreAsync(Genre genre, CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByPriceAsync(decimal price, CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByPublicationDateAsync(DateTimeOffset publicationDate, 
+    Task<IEnumerable<Book>> GetBooksByGenreAsync(string genreName, 
         CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByIsAvailableAsync(bool isAvailable, 
-        CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByPagesAsync(short pages, CancellationToken cancellationToken = default);
-
-    Task<Book> GetBookByAgeRatingAsync(AgeRating ageRating, 
-        CancellationToken cancellationToken = default);
+    Task<Book> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken = default);
 }

@@ -4,13 +4,12 @@ namespace Book.Domain.Extensions;
 
 public static class AgeRatingExtension
 {
-    public static string ToFormattedString(this AgeRating ageRating) => ageRating switch
+    public static string ToFormattedString(this AgeRating ageRating)
     {
-        AgeRating.ZeroPlus => "0+",
-        AgeRating.SixPlus => "6+",
-        AgeRating.TwelvePlus => "12+",
-        AgeRating.SixteenPlus => "16+", 
-        AgeRating.EighteenPlus => "18+",
-        _ => throw new ArgumentOutOfRangeException(nameof(ageRating))
-    };
+        if (!Enum.IsDefined(typeof(AgeRating), ageRating))
+        {
+            throw new ArgumentOutOfRangeException(nameof(ageRating), "Invalid age rating value");
+        }
+        return $"{(byte)ageRating}+";
+    }
 }

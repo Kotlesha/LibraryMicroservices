@@ -6,15 +6,16 @@ namespace Book.Domain.Entities;
 public sealed class Book : AggregateRoot
 {
     public string Title {get; private set; }
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
     public decimal Price { get; private set; }
     public DateTimeOffset PublicationDate { get; private set; }
     public bool IsAvailable { get; private set; } = true;
     public short Pages { get; private set; }
-    public AgeRating AgeRating { get; private set; } 
+    public AgeRating AgeRating { get; private set; }
+    public string ISBN { get; private set; }
 
-    private readonly List<Category> _category = [];
-    public IReadOnlyList<Category> Categories => _category.AsReadOnly();
+    public Guid? CategoryId;
+    public Category? Category;
 
     private readonly List<Author> _author = [];
     public IReadOnlyList<Author> Authors => _author.AsReadOnly();
@@ -29,7 +30,8 @@ public sealed class Book : AggregateRoot
         decimal price, 
         DateTimeOffset publicationDate, 
         short pages, 
-        AgeRating ageRating) : base(id)
+        AgeRating ageRating,
+        string isbn) : base(id)
     {
         Title = title;
         Description = description;
@@ -37,15 +39,17 @@ public sealed class Book : AggregateRoot
         PublicationDate = publicationDate;
         Pages = pages;
         AgeRating = ageRating;
+        ISBN = isbn;
     }
 
     public static Book Create(
-        string title, 
-        string description, 
-        decimal price, 
-        DateTimeOffset publicationDate, 
-        short pages, 
-        AgeRating ageRating)
+        string title,
+        string description,
+        decimal price,
+        DateTimeOffset publicationDate,
+        short pages,
+        AgeRating ageRating,
+        string isbn)
     {
         var book = new Book(
             Guid.NewGuid(), 
@@ -54,7 +58,8 @@ public sealed class Book : AggregateRoot
             price, 
             publicationDate, 
             pages, 
-            ageRating);
+            ageRating,
+            isbn);
 
         book.Validate();
 
@@ -65,16 +70,17 @@ public sealed class Book : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(book, nameof(book));
 
+        book.Validate();
         Title = book.Title;
         Description = book.Description;
         Price = book.Price;
         PublicationDate = book.PublicationDate;
         Pages = book.Pages;
         AgeRating = book.AgeRating;
+        ISBN = book.ISBN;
     }
 
     public void MakeAvailable() => IsAvailable = true;
-
     public void MakeUnavailable() => IsAvailable = false;
 
     public override void Validate()
@@ -82,5 +88,6 @@ public sealed class Book : AggregateRoot
         ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
         ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(Pages, nameof(Pages));
+        ArgumentException.ThrowIfNullOrWhiteSpace(ISBN, nameof(ISBN));
     }
 }

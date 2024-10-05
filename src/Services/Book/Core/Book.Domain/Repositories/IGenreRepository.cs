@@ -6,7 +6,4 @@ namespace Book.Domain.Repositories;
 public interface IGenreRepository : IRepository<Genre>
 {
     Task<Genre> GetGenreByNameAsync(string name, CancellationToken cancellationToken = default);
-
-    Task<Genre> GetGenreByCategoryAsync(Category category, 
-        CancellationToken cancellationToken = default);
 }

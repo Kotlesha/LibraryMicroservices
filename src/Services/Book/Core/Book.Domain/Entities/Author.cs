@@ -28,6 +28,7 @@ public sealed class Author : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(author, nameof(author));
 
+        author.Validate();
         Surname = author.Surname;
         Name = author.Name;
     }
@@ -35,5 +36,6 @@ public sealed class Author : AggregateRoot
     public override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
+        ArgumentException.ThrowIfNullOrWhiteSpace(Surname, nameof(Surname));
     }
 }

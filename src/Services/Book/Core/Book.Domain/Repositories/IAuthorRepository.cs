@@ -3,12 +3,11 @@ using Shared.CleanArchitecture.Domain.Repositories;
 
 namespace Book.Domain.Repositories;
 
+using Book = Entities.Book;
 public interface IAuthorRepository : IRepository<Author>
 {
-    Task<Author> GetAuthorByNameAsync(string name, CancellationToken cancellationToken = default);
-
-    Task<Author> GetAuthorBySurnameAsync(string surname,
+    Task<IEnumerable<Author>> GetAuthorBySurnameAsync(string surname,
         CancellationToken cancellationToken = default);
-
-    Task<Author> GetAuthorByBookAsync(Entities.Book book, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Book>> GetBooksByAuthorAsync(string authorName, 
+        CancellationToken cancellationToken = default);
 }
