@@ -13,6 +13,7 @@ public sealed class Book : AggregateRoot
     public short Pages { get; private set; }
     public AgeRating AgeRating { get; private set; }
     public string ISBN { get; private set; }
+
     public Guid? CategoryId { get; private set; }
     public Category? Category { get; private set; }
 
@@ -30,7 +31,8 @@ public sealed class Book : AggregateRoot
         DateTimeOffset publicationDate, 
         short pages, 
         AgeRating ageRating,
-        string isbn) : base(id)
+        string isbn,
+        Guid? categoryId) : base(id)
     {
         Title = title;
         Description = description;
@@ -39,6 +41,7 @@ public sealed class Book : AggregateRoot
         Pages = pages;
         AgeRating = ageRating;
         ISBN = isbn;
+        CategoryId = categoryId;
     }
 
     public static Book Create(
@@ -48,7 +51,8 @@ public sealed class Book : AggregateRoot
         DateTimeOffset publicationDate,
         short pages,
         AgeRating ageRating,
-        string isbn)
+        string isbn,
+        Guid? categoryId)
     {
         var book = new Book(
             Guid.NewGuid(), 
@@ -58,7 +62,8 @@ public sealed class Book : AggregateRoot
             publicationDate, 
             pages, 
             ageRating,
-            isbn);
+            isbn,
+            categoryId);
 
         book.Validate();
 
@@ -68,8 +73,8 @@ public sealed class Book : AggregateRoot
     public void Update(Book book)
     {
         ArgumentNullException.ThrowIfNull(book, nameof(book));
-
         book.Validate();
+
         Title = book.Title;
         Description = book.Description;
         Price = book.Price;
@@ -77,6 +82,7 @@ public sealed class Book : AggregateRoot
         Pages = book.Pages;
         AgeRating = book.AgeRating;
         ISBN = book.ISBN;
+        CategoryId = book.CategoryId;
     }
 
     public void MakeAvailable() => IsAvailable = true;

@@ -12,10 +12,7 @@ public sealed class Category : AggregateRoot
     private readonly List<Genre> _genries = [];
     public IReadOnlyList<Genre> Genries => _genries.AsReadOnly();
 
-    private Category(Guid id, string name) : base(id)
-    {
-        Name = name;
-    }
+    private Category(Guid id, string name) : base(id) => Name = name;
 
     public static Category Create(string name)
     {
@@ -28,8 +25,8 @@ public sealed class Category : AggregateRoot
     public void Update(Category category)
     {
         ArgumentNullException.ThrowIfNull(category, nameof(category));
-
         category.Validate();
+
         Name = category.Name;
     }
 

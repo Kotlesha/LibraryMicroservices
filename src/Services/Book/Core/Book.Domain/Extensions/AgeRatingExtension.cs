@@ -10,6 +10,7 @@ public static class AgeRatingExtension
         {
             throw new ArgumentOutOfRangeException(nameof(ageRating), "Invalid age rating value");
         }
+
         return $"{(byte)ageRating}+";
     }
 }

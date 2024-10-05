@@ -27,15 +27,15 @@ public sealed class Author : AggregateRoot
     public void Update(Author author)
     {
         ArgumentNullException.ThrowIfNull(author, nameof(author));
-
         author.Validate();
+
         Surname = author.Surname;
         Name = author.Name;
     }
 
     public override void Validate()
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
         ArgumentException.ThrowIfNullOrWhiteSpace(Surname, nameof(Surname));
+        ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
     }
 }

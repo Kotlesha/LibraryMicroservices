@@ -13,6 +13,7 @@ public sealed class Genre : AggregateRoot
     public IReadOnlyList<Category> Categories => _categories.AsReadOnly();
 
     private Genre(Guid id, string name) : base(id) => Name = name;
+
     public static Genre Create(string name)
     {
         var genre = new Genre(Guid.NewGuid(), name);
@@ -24,6 +25,7 @@ public sealed class Genre : AggregateRoot
     public void Update(Genre genre)
     {
         ArgumentNullException.ThrowIfNull(genre, nameof(genre));
+        genre.Validate();
 
         Name = genre.Name;
     }
