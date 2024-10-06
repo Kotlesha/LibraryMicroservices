@@ -7,8 +7,9 @@ using Order = Entities.Order;
 
 public interface IOrderRepository : IRepository<Order>
 {
-    Task<Order> GetOrderByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
-    Task<IEnumerable<Order>> GetOrderByDateAsync(DateOnly Date, CancellationToken cancellationToken = default);
-    Task AddBookToOrderAsync(Order order, Book book, CancellationToken cancellationToken = default);
-    Task DeleteBookFromOrderAsync(Order order, Book book, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Order>> GetOrdersByUserIdAsync(Guid userId, 
+        CancellationToken cancellationToken = default);
+    Task<IEnumerable<Order>> GetOrderByDateAsync(DateOnly Date, 
+        CancellationToken cancellationToken = default);
+
 }

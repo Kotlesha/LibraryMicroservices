@@ -5,5 +5,6 @@ namespace Order.Domain.Repositories;
 
 public interface IBookRepository : IRepository<Book>
 {
-    Task<Book> GetBookByTitleAsync(string title, CancellationToken cancellationToken = default);
+    Task<Book> GetBookByTitleAsync(string title, 
+        CancellationToken cancellationToken = default);
 }

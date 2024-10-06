@@ -28,6 +28,9 @@ public sealed class Book : AggregateRoot
     {
         Title = book.Title;
         Price = book.Price;
+        ArgumentNullException.ThrowIfNull(book, nameof(book));
+        book.Validate();
+
     }
 
     public override void Validate()
