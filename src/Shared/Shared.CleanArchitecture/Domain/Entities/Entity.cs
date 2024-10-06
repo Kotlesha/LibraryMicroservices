@@ -1,6 +1,6 @@
 ﻿namespace Shared.CleanArchitecture.Domain.Entities;
 
-public abstract class Entity<T> : IEntity<T>, IAuditableEntity, IValidatableEntity<Entity<T>, T>
+public abstract class Entity<T> : ValidatableEntity<Entity<T>, T>, IEntity<T>, IAuditableEntity
 {
     public T Id { get; protected set; }
 
@@ -10,6 +10,4 @@ public abstract class Entity<T> : IEntity<T>, IAuditableEntity, IValidatableEnti
     public string? CreatedBy { get; set; }
     public DateTimeOffset? LastModifiedAt { get; set; }
     public string? LastModifiedBy { get; set; }
-
-    public abstract void Validate();
 }
