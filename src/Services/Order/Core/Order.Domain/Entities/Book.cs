@@ -7,6 +7,8 @@ public sealed class Book : AggregateRoot
     public string Title { get; private set; }
     public decimal Price { get; private set; }
 
+    public bool IsAvailable {  get; private set; }
+
     private readonly List<Order> _orders = [];
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
 
@@ -33,7 +35,7 @@ public sealed class Book : AggregateRoot
 
     }
 
-    public override void Validate()
+    protected override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
         ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
