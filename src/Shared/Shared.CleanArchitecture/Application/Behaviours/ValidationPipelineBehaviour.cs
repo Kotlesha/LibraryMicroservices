@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Shared.CleanArchitecture.Application.Behaviours;
 
-public sealed class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+public sealed class ValidationPipelineBehaviour<TRequest, TResponse>
+    (IEnumerable<IValidator<TRequest>> validators) 
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest, IRequest<TResponse>
 {
