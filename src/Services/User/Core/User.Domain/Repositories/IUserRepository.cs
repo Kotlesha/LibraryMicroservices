@@ -1,10 +1,15 @@
-﻿using Shared.CleanArchitecture.Domain.Repositories;
-
-namespace User.Domain.Repositories;
+﻿namespace User.Domain.Repositories;
 
 using User = Entities.User;
 
-public interface IUserRepository : IRepository<User>
+public interface IUserRepository
 {
-    Task<User> GetAuthUser(Guid userId);
+    Task<User> AddUserAsync(User user, 
+        CancellationToken cancellationToken = default);
+    Task<User> GetUserByIdAsync(Guid applicationUserId,
+        CancellationToken cancellationToken = default);
+    Task<User> GetAuthUserAsync(Guid applicationUserId,
+        CancellationToken cancellationToken = default);
+    Task<IEnumerable<User>> GetAllUsers(
+        CancellationToken cancellationToken = default);
 }
