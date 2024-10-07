@@ -6,7 +6,6 @@ public sealed class Book : AggregateRoot
 {
     public string Title { get; private set; }
     public decimal Price { get; private set; }
-
     public bool IsAvailable {  get; private set; }
 
     private readonly List<Order> _orders = [];
@@ -18,7 +17,7 @@ public sealed class Book : AggregateRoot
         Price = price;
     }
 
-    public static Book Create(string title, decimal price) 
+    public static Book Create(string title, decimal price = 0.0m) 
     { 
         var book = new Book(Guid.NewGuid(), title, price);
         book.Validate();
@@ -28,11 +27,11 @@ public sealed class Book : AggregateRoot
 
     public void Update(Book book)
     {
-        Title = book.Title;
-        Price = book.Price;
         ArgumentNullException.ThrowIfNull(book, nameof(book));
         book.Validate();
 
+        Title = book.Title;
+        Price = book.Price;  
     }
 
     protected override void Validate()

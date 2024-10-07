@@ -9,7 +9,7 @@ public sealed class Order : AggregateRoot
 {
     public Guid UserId { get; private set; }
     public DateTime CreatedTimeUtc { get; private set; }
-    public decimal TotalCost {  get; private set; }
+    public decimal TotalCost { get; private set; }
 
     private readonly List<Book> _books = [];
     public IReadOnlyList<Book> Books => _books.AsReadOnly();
@@ -18,10 +18,10 @@ public sealed class Order : AggregateRoot
     {
         UserId = userId;
         CreatedTimeUtc = DateTime.UtcNow;
-        TotalCost = 0.0m;
+        TotalCost = totalCost;
     }
 
-    public static Order Create(Guid userId, decimal totalCost)
+    public static Order Create(Guid userId, decimal totalCost = 0.0m)
     {
         var order = new Order(Guid.NewGuid(), userId, totalCost);
         order.Validate();
@@ -40,16 +40,19 @@ public sealed class Order : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(book, nameof(book));
 
-
         if (!book.IsAvailable)
         {
             return Result.Failure(DomainErrors.Order.BookNotAvailable);
         }
+
         if (HasBook(book))
         {
             return Result.Failure(DomainErrors.Order.BookAlreadyExists);
         }
+
         _books.Add(book);
+        TotalCost += book.Price;
+
         return Result.Success();
     }
 
@@ -61,6 +64,10 @@ public sealed class Order : AggregateRoot
         {
             return Result.Failure(DomainErrors.Order.BookNotFound);
         }
+
+        _books.Remove(book);
+        TotalCost -= book.Price;
+
         return Result.Success();
     }
 }

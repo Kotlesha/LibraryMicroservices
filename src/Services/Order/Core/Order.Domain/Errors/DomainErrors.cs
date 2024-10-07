@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Order.Domain.Errors
 {
-    public static partial class DomainErrors
+    public static class DomainErrors
     {
         public static class Order
         {
