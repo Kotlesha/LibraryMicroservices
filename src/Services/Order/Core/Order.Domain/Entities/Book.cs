@@ -1,4 +1,5 @@
 ﻿using Shared.CleanArchitecture.Domain.Entities;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Order.Domain.Entities;
 
@@ -6,7 +7,7 @@ public sealed class Book : AggregateRoot
 {
     public string Title { get; private set; }
     public decimal Price { get; private set; }
-    public bool IsAvailable {  get; private set; }
+    public bool IsAvailable { get; private set; } = true;
 
     private readonly List<Order> _orders = [];
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
@@ -33,6 +34,9 @@ public sealed class Book : AggregateRoot
         Title = book.Title;
         Price = book.Price;  
     }
+
+    public void MakeAvailable() => IsAvailable = true;
+    public void MakeUnAvailable() => IsAvailable = false;
 
     protected override void Validate()
     {
