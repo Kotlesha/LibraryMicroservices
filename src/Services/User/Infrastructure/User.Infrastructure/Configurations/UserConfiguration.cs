@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.CleanArchitecture.Infrastructure.Configurations;
 using User.Domain.Constants;
 
 namespace User.Infrastructure.Configurations;
 
 using User = Domain.Entities.User;
 
-internal class UserConfiguration : IEntityTypeConfiguration<User>
+internal class UserConfiguration : BaseEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
+        base.Configure(builder);
+
         builder
             .Property(u => u.Name)
             .IsRequired()
