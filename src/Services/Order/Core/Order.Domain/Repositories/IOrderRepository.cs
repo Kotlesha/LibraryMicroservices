@@ -1,5 +1,4 @@
-﻿using Order.Domain.Entities;
-using Shared.CleanArchitecture.Domain.Repositories;
+﻿using Shared.CleanArchitecture.Domain.Repositories;
 
 namespace Order.Domain.Repositories;
 
@@ -11,5 +10,4 @@ public interface IOrderRepository : IRepository<Order>
         CancellationToken cancellationToken = default);
     Task<IEnumerable<Order>> GetOrderByDateAsync(DateOnly Date, 
         CancellationToken cancellationToken = default);
-
 }

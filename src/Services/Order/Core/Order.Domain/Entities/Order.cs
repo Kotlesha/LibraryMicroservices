@@ -1,7 +1,6 @@
 ﻿using Order.Domain.Errors;
 using Shared.CleanArchitecture.Common;
 using Shared.CleanArchitecture.Domain.Entities;
-using System.Runtime.CompilerServices;
 
 namespace Order.Domain.Entities;
 
