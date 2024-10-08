@@ -6,7 +6,7 @@ using User.Infrastructure.Repositories;
 
 namespace User.Infrastructure.Extensions;
 
-public static class InfrastructureServiceCollectionExtension
+public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
         IConfiguration configuration)
@@ -16,6 +16,7 @@ public static class InfrastructureServiceCollectionExtension
         services.AddDbContext<UserDbContext>(options =>
             configuration.GetConnectionString("UserDbConnectionString"));
 
+        
         return services;
     }
 }
