@@ -6,7 +6,7 @@ using Shared.CleanArchitecture.Application.Abstractions.Services;
 
 namespace Shared.CleanArchitecture.Infrastructure.Repositories;
 
-internal sealed class UnitOfWork(
+public sealed class UnitOfWork(
     DbContext dbContext, 
     IUserService userService) : IUnitOfWork
 {
