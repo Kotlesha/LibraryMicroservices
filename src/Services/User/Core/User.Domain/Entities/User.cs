@@ -7,7 +7,7 @@ public sealed class User : AggregateRoot
     public string Name { get; private set; }
     public string Surname { get; private set; }
     public string Patronymic { get; private set; }
-    public DateOnly BirthDate { get; private set; }
+    public DateOnly? BirthDate { get; private set; }
     public string Email { get; private set; }
     public Guid ApplicationUserId { get; private set; }
 
@@ -16,7 +16,7 @@ public sealed class User : AggregateRoot
         string name, 
         string surname, 
         string patronymic, 
-        DateOnly birthDate, 
+        DateOnly? birthDate, 
         string email, 
         Guid applicationUserId) : base(id)
     {
@@ -32,7 +32,7 @@ public sealed class User : AggregateRoot
         string name,
         string surname,
         string patronymic,
-        DateOnly birthDate,
+        DateOnly? birthDate,
         string email,
         Guid applicationUserId)
     {
