@@ -6,8 +6,8 @@ public abstract class Entity<T> : ValidatableEntity<Entity<T>, T>, IEntity<T>, I
 
     protected Entity(T id) => Id = id;
 
-    public DateTime? CreatedAtUtc { get; set; }
+    public DateTime? CreatedOnUtc { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTime? LastModifiedAtUtc { get; set; }
+    public DateTime? LastModifiedOnUtc { get; set; }
     public string? LastModifiedBy { get; set; }
 }
