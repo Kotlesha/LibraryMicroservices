@@ -4,7 +4,7 @@ using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Shared.CleanArchitecture.Infrastructure.Configurations;
 
-public abstract class DbEntityConfiguration<TAggregateRoot>
+public abstract class BaseEntityConfiguration<TAggregateRoot>
     : IEntityTypeConfiguration<TAggregateRoot> where TAggregateRoot : AggregateRoot
 {
     public virtual void Configure(EntityTypeBuilder<TAggregateRoot> builder)
