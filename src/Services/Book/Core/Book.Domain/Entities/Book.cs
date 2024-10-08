@@ -1,4 +1,6 @@
 ﻿using Book.Domain.Enums;
+using Book.Domain.Errors;
+using Shared.CleanArchitecture.Common;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Book.Domain.Entities;
@@ -17,11 +19,11 @@ public sealed class Book : AggregateRoot
     public Guid? CategoryId { get; private set; }
     public Category? Category { get; private set; }
 
-    private readonly List<Author> _author = [];
-    public IReadOnlyList<Author> Authors => _author.AsReadOnly();
+    private readonly List<Author> _authors = [];
+    public IReadOnlyList<Author> Authors => _authors.AsReadOnly();
 
-    private readonly List<Genre> _genre = [];
-    public IReadOnlyList<Genre> Genres => _genre.AsReadOnly();
+    private readonly List<Genre> _genres = [];
+    public IReadOnlyList<Genre> Genres => _genres.AsReadOnly();
 
     private Book(
         Guid id, 
@@ -88,7 +90,63 @@ public sealed class Book : AggregateRoot
     public void MakeAvailable() => IsAvailable = true;
     public void MakeUnavailable() => IsAvailable = false;
 
-    public override void Validate()
+    private bool HasAuthor(Author author) => _authors.Any(a => a.Id.Equals(author.Id));
+
+    public Result AddAuthorToBook(Author author)
+    {
+        ArgumentNullException.ThrowIfNull(author, nameof(author));
+
+        if (HasAuthor(author))
+        {
+            Result.Failure(DomainErrors.Book.AuthorAlreadyExists);
+        }
+
+        _authors.Add(author);
+        return Result.Success();
+    }
+
+    public Result RemoveAuthorFromBook(Author author)
+    {
+        ArgumentNullException.ThrowIfNull(author, nameof(author));
+
+        if (!HasAuthor(author))
+        {
+            Result.Failure(DomainErrors.Book.AuthorNotFound);
+        }
+
+        _authors.Remove(author);
+        return Result.Success();
+    }
+
+    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
+
+    public Result AddGenreToBook(Genre genre)
+    {
+        ArgumentNullException.ThrowIfNull(genre, nameof(genre));
+
+        if (HasGenre(genre))
+        {
+            Result.Failure(DomainErrors.Book.GenreAlreadyExists);
+        }
+
+        _genres.Add(genre);
+        return Result.Success();
+    }
+
+    public Result RemoveGenreFromBook(Genre genre)
+    {
+        ArgumentNullException.ThrowIfNull(genre, nameof(genre));
+
+        if (!HasGenre(genre))
+        {
+            Result.Failure(DomainErrors.Book.GenreAlreadyExists);
+        }
+
+        _genres.Remove(genre);
+        return Result.Success();
+    }
+
+    protected override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
         ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
