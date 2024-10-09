@@ -8,19 +8,19 @@ namespace Book.Domain.Errors
         {
             public static readonly Error BookAlreadyExists = new(
                 code: "Category.AddBookToCategory",
-                message: "Эта книга уже добавлена в категорию.");
+                message: "This book has already been added to the category.");
 
             public static readonly Error BookNotFound = new(
                code: "Category.RemoveBookFromCategory",
-               message: "Такой книги нет в категории.");
+               message: "There is no such book in this category.");
 
             public static readonly Error GenreAlreadyExists = new(
                 code: "Category.AddGenreToCategory",
-                message: "Этот жанр уже добавлен в категорию.");
+                message: "This genre has already been added to the category.");
 
             public static readonly Error GenreNotFound = new(
                code: "Category.RemoveGenreFromCategory",
-               message: "Такого жанра нет в категории.");
+               message: "There is no such genre in the category.");
         }
     }
 }

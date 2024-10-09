@@ -7,11 +7,11 @@ namespace Book.Domain.Entities;
 
 public sealed class Book : AggregateRoot
 {
-    public string Title {get; private set; }
+    public string Title { get; private set; }
     public string? Description { get; private set; }
     public decimal Price { get; private set; }
-    public DateTimeOffset PublicationDate { get; private set; }
-    public bool IsAvailable { get; private set; } = true;
+    public DateTime PublicationDateUtc { get; private set; }
+    public bool IsAvailable { get; private set; }
     public short Pages { get; private set; }
     public AgeRating AgeRating { get; private set; }
     public string ISBN { get; private set; }
@@ -30,7 +30,8 @@ public sealed class Book : AggregateRoot
         string title, 
         string description, 
         decimal price, 
-        DateTimeOffset publicationDate, 
+        DateTime publicationDateUtc, 
+        bool isAvailable,
         short pages, 
         AgeRating ageRating,
         string isbn,
@@ -39,7 +40,8 @@ public sealed class Book : AggregateRoot
         Title = title;
         Description = description;
         Price = price;
-        PublicationDate = publicationDate;
+        PublicationDateUtc = publicationDateUtc;
+        IsAvailable = isAvailable;
         Pages = pages;
         AgeRating = ageRating;
         ISBN = isbn;
@@ -50,18 +52,19 @@ public sealed class Book : AggregateRoot
         string title,
         string description,
         decimal price,
-        DateTimeOffset publicationDate,
         short pages,
         AgeRating ageRating,
         string isbn,
-        Guid? categoryId)
+        Guid? categoryId,
+        bool isAvailable = true)
     {
         var book = new Book(
             Guid.NewGuid(), 
             title, 
             description, 
             price, 
-            publicationDate, 
+            DateTime.UtcNow,
+            isAvailable,
             pages, 
             ageRating,
             isbn,
@@ -80,7 +83,7 @@ public sealed class Book : AggregateRoot
         Title = book.Title;
         Description = book.Description;
         Price = book.Price;
-        PublicationDate = book.PublicationDate;
+        PublicationDateUtc = book.PublicationDateUtc;
         Pages = book.Pages;
         AgeRating = book.AgeRating;
         ISBN = book.ISBN;
@@ -91,6 +94,7 @@ public sealed class Book : AggregateRoot
     public void MakeUnavailable() => IsAvailable = false;
 
     private bool HasAuthor(Author author) => _authors.Any(a => a.Id.Equals(author.Id));
+    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
 
     public Result AddAuthorToBook(Author author)
     {
@@ -118,8 +122,6 @@ public sealed class Book : AggregateRoot
         return Result.Success();
     }
 
-    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
-
     public Result AddGenreToBook(Genre genre)
     {
         ArgumentNullException.ThrowIfNull(genre, nameof(genre));
@@ -139,7 +141,7 @@ public sealed class Book : AggregateRoot
 
         if (!HasGenre(genre))
         {
-            Result.Failure(DomainErrors.Book.GenreAlreadyExists);
+            Result.Failure(DomainErrors.Book.GenreNotFound);
         }
 
         _genres.Remove(genre);

@@ -33,6 +33,7 @@ public sealed class Category : AggregateRoot
     }
 
     private bool HasBook(Book book) => _books.Any(b => b.Id.Equals(book.Id));
+    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
 
     public Result AddBookToCategory(Book book)
     {
@@ -59,8 +60,6 @@ public sealed class Category : AggregateRoot
         _books.Remove(book);
         return Result.Success();
     }
-
-    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
 
     public Result AddGenreToCategory(Genre genre)
     {
