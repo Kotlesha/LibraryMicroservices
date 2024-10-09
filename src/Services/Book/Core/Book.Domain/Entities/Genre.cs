@@ -30,7 +30,7 @@ public sealed class Genre : AggregateRoot
         Name = genre.Name;
     }
 
-    public override void Validate()
+    protected override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));
     }
