@@ -7,20 +7,21 @@ public sealed class Book : AggregateRoot
 {
     public string Title { get; private set; }
     public decimal Price { get; private set; }
-    public bool IsAvailable { get; private set; } = true;
+    public bool IsAvailable { get; private set; }
 
     private readonly List<Order> _orders = [];
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
 
-    private Book(Guid id, string title, decimal price) : base(id)
+    private Book(Guid id, string title, decimal price, bool isAvailable) : base(id)
     {
         Title = title;
         Price = price;
+        IsAvailable = isAvailable;
     }
 
-    public static Book Create(string title, decimal price = 0.0m) 
+    public static Book Create(string title, decimal price = 0.0m, bool isAvailable = true) 
     { 
-        var book = new Book(Guid.NewGuid(), title, price);
+        var book = new Book(Guid.NewGuid(), title, price, isAvailable);
         book.Validate();
 
         return book;
