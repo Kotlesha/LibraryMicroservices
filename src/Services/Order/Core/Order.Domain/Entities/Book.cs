@@ -6,19 +6,21 @@ public sealed class Book : AggregateRoot
 {
     public string Title { get; private set; }
     public decimal Price { get; private set; }
+    public bool IsAvailable { get; private set; }
 
     private readonly List<Order> _orders = [];
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
 
-    private Book(Guid id, string title, decimal price) : base(id)
+    private Book(Guid id, string title, decimal price, bool isAvailable) : base(id)
     {
         Title = title;
         Price = price;
+        IsAvailable = isAvailable;
     }
 
-    public static Book Create(string title, decimal price) 
+    public static Book Create(string title, decimal price = 0.0m, bool isAvailable = true) 
     { 
-        var book = new Book(Guid.NewGuid(), title, price);
+        var book = new Book(Guid.NewGuid(), title, price, isAvailable);
         book.Validate();
 
         return book;
@@ -26,11 +28,17 @@ public sealed class Book : AggregateRoot
 
     public void Update(Book book)
     {
+        ArgumentNullException.ThrowIfNull(book, nameof(book));
+        book.Validate();
+
         Title = book.Title;
-        Price = book.Price;
+        Price = book.Price;  
     }
 
-    public override void Validate()
+    public void MakeAvailable() => IsAvailable = true;
+    public void MakeUnAvailable() => IsAvailable = false;
+
+    protected override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
         ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
