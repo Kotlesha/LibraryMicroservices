@@ -1,5 +1,4 @@
 ﻿using Shared.CleanArchitecture.Domain.Entities;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Order.Domain.Entities;
 
