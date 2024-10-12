@@ -33,7 +33,7 @@ public sealed class Author : AggregateRoot
         Name = author.Name;
     }
 
-    public override void Validate()
+    protected override void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(Surname, nameof(Surname));
         ArgumentException.ThrowIfNullOrWhiteSpace(Name, nameof(Name));

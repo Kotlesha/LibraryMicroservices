@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Shared.CleanArchitecture.Application.Behaviours;
 using System.Reflection;
 
-namespace User.Application;
+namespace User.Application.Extensions;
 
-public static class DependencyInjection 
+public static class ApplicationServiceCollectionExtension
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {

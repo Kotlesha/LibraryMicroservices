@@ -6,6 +6,6 @@ public sealed record CreateUserCommand(
     string Name,
     string Surname,
     string Patronymic,
-    DateOnly BirthDate,
+    DateOnly? BirthDate,
     string Email,
     Guid ApplicationUserId) : ICommand<Guid>;
