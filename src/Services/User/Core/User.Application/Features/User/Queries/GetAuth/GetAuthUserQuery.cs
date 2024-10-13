@@ -2,6 +2,6 @@
 using Shared.CleanArchitecture.Common.Components;
 using User.Application.Features.User.Queries.ResponseDTOs;
 
-namespace User.Application.Features.User.Queries.GetById;
+namespace User.Application.Features.User.Queries.GetAuth;
 
-public sealed record GetUserByIdQuery(Guid ApplicationUserId) : IQuery<Result<UserDTO>>;
+public sealed record GetAuthUserQuery : IQuery<Result<UserDTO>>;
