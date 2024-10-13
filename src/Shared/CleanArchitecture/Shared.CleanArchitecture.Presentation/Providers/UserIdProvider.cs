@@ -1,4 +1,5 @@
-﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
+﻿using Microsoft.AspNetCore.Http;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using System.Security.Claims;
 
 namespace Shared.CleanArchitecture.Presentation.Providers;

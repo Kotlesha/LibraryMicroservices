@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Components;
 
 namespace Shared.CleanArchitecture.Presentation.Middleware.Exceptions
