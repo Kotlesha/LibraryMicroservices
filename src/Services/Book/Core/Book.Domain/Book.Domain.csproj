@@ -10,4 +10,9 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\CleanArchitecture\Shared.CleanArchitecture.Common\Shared.CleanArchitecture.Common.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\CleanArchitecture\Shared.CleanArchitecture.Domain\Shared.CleanArchitecture.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

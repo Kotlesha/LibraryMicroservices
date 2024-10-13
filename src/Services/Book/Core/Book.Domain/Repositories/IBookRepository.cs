@@ -1,5 +1,4 @@
-﻿using Book.Domain.Entities;
-using Shared.CleanArchitecture.Domain.Repositories;
+﻿using Shared.CleanArchitecture.Domain.Repositories;
 
 namespace Book.Domain.Repositories;
 

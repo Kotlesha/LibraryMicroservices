@@ -1,0 +1,20 @@
+﻿using Shared.CleanArchitecture.Domain.Events;
+
+namespace Shared.CleanArchitecture.Domain.Entities;
+
+public abstract class AggregateRoot : AggregateRoot<Guid>
+{
+    protected AggregateRoot(Guid id) : base(id) { }
+}
+
+public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot<T>
+{
+    private readonly List<IDomainEvent> _domainEvents = [];
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    protected AggregateRoot(T id) : base(id) { }
+
+    public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
+    public void ClearDomainEvents() => _domainEvents.Clear();
+}
