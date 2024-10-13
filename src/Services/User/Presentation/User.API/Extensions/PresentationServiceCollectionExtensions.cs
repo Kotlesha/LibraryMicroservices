@@ -2,7 +2,7 @@
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
 
-namespace User.API;
+namespace User.API.Extensions;
 
 public static class PresentationServiceCollectionExtensions
 {
