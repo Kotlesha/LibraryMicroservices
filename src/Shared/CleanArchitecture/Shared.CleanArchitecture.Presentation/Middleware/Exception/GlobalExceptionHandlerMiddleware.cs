@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shared.CleanArchitecture.Application.Exceptions;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware;
+namespace Shared.CleanArchitecture.Presentation.Middleware.Exception;
 
 public class GlobalExceptionHandlerMiddleware(
     RequestDelegate next,
@@ -17,17 +18,16 @@ public class GlobalExceptionHandlerMiddleware(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, 
+            _logger.LogError(ex,
                 "Exception occurred: {Message}", ex.Message);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Server Error"
-            };
+            var instance = context.Request.Path;
 
-            context.Response.StatusCode =
-                StatusCodes.Status500InternalServerError;
+            var problemDetails = ex is ValidationException validationException ?
+                ProblemDetailsFactory.ValidationError(instance, validationException.Errors) :
+                ProblemDetailsFactory.InternalServerError(instance);
+
+            context.Response.StatusCode = (int)problemDetails.Status;
 
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
