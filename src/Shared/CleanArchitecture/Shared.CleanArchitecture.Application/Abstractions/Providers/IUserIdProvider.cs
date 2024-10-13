@@ -1,6 +1,6 @@
-﻿namespace Shared.CleanArchitecture.Application.Abstractions.Services;
+﻿namespace Shared.CleanArchitecture.Application.Abstractions.Providers;
 
 public interface IUserIdProvider
 {
-    Guid GetAuthUserId();
+    string? GetAuthUserId();
 }

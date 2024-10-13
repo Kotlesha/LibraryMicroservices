@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.CleanArchitecture.Domain.Entities;
 using Shared.CleanArchitecture.Domain.Repositories;
-using Shared.CleanArchitecture.Application.Abstractions.Services;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 
 namespace Shared.CleanArchitecture.Infrastructure.Repositories;
 
