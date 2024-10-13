@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Application.Exceptions;
+﻿using Shared.CleanArchitecture.Application.Exceptions;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware.Exception;
+namespace Shared.CleanArchitecture.Presentation.Middleware.Exceptions;
 
 public class GlobalExceptionHandlerMiddleware(
     RequestDelegate next,

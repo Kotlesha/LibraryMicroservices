@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Presentation.Middleware.Exception;
+﻿namespace Shared.CleanArchitecture.Presentation.Middleware.Exceptions;
 
 internal static class ExceptionMessages
 {

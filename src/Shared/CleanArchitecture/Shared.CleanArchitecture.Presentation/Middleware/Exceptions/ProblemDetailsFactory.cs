@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Components;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware.Exception
+namespace Shared.CleanArchitecture.Presentation.Middleware.Exceptions
 {
     internal static class ProblemDetailsFactory
     {
