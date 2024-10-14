@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common.Components;
+﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
+using Shared.CleanArchitecture.Common;
 using User.Application.Abstractions.Services;
-using User.Application.Errors;
 using User.Application.Features.User.Queries.ResponseDTOs;
-using User.Domain.Repositories;
 
 namespace User.Application.Features.User.Queries.GetById;
 

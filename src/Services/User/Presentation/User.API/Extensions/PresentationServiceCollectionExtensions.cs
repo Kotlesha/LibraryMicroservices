@@ -1,5 +1,4 @@
-﻿using Carter;
-using Shared.CleanArchitecture.Application.Abstractions.Providers;
+﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
 
 namespace User.API.Extensions;
@@ -10,7 +9,7 @@ public static class PresentationServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
         services.AddScoped<IUserIdProvider, UserIdProvider>();
-        services.AddCarter();
+        //services.AddCarter();
 
         return services;
     }

@@ -1,5 +1,5 @@
 ﻿using Book.Domain.Errors;
-using Shared.CleanArchitecture.Common.Components;
+using Shared.CleanArchitecture.Common;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Book.Domain.Entities;

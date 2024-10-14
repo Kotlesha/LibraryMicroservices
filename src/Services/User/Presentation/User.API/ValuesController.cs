@@ -1,9 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.Features.User.Commands.Create;
 using User.Application.Features.User.Queries.GetAll;
-using User.Application.Features.User.Queries.GetAuth;
 using User.Application.Features.User.Queries.GetById;
 
 namespace User.API

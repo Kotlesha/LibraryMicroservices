@@ -1,12 +1,7 @@
-using Carter;
+using Shared.CleanArchitecture.Presentation.Middleware;
 using User.API.Extensions;
 using User.Application.Extensions;
 using User.Infrastructure.Extensions;
-using Shared.CleanArchitecture.Presentation.Middleware.Exceptions;
-using Shared.CleanArchitecture.Presentation.Endpoints;
-using User.API.Endpoints;
-using User.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace User.API;
 

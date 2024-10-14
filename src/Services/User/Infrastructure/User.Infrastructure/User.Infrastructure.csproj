@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Shared\CleanArchitecture\Shared.CleanArchitecture.Infrastructure\Shared.CleanArchitecture.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Core\User.Domain\User.Domain.csproj" />
   </ItemGroup>
 
