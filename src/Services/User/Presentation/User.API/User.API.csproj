@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\CleanArchitecture\Shared.CleanArchitecture.Presentation\Shared.CleanArchitecture.Presentation.csproj" />
+    <ProjectReference Include="..\..\Core\User.Application\User.Application.csproj" />
+    <ProjectReference Include="..\..\Core\User.Domain\User.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\User.Infrastructure\User.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Shared.CleanArchitecture.Application.Exceptions;
+﻿using Shared.CleanArchitecture.Application.Exceptions;
 
 namespace Shared.CleanArchitecture.Presentation.Middleware.Exceptions;
 

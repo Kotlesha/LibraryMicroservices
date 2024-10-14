@@ -5,7 +5,7 @@ namespace User.Infrastructure.Context;
 
 using User = Domain.Entities.User;
 
-internal class UserDbContext(DbContextOptions<UserDbContext> options) 
+public class UserDbContext(DbContextOptions<UserDbContext> options) 
     : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
