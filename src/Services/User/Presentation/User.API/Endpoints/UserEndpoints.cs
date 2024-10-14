@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Carter;
+using Carter.OpenApi;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Presentation.Endpoints;
 using User.Application.Features.User.Commands.Create;
@@ -8,14 +10,17 @@ using User.Application.Features.User.Queries.GetById;
 
 namespace User.API.Endpoints;
 
-public sealed class UserEndpoints : EndpointGroupBase
+public class UserEndpoints : CarterModule
 {
-    public UserEndpoints() : base("/users") { }
+    public UserEndpoints() : base("/users") 
+    { 
+        IncludeInOpenApi();
+    }
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/create", CreateUser)
-            .Produces(StatusCodes.Status201Created);
+            .IncludeInOpenApi();
 
         app.MapGet("/me", GetAuthUser)
             .Produces(StatusCodes.Status200OK)
@@ -56,7 +61,7 @@ public sealed class UserEndpoints : EndpointGroupBase
 
         return user.IsSuccess ?
             Results.Ok(user.Value) :
-            Results.NotFound();
+            Results.NotFound(user.Error);
     }
 
     public async Task<IResult> GetAllUsers(ISender sender)
