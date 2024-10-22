@@ -4,9 +4,9 @@ using Shared.CleanArchitecture.Common;
 
 namespace Shared.CleanArchitecture.Application.Behaviours;
 
-public sealed class ValidationPipelineBehaviour<TRequest, TResponse>
-    (IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest, IRequest<TResponse>
+public sealed class ValidationPipelineBehaviour<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IBaseRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
