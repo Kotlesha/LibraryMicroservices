@@ -1,4 +1,5 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
+using Shared.CleanArchitecture.Common;
 
 namespace User.Application.Features.User.Commands.Create;
 
@@ -8,4 +9,4 @@ public sealed record CreateUserCommand(
     string Patronymic,
     DateOnly? BirthDate,
     string Email,
-    Guid ApplicationUserId) : ICommand<Guid>;
+    Guid ApplicationUserId) : ICommand<Result<Guid>>;

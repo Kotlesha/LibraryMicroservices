@@ -19,8 +19,10 @@ public static class ApplicationServiceCollectionExtension
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssemblies(assesmbly));
 
+        ValidatorOptions.Global.LanguageManager.Enabled = false;
+
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
-        services.AddValidatorsFromAssembly(assesmbly);
+        services.AddValidatorsFromAssembly(assesmbly, includeInternalTypes: true);
         services.AddAutoMapper(assesmbly);
 
         return services;

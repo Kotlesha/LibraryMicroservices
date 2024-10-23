@@ -1,5 +1,7 @@
-﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
+﻿using FastEndpoints;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
+using FastEndpoints.Swagger;
 
 namespace User.API.Extensions;
 
@@ -9,7 +11,9 @@ public static class PresentationServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
         services.AddScoped<IUserIdProvider, UserIdProvider>();
-        //services.AddCarter();
+
+        services.AddFastEndpoints()
+            .SwaggerDocument(o => o.AutoTagPathSegmentIndex = 0);
 
         return services;
     }

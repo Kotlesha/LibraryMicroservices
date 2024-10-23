@@ -30,5 +30,9 @@ internal class UserConfiguration : BaseEntityConfiguration<User>
         builder
             .Property(u => u.Email)
             .IsRequired();
+
+        builder
+            .HasIndex(u => u.ApplicationUserId)
+            .IsUnique();
     }
 }
