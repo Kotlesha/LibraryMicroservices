@@ -17,4 +17,23 @@ public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot<T>
     public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
     public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
     public void ClearDomainEvents() => _domainEvents.Clear();
+
+    protected bool HasEntity<TEntity>(TEntity entity, List<TEntity> entities) where TEntity : AggregateRoot<T>
+        => entities.Any(e => e.Id!.Equals(entity.Id));
+
+    protected void AddEntity<TEntity>(TEntity entity, List<TEntity> entities) where TEntity : AggregateRoot<T>
+    {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
+        if (HasEntity(entity, entities)) return;
+        entities.Add(entity);
+    }
+
+    protected void RemoveEntity<TEntity>(TEntity entity, List<TEntity> entities) where TEntity : AggregateRoot<T>
+    {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
+        if (!HasEntity(entity, entities)) return;
+        entities.Remove(entity);
+    }
 }

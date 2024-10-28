@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common;
+﻿using Shared.CleanArchitecture.Common.Components;
 
 namespace Order.Domain.Errors;
 

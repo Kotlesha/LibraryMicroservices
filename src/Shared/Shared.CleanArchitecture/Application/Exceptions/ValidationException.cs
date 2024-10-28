@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common;
+﻿using Shared.CleanArchitecture.Common.Components;
 
 namespace Shared.CleanArchitecture.Application.Exceptions;
 
