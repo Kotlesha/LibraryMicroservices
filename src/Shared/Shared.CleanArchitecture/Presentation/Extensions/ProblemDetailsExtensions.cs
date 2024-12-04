@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.CleanArchitecture.Common.Components.Errors;
 using System.Diagnostics;
 
 namespace Shared.CleanArchitecture.Presentation.Extensions;
 
-internal static class ProblemDetailsExtensions
+public static class ProblemDetailsExtensions
 {
     public static IServiceCollection AddExtendedProblemDetails(this IServiceCollection services)
     {
@@ -23,5 +25,12 @@ internal static class ProblemDetailsExtensions
         });
 
         return services;
+    }
+
+    public static ProblemDetails WithValidationErrors(this ProblemDetails problemDetails, 
+        IEnumerable<Error>? errors)
+    {
+        problemDetails.Extensions["errors"] = errors;
+        return problemDetails;
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace Shared.CleanArchitecture.Common.Components;
+﻿using System.Text.Json.Serialization;
 
-public class Error : IEquatable<Error>
+namespace Shared.CleanArchitecture.Common.Components.Errors;
+
+public partial class Error : IEquatable<Error>
 {
-    public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
-    public static readonly Error NullValue = new("Error.NullValue", "The specified result value is null.", ErrorType.Failure);
-
+    [JsonIgnore]
     public ErrorType Type { get; }
     public string Code { get; }
     public string Message { get; }
@@ -50,16 +50,4 @@ public class Error : IEquatable<Error>
     public override int GetHashCode() => HashCode.Combine(Code, Message);
 
     public override string ToString() => Code;
-
-    public static Error NotFound(string code, string message) =>
-        new(code, message, ErrorType.NotFound);
-
-    public static Error Validation(string code, string message) =>
-        new(code, message, ErrorType.Validation);
-
-    public static Error Conflict(string code, string message) =>
-        new(code, message, ErrorType.Conflict);
-
-    public static Error Failure(string code, string message) =>
-        new(code, message, ErrorType.Failure);
 }

@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common.Components;
+﻿using Shared.CleanArchitecture.Common.Components.Errors;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Shared.CleanArchitecture.Application.Abstractions.Providers;

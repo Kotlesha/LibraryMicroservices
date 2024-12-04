@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common.Components;
+﻿namespace Shared.CleanArchitecture.Common.Components.Errors;
 
 public enum ErrorType
 {

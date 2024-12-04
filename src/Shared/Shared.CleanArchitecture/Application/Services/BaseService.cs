@@ -1,6 +1,6 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Application.Abstractions.Services;
-using Shared.CleanArchitecture.Common.Components;
+using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Entities;
 using Shared.CleanArchitecture.Domain.Repositories.Base;
 

@@ -1,4 +1,6 @@
-﻿namespace Shared.CleanArchitecture.Common.Components;
+﻿using Shared.CleanArchitecture.Common.Components.Errors;
+
+namespace Shared.CleanArchitecture.Common.Components.Results;
 
 public class Result
 {
