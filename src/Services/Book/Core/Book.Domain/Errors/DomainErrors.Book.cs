@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common.Components;
+﻿using Shared.CleanArchitecture.Common.Components.Errors;
 
 namespace Book.Domain.Errors;
 

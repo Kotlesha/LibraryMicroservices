@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Shared.CleanArchitecture.Common.Components;
+using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Presentation.Factories;
 
 namespace Shared.CleanArchitecture.Common.Extensions;

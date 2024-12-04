@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
-using Shared.CleanArchitecture.Common.Components;
+using Shared.CleanArchitecture.Common.Components.Errors;
 
 namespace Shared.CleanArchitecture.Application.Behaviours;
 
 public sealed class ValidationPipelineBehaviour<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest, IRequest<TResponse>
+    where TRequest : IBaseRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
