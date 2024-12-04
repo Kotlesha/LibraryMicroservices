@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common.Components;
+﻿using Shared.CleanArchitecture.Common.Components.Result;
 using User.Application.Features.User.Queries.ResponseDTOs;
 
 namespace User.Application.Abstractions.Services;
