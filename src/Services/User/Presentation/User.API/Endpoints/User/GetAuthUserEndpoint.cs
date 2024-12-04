@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components;
 using User.Application.Features.User.Queries.GetAuth;
 using User.Application.Features.User.Queries.ResponseDTOs;
 

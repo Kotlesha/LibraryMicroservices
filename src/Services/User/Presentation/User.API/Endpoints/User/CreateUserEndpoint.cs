@@ -2,12 +2,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Extensions;
 using User.Application.Features.User.Commands.Create;
 
 namespace User.API.Endpoints.User;
 
 public sealed class CreateUserEndpoint(ISender sender) 
-    : Endpoint<CreateUserCommand, Results<CreatedAtRoute<Guid>, Conflict<Error>>>
+    : Endpoint<CreateUserCommand, Results<CreatedAtRoute<Guid>, ProblemHttpResult>>
 {
     private readonly ISender _sender = sender;
 
@@ -18,7 +19,7 @@ public sealed class CreateUserEndpoint(ISender sender)
         AllowAnonymous();
     }
 
-    public override async Task<Results<CreatedAtRoute<Guid>, Conflict<Error>>> ExecuteAsync(
+    public override async Task<Results<CreatedAtRoute<Guid>, ProblemHttpResult>> ExecuteAsync(
         CreateUserCommand req, CancellationToken ct)
     {
         var result = await _sender.Send(req, ct);
@@ -33,6 +34,6 @@ public sealed class CreateUserEndpoint(ISender sender)
             return createdResult;
         }
 
-        return TypedResults.Conflict(result.Error);
+        return result.ToProblemDetails();
     }
 }
