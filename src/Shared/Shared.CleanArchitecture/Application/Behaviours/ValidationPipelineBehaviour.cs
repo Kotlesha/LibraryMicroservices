@@ -25,7 +25,7 @@ public sealed class ValidationPipelineBehaviour<TRequest, TResponse>(
         var errors = validationFailures
             .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
-            .Select(validationFailure => new Error(
+            .Select(validationFailure => Error.Validation(
                 validationFailure.PropertyName,
                 validationFailure.ErrorMessage))
             .ToArray();
