@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shared.CleanArchitecture.Application.Exceptions;
-using Shared.CleanArchitecture.Presentation.ProblemDetailsTypes;
-using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Presentation.Factories;
 using Shared.CleanArchitecture.Common.Components.Errors;
 using Shared.CleanArchitecture.Presentation.Extensions;
+using Shared.CleanArchitecture.Presentation.Factories;
 
 namespace Shared.CleanArchitecture.Presentation.Middleware;
 
 public class GlobalExceptionHandlerMiddleware(
     RequestDelegate next, 
-    ILogger<GlobalExceptionHandlerMiddleware> logger)
+    ILogger<GlobalExceptionHandlerMiddleware> logger,
+    IProblemDetailsService problemDetailsService)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
+    private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -37,7 +37,13 @@ public class GlobalExceptionHandlerMiddleware(
             };
 
             context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(problemDetails);
+
+            await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                Exception = ex,
+                HttpContext = context,
+                ProblemDetails = problemDetails
+            });
         }
     }
 }
