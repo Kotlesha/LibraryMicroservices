@@ -10,10 +10,15 @@ public partial class Error
     public static readonly Error Failure
         = new("Error.InternalServerError", "An unexpected error occurred.", ErrorType.Failure);
 
-    public static Error Validation =>
-        new("Error.ValidationError", "Validation errors occurred.", ErrorType.Validation);
+    public static Error Validation(
+        string code = "Error.ValidationError", 
+        string message = "Validation errors occurred.")
+        => new(code, message, ErrorType.Validation);
+
 
     public static Error NotFound(string code, string message) => new(code, message, ErrorType.NotFound);
 
     public static Error Conflict(string code, string message) => new(code, message, ErrorType.Conflict);
+
+    public static Error BadRequest(string code, string message) => new(code, message, ErrorType.BadRequest);
 }
