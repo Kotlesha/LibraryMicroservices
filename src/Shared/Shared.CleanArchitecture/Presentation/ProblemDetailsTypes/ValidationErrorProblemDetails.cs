@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components;
 using Shared.CleanArchitecture.Presentation.ProblemDetailsTypes.Messages;
 
 namespace Shared.CleanArchitecture.Presentation.ProblemDetailsTypes;

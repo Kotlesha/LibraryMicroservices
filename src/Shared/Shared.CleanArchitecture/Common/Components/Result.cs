@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common;
+﻿namespace Shared.CleanArchitecture.Common.Components;
 
 public class Result
 {

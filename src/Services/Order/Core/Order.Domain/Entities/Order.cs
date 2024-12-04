@@ -1,5 +1,5 @@
 ﻿using Order.Domain.Errors;
-using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Order.Domain.Entities;
