@@ -37,7 +37,7 @@ public static class ResultExtensions
                 ErrorType.Validation => "Bad Request",
                 ErrorType.NotFound => "Not Found",
                 ErrorType.Conflict => "Conflict",
-                _ => "Server failure"
+                _ => "Internal Server Error"
             };
 
         static string GetType(ErrorType statusCode) =>

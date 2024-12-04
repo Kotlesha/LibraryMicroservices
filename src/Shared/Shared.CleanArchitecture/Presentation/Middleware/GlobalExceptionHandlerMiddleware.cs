@@ -1,38 +1,58 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.CleanArchitecture.Application.Exceptions;
 using Shared.CleanArchitecture.Presentation.ProblemDetailsTypes;
+using Shared.CleanArchitecture.Common.Components;
+using Microsoft.AspNetCore.Mvc;
+using Shared.CleanArchitecture.Presentation.Factories;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware;
-
-public class GlobalExceptionHandlerMiddleware(
-    RequestDelegate next,
-    ILogger<GlobalExceptionHandlerMiddleware> logger)
+namespace Shared.CleanArchitecture.Presentation.Middleware
 {
-    private readonly RequestDelegate _next = next;
-    private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
-
-    public async Task InvokeAsync(HttpContext context)
+    public class GlobalExceptionHandlerMiddleware
     {
-        try
+        private readonly RequestDelegate _next;
+        private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger;
+
+        public GlobalExceptionHandlerMiddleware(RequestDelegate next, ILogger<GlobalExceptionHandlerMiddleware> logger)
         {
-            await _next(context);
+            _next = next;
+            _logger = logger;
         }
-        catch (Exception ex)
+
+        public async Task InvokeAsync(HttpContext context)
         {
-            _logger.LogError(ex,
-                "Exception occurred: {Message}", ex.Message);
+            try
+            {
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occurred: {Message}", ex.Message);
 
-            var instance = context.Request.Path;
+                var instance = context.Request.Path;
 
-            ProblemDetails problemDetails = ex is ValidationException validationException ?
-                new ValidationErrorProblemDetails(instance, validationException.Errors) :
-                new InternalServerErrorProblemDetails(instance);
+                // Create ProblemDetails based on the exception type using the factory method
+                ProblemDetails problemDetails;
 
-            context.Response.StatusCode = (int)problemDetails.Status;
+                if (ex is ValidationException validationException)
+                {
+                    // You can pass validation errors if needed
+                    problemDetails = ProblemDetailsFactory.CreateProblemDetails(
+                        Error.Validation("ValidationError", "Validation errors occurred")
+                    );
+                    problemDetails.Extensions["errors"] = validationException.Errors;
+                }
+                else
+                {
+                    problemDetails = ProblemDetailsFactory.CreateProblemDetails(
+                        Error.Failure("InternalServerError", "An unexpected error occurred")
+                    );
+                }
 
-            await context.Response.WriteAsJsonAsync(problemDetails);
+                context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
+
+                await context.Response.WriteAsJsonAsync(problemDetails);
+            }
         }
     }
 }
