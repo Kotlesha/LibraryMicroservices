@@ -17,11 +17,20 @@ public static class ProblemDetailsExtensions
                 context.ProblemDetails.Instance =
                     $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
 
-                context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+                var existingExtensions = new Dictionary<string, object>(context.ProblemDetails.Extensions!);
+
+                context.ProblemDetails.Extensions.Clear();
+                context.ProblemDetails.Extensions["requestId"] = context.HttpContext.TraceIdentifier;
 
                 Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
-                context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+                context.ProblemDetails.Extensions["traceId"] = activity?.Id;
+
+                foreach (var kvp in existingExtensions)
+                {
+                    context.ProblemDetails.Extensions[kvp.Key] = kvp.Value;
+                }
             };
+
         });
 
         return services;
