@@ -31,6 +31,14 @@ internal class CreateUserCommandHandler(
             return Result.Failure<Guid>(ApplicationErrors.User.ApplicationUserIdAlreadyExists);
         }
 
+        var isEmailExist = await _userService.GetUserByEmailAsync(
+            request.Email, cancellationToken);
+
+        if (isEmailExist.IsSuccess) 
+        {
+            return Result.Failure<Guid>(ApplicationErrors.User.ApplicationEmailAlreadyExists);
+        }
+
         var user = _mapper.Map<User>(request);
 
         await _userRepository.AddUserAsync(user, cancellationToken);

@@ -1,36 +1,26 @@
-﻿using FastEndpoints;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Extensions;
+using User.API.Metadata.User;
 using User.Application.Features.User.Queries.GetById;
-using User.Application.Features.User.Queries.ResponseDTOs;
 
 namespace User.API.Endpoints.User;
 
-public sealed class GetUserByIdEndpoint(ISender sender) 
-    : Endpoint<GetUserByIdQuery, Results<Ok<UserDTO>, ProblemHttpResult>>
+public static class GetUserByIdEndpoint
 {
-    private readonly ISender _sender = sender;
-
-    public override void Configure()
+    public static void MapGetUserByIdEndpoint(this IEndpointRouteBuilder app)
     {
-        Get("{userId:guid}");
+        app.MapGet("/users/{applicationUserId}",
+            async (
+                [FromRoute] Guid applicationUserId,
+                ISender sender) =>
+        {
+            var result = await sender.Send(new GetUserByIdQuery(applicationUserId));
 
-        Description(e => {
-            e.WithTags("Users");
-            e.WithName("GetUserByIdEndpoint");
-        });
-
-        AllowAnonymous();
-    }
-
-    public override async Task<Results<Ok<UserDTO>, ProblemHttpResult>> ExecuteAsync(
-        GetUserByIdQuery req, CancellationToken ct)
-    {
-        var result = await _sender.Send(req, ct);
-
-        return result.IsSuccess ?
-            TypedResults.Ok(result.Value) :
-            TypedResults.Problem(result.Error);
+            return result.IsSuccess ?
+                Results.Ok(result.Value) :
+                result.ToProblemDetails();
+        })
+        .ApplyGetUserByIdMetadata();
     }
 }

@@ -1,7 +1,8 @@
-﻿using FastEndpoints;
-using Shared.CleanArchitecture.Application.Abstractions.Providers;
+﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
+using Shared.CleanArchitecture.Presentation.Extensions;
 using Shared.CleanArchitecture.Presentation.Providers;
-using FastEndpoints.Swagger;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 namespace User.API.Extensions;
 
@@ -12,8 +13,16 @@ public static class PresentationServiceCollectionExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<IUserIdProvider, UserIdProvider>();
 
-        services.AddFastEndpoints()
-            .SwaggerDocument(o => o.AutoTagPathSegmentIndex = 0);
+        services.AddEndpointsApiExplorer();
+
+        services.AddSwaggerGen(options =>
+        {
+            options.EnableAnnotations();
+            options.ExampleFilters();
+        });
+
+        services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());
+        services.AddExtendedProblemDetails();
 
         return services;
     }

@@ -1,39 +1,33 @@
-﻿using FastEndpoints;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Shared.CleanArchitecture.Common;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Extensions;
+using User.API.Metadata.User;
 using User.Application.Features.User.Commands.Create;
 
 namespace User.API.Endpoints.User;
 
-public sealed class CreateUserEndpoint(ISender sender) 
-    : Endpoint<CreateUserCommand, Results<CreatedAtRoute<Guid>, ProblemHttpResult>>
+public static class CreateUserEndpoint
 {
-    private readonly ISender _sender = sender;
-
-    public override void Configure()
+    public static void MapCreateUserEndpoint(this IEndpointRouteBuilder app)
     {
-        Post("/create");
-        Description(e => e.WithTags("Users"));
-        AllowAnonymous();
-    }
-
-    public override async Task<Results<CreatedAtRoute<Guid>, ProblemHttpResult>> ExecuteAsync(
-        CreateUserCommand req, CancellationToken ct)
-    {
-        var result = await _sender.Send(req, ct);
-
-        if (result.IsSuccess)
+        app.MapPost("/users/create", 
+            async (
+            [FromBody] CreateUserCommand command,
+            ISender sender,
+            CancellationToken ct) =>
         {
-            var createdResult = TypedResults.CreatedAtRoute(
-                routeName: nameof(GetUserByIdEndpoint),
-                routeValues: new { userId = result.Value },
-                value: result.Value);
+            var result = await sender.Send(command, ct);
 
-            return createdResult;
-        }
+            if (result.IsSuccess)
+            {
+                return Results.CreatedAtRoute(
+                    routeName: "GetUserById",
+                    routeValues: new { applicationUserId = result.Value },
+                    result.Value);
+            }
 
-        return result.ToProblemDetails();
+            return result.ToProblemDetails();
+        })
+        .ApplyCreateUserMetadata();
     }
 }

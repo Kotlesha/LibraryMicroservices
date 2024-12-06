@@ -8,6 +8,8 @@ public interface IUserRepository
         CancellationToken cancellationToken = default);
     Task<User?> GetUserByIdAsync(Guid applicationUserId,
         CancellationToken cancellationToken = default);
+    Task<User?> GetUserByEmailAsync(string email,
+        CancellationToken cancellationToken = default);
     Task<IEnumerable<User>> GetAllUsersAsync(
         CancellationToken cancellationToken = default);
 }

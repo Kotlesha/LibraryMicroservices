@@ -23,6 +23,15 @@ internal class UserRepository(UserDbContext userDbContext) : IUserRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await _userDbContext
+            .Users
+            .FirstOrDefaultAsync(
+                u => u.Email.Equals(email),
+                cancellationToken);
+    }
+
     public async Task<User?> GetUserByIdAsync(Guid applicationUserId, CancellationToken cancellationToken = default)
     {
         return await _userDbContext

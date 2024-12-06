@@ -22,6 +22,8 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.ApplyMigrations();
         }
 
@@ -29,6 +31,8 @@ public class Program
 
         app.UseAuthorization();
         app.UseAuthentication();
+
+        app.UseStatusCodePages();
 
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
