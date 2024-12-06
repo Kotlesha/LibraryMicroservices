@@ -36,7 +36,8 @@ public class GlobalExceptionHandlerMiddleware(
                 _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
             };
 
-            context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = problemDetails.Status 
+                ?? StatusCodes.Status500InternalServerError;
 
             await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
             {
