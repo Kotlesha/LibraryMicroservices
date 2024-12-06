@@ -7,7 +7,7 @@ namespace Shared.CleanArchitecture.Common.Extensions;
 
 public static class ResultExtensions
 {
-    public static ProblemHttpResult ToProblemDetails(this Result result)
+    public static IResult ToProblemDetails(this Result result)
     {
         if (result.IsSuccess)
         {
