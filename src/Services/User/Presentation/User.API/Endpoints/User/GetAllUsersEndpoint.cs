@@ -1,7 +1,4 @@
-﻿using FastEndpoints;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using MediatR;
 using System.Text.Json;
 using User.API.Metadata.User;
 using User.Application.Features.User.Queries.GetAll;

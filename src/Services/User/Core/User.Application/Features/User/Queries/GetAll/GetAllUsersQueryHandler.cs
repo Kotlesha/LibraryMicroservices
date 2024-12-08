@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Common.Extensions;
-using Shared.CleanArchitecture.Common.Paging;
+using Shared.CleanArchitecture.Common.Pagination;
 using User.Application.Features.User.Queries.ResponseDTOs;
+using User.Application.Features.User.Queries.Extensions;
 using User.Domain.Repositories;
 
 namespace User.Application.Features.User.Queries.GetAll;
 
 internal class GetAllUsersQueryHandler(
     IUserRepository userRepository, 
-    IMapper mapper) : IQueryHandler<GetAllUsersQuery, (IEnumerable<UserDTO> users, MetaData metaData)>
+    IMapper mapper) : 
+    IQueryHandler<GetAllUsersQuery, (IEnumerable<UserDTO> users, MetaData metaData)>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -18,19 +20,15 @@ internal class GetAllUsersQueryHandler(
     {
         var query = _userRepository.GetAllUsers();
 
-        if (!string.IsNullOrEmpty(request.Parameters.SearchTerm))
-        {
-            query = query.Where(
-                u => u.Name.ToLower().Equals(request.Parameters.SearchTerm.ToLower()) || 
-                u.Email.Equals(request.Parameters.SearchTerm));
-        }
-
-        var users = await query
-            .ToPagedList(
+        var paginatedResult = await query
+            .ApplySearch(request.Parameters.SearchTerm?.ToLower())
+            .ApplyPagination(
                 request.Parameters.PageNumber,
                 request.Parameters.PageSize,
                 cancellationToken);
 
-        return (_mapper.Map<IEnumerable<UserDTO>>(users), users.MetaData);
+        return (
+            users: _mapper.Map<IEnumerable<UserDTO>>(paginatedResult.Items), 
+            metaData: paginatedResult.MetaData);
     }
 }

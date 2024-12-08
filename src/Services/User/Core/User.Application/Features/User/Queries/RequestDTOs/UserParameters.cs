@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common.Paging;
+﻿using Shared.CleanArchitecture.Common.Pagination.Parameters;
 
 namespace User.Application.Features.User.Queries.RequestDTOs;
 

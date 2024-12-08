@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Extensions;
-using Swashbuckle.AspNetCore.Annotations;
 using User.API.Metadata.User;
 using User.Application.Features.User.Queries.GetById;
 
@@ -13,7 +12,7 @@ public static class GetUserByIdEndpoint
     {
         app.MapGet("/users/{applicationUserId}",
             async (
-                [FromRoute, SwaggerParameter("The unique identifier of the user (GUID format)")] Guid applicationUserId,
+                [FromRoute] Guid applicationUserId,
                 ISender sender,
                 CancellationToken cancellationToken) =>
             {

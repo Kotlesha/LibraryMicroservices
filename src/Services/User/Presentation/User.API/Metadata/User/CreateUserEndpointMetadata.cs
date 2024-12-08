@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 using User.API.Examples.User.CreateUser;
-using User.API.Examples.User.GetUserById;
 using User.Application.Errors;
 using User.Application.Features.User.Commands.Create;
 

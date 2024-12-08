@@ -15,10 +15,10 @@ public static class PresentationServiceCollectionExtensions
 
         services.AddEndpointsApiExplorer();
 
-        services.AddSwaggerGen(options =>
+        services.AddSwaggerGen(opt =>
         {
-            options.EnableAnnotations();
-            options.ExampleFilters();
+            opt.EnableAnnotations();
+            opt.ExampleFilters();
         });
 
         services.AddSwaggerExamplesFromAssemblies(Assembly.GetExecutingAssembly());

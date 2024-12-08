@@ -10,20 +10,20 @@ public class GetAllUsersSuccessResponseExample : IExamplesProvider<IEnumerable<U
         return [
             new UserDTO(
                 Name: "Алексей",
-                Surname: "Иванов",
-                Patronymic: "Сергеевич",
+                Surname: "Кот",
+                Patronymic: "Владимирович",
                 BirthDate: new DateOnly(1985, 3, 15),
-                Email: "alexey.ivanov@example.com",
+                Email: "kot1@gmail.com",
                 ApplicationUserId: Guid.NewGuid()
             ),
             new UserDTO(
-                Name: "Мария",
-                Surname: "Петрова",
-                Patronymic: "Ивановна",
-                BirthDate: new DateOnly(1990, 7, 21),
-                Email: "maria.petrova@example.com",
+                Name: "Андрей",
+                Surname: "Кот",
+                Patronymic: "Александрович",
+                BirthDate: new DateOnly(1985, 3, 15),
+                Email: "kot@gmail.com",
                 ApplicationUserId: Guid.NewGuid()
-            )
+            ),
         ];
     }
 }

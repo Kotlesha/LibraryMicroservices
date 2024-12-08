@@ -12,7 +12,7 @@ public static class CreateUserEndpoint
 {
     public static IEndpointRouteBuilder MapCreateUserEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/users/create", 
+        app.MapPost("/users/create",
             async (
             [FromBody] CreateUserCommand command,
             ISender sender,

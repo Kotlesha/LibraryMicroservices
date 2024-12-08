@@ -1,4 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using User.API.Examples.User.GetAllUsers;
 using User.Application.Features.User.Queries.ResponseDTOs;
 
@@ -13,15 +14,17 @@ public static class GetAllUsersEndpointMetadata
             .WithTags("Users")
             .WithSummary("Retrieves a list of all users")
             .WithDescription(
-                "This endpoint returns a list of all registered users. " +
-                "If no users are found, it will return a NoContent response.");
+                "This endpoint retrieves a list of users with pagination, " +
+                "including metadata about the pagination state (e.g., total pages, current page).");
 
         route
             .Produces<IEnumerable<UserDTO>>()
             .WithMetadata(
                 new SwaggerResponseAttribute(
                     StatusCodes.Status200OK,
-                    "List of Users",
+                    "List of users"),
+                new SwaggerResponseExampleAttribute(
+                    StatusCodes.Status200OK,
                     typeof(GetAllUsersSuccessResponseExample)));
 
         route

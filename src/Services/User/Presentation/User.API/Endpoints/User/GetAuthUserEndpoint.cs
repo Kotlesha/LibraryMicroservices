@@ -1,12 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Extensions;
 using User.API.Metadata.User;
 using User.Application.Features.User.Queries.GetAuth;
-using User.Application.Features.User.Queries.GetById;
 
 namespace User.API.Endpoints.User;
-
 
 public static class GetAuthUserEndpoint
 {
