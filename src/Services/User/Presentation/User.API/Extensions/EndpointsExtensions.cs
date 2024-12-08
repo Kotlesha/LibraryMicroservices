@@ -8,7 +8,8 @@ public static class EndpointsExtensions
     {
         //app.MapGroup("/users");
 
-        app.MapCreateUserEndpoint().MapGetUserByIdEndpoint();
+        app.MapCreateUserEndpoint();
+        app.MapGetUserByIdEndpoint();
         app.MapGetAuthUserEndpoint();
         app.MapGetAllUsersEndpoint();
     }

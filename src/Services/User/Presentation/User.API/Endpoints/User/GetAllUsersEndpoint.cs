@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using User.API.Metadata.User;
 using User.Application.Features.User.Queries.GetAll;
-using User.Domain.Parameters;
+using User.Application.Features.User.Queries.RequestDTOs;
 
 namespace User.API.Endpoints.User;
 

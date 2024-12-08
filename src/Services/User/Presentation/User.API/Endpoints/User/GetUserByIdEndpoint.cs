@@ -9,7 +9,7 @@ namespace User.API.Endpoints.User;
 
 public static class GetUserByIdEndpoint
 {
-    public static IEndpointRouteBuilder MapGetUserByIdEndpoint(this IEndpointRouteBuilder app)
+    public static void MapGetUserByIdEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapGet("/users/{applicationUserId}",
             async (
@@ -26,7 +26,5 @@ public static class GetUserByIdEndpoint
                     result.ToProblemDetails();
             })
         .ApplyGetUserByIdMetadata();
-
-        return app;
     }
 }

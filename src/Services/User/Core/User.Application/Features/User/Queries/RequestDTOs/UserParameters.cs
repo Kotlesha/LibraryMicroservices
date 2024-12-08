@@ -1,6 +1,6 @@
 ﻿using Shared.CleanArchitecture.Common.Paging;
 
-namespace User.Domain.Parameters;
+namespace User.Application.Features.User.Queries.RequestDTOs;
 
 public class UserParameters : RequestParameters
 {

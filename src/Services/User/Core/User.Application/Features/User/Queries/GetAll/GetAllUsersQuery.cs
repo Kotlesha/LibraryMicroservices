@@ -1,7 +1,7 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Common.Paging;
+using User.Application.Features.User.Queries.RequestDTOs;
 using User.Application.Features.User.Queries.ResponseDTOs;
-using User.Domain.Parameters;
 
 namespace User.Application.Features.User.Queries.GetAll;
 
