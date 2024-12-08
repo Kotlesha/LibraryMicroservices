@@ -9,12 +9,12 @@ namespace User.Application.Features.User.Queries.GetAll;
 
 internal class GetAllUsersQueryHandler(
     IUserRepository userRepository, 
-    IMapper mapper) : IQueryHandler<GetAllUsersQuery, PagedList<UserDTO>>
+    IMapper mapper) : IQueryHandler<GetAllUsersQuery, (IEnumerable<UserDTO> users, MetaData metaData)>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<PagedList<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<UserDTO> users, MetaData metaData)> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
         var query = _userRepository.GetAllUsers();
 
@@ -31,6 +31,6 @@ internal class GetAllUsersQueryHandler(
                 request.Parameters.PageSize,
                 cancellationToken);
 
-        return _mapper.Map<PagedList<UserDTO>>(users);
+        return (_mapper.Map<IEnumerable<UserDTO>>(users), users.MetaData);
     }
 }

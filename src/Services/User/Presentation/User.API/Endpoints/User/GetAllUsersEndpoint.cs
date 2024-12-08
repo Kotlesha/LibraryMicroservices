@@ -20,17 +20,17 @@ public static class GetAllUsersEndpoint
                 HttpContext httpContext,
                 CancellationToken cancellationToken) =>
             {
-                var pagedResult = await sender.Send(
+                var (users, metaData) = await sender.Send(
                     new GetAllUsersQuery(parameters),
                 cancellationToken);
 
-                if (pagedResult.Any())
+                if (users.Any())
                 {
                     httpContext.Response.Headers.Append(
                         "X-Pagination",
-                        JsonSerializer.Serialize(pagedResult.MetaData));
+                        JsonSerializer.Serialize(metaData));
 
-                    return Results.Ok(pagedResult);
+                    return Results.Ok(users);
                 }
 
                 return Results.NoContent();
