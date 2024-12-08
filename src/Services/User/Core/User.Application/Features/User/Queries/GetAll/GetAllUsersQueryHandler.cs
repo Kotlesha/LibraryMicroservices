@@ -14,7 +14,9 @@ internal class GetAllUsersQueryHandler(
 
     public async Task<IEnumerable<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetAllUsersAsync(cancellationToken);
+        var users = await _userRepository.GetAllUsersAsync(
+            request.Parameters, cancellationToken);
+
         return _mapper.Map<IEnumerable<UserDTO>>(users);
     }
 }

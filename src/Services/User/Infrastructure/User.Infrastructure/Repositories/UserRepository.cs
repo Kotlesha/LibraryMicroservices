@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shared.CleanArchitecture.Common.Extensions;
+using Shared.CleanArchitecture.Common.Paging;
+using User.Domain.Parameters;
 using User.Domain.Repositories;
 using User.Infrastructure.Context;
 
@@ -15,12 +18,22 @@ internal class UserRepository(UserDbContext userDbContext) : IUserRepository
         await _userDbContext.AddAsync(user, cancellationToken);
     }
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync(CancellationToken cancellationToken = default)
+    public async Task<PagedList<User>> GetAllUsersAsync(UserParameters parameters,
+        CancellationToken cancellationToken = default)
     {
-        return await _userDbContext
-            .Users
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var query = _userDbContext.Users.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(parameters.SearchTerm))
+        {
+            query = query.Where(u => u.Name.ToLower().Equals(parameters.SearchTerm.ToLower())
+                || u.Email.Equals(parameters.SearchTerm.ToLower()));
+        }
+
+        return await query
+            .ToPagedList(
+                parameters.PageNumber, 
+                parameters.PageSize, 
+                cancellationToken);
     }
 
     public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
