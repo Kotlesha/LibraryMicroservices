@@ -1,9 +1,9 @@
 ﻿using Swashbuckle.AspNetCore.Filters;
 using User.Application.Features.User.Queries.ResponseDTOs;
 
-namespace User.API.Examples.User.GetUserById;
+namespace User.API.Examples.Common;
 
-public class GetUserByIdSuccessResponseExample : IExamplesProvider<UserDTO>
+public class GetUserSuccessResponseExample : IExamplesProvider<UserDTO>
 {
     public UserDTO GetExamples()
     {

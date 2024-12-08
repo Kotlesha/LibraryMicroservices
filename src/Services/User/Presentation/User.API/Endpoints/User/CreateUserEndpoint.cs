@@ -1,22 +1,24 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Common.Extensions;
+using Swashbuckle.AspNetCore.Filters;
 using User.API.Metadata.User;
 using User.Application.Features.User.Commands.Create;
+using User.Application.Features.User.Queries.GetById;
 
 namespace User.API.Endpoints.User;
 
 public static class CreateUserEndpoint
 {
-    public static void MapCreateUserEndpoint(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapCreateUserEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/users/create", 
             async (
             [FromBody] CreateUserCommand command,
             ISender sender,
-            CancellationToken ct) =>
+            CancellationToken cancellationToken) =>
         {
-            var result = await sender.Send(command, ct);
+            var result = await sender.Send(command, cancellationToken);
 
             if (result.IsSuccess)
             {
@@ -29,5 +31,7 @@ public static class CreateUserEndpoint
             return result.ToProblemDetails();
         })
         .ApplyCreateUserMetadata();
+
+        return app;
     }
 }

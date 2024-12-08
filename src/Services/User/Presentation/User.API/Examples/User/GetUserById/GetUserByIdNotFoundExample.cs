@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shared.CleanArchitecture.Common.Components.Errors;
+using Shared.CleanArchitecture.Presentation.Helpers;
 using Swashbuckle.AspNetCore.Filters;
 using User.Application.Errors;
 
@@ -8,11 +10,13 @@ public class GetUserByIdNotFoundExample : IExamplesProvider<ProblemDetails>
 {
     public ProblemDetails GetExamples()
     {
+        var errorType = ErrorType.NotFound;
+
         return new()
         {
-            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4",
-            Title = "Not Found Error",
-            Status = 404,
+            Type = ProblemDetailsHelper.GetType(errorType),
+            Title = ProblemDetailsHelper.GetTitle(errorType),
+            Status = ProblemDetailsHelper.GetStatusCode(errorType),
             Instance = $"GET /users/{Guid.NewGuid()}",
             Extensions = new Dictionary<string, object?>()
             {

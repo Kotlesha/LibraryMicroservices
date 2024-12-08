@@ -2,6 +2,7 @@
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 using User.API.Examples.User.CreateUser;
+using User.API.Examples.User.GetUserById;
 using User.Application.Errors;
 using User.Application.Features.User.Commands.Create;
 
@@ -36,7 +37,9 @@ public static class CreateUserEndpointMetadata
              .WithMetadata(
                 new SwaggerResponseAttribute(
                     StatusCodes.Status409Conflict,
-                    $"Conflict: {ApplicationErrors.User.ApplicationUserIdAlreadyExists.Message}",
+                    $"Conflict: {ApplicationErrors.User.ApplicationUserIdAlreadyExists.Message}"),
+                new SwaggerResponseExampleAttribute(
+                    StatusCodes.Status409Conflict,
                     typeof(CreateUserConflictResponseExample)));
 
         return route;
