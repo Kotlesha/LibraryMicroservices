@@ -1,6 +1,6 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
-using Shared.CleanArchitecture.Common.Components.Results;
+using Shared.Components.Results;
 using User.Application.Abstractions.Services;
 using User.Application.Errors;
 using User.Application.Features.User.Queries.ResponseDTOs;

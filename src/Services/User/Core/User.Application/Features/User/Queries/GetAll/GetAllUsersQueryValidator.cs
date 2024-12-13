@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shared.CleanArchitecture.Common.Pagination.Parameters;
+using Shared.Components.Pagination.Parameters;
 
 namespace User.Application.Features.User.Queries.GetAll;
 

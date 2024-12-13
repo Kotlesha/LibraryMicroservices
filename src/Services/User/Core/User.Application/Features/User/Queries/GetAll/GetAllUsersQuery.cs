@@ -1,5 +1,5 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common.Pagination;
+using Shared.Components.Pagination;
 using User.Application.Features.User.Queries.RequestDTOs;
 using User.Application.Features.User.Queries.ResponseDTOs;
 

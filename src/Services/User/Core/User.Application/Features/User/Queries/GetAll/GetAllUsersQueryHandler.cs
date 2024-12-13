@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common.Extensions;
-using Shared.CleanArchitecture.Common.Pagination;
 using User.Application.Features.User.Queries.ResponseDTOs;
 using User.Application.Features.User.Queries.Extensions;
 using User.Domain.Repositories;
+using Shared.Components.Pagination;
+using Shared.Components.Extensions;
 
 namespace User.Application.Features.User.Queries.GetAll;
 

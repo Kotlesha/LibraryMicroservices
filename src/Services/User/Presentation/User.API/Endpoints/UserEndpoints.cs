@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Common.Extensions;
 using System.Text.Json;
 using User.Application.Features.User.Commands.Create;
 using User.Application.Features.User.Queries.GetAll;
 using User.Application.Features.User.Queries.GetAuth;
 using User.Application.Features.User.Queries.GetById;
 using User.Application.Features.User.Queries.RequestDTOs;
+using Shared.CleanArchitecture.Extensions;
 
 namespace User.API.Endpoints;
 

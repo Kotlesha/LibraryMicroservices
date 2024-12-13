@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Repositories;
+using Shared.Components.Results;
 using User.Application.Abstractions.Services;
 using User.Application.Errors;
 using User.Domain.Repositories;

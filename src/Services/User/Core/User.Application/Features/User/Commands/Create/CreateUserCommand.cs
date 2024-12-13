@@ -1,5 +1,5 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common.Components.Results;
+using Shared.Components.Results;
 
 namespace User.Application.Features.User.Commands.Create;
 
