@@ -1,4 +1,5 @@
 using Shared.CleanArchitecture.Presentation.Middleware;
+using User.API.Endpoints;
 using User.API.Extensions;
 using User.Application.Extensions;
 using User.Infrastructure.Extensions;
@@ -27,6 +28,8 @@ public class Program
             app.ApplyMigrations();
         }
 
+        app.MapUserEndpoints();
+
         app.UseHttpsRedirection();
 
         app.UseAuthentication();
@@ -35,8 +38,6 @@ public class Program
         app.UseStatusCodePages();
 
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-
-        app.UseEndpoints();
 
         app.Run();
     }
