@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common.Pagination;
+﻿namespace Shared.Components.Pagination;
 
 public class MetaData
 {

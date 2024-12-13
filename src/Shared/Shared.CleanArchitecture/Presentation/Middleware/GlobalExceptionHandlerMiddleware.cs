@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shared.CleanArchitecture.Application.Exceptions;
-using Shared.CleanArchitecture.Common.Components.Errors;
 using Shared.CleanArchitecture.Presentation.Extensions;
 using Shared.CleanArchitecture.Presentation.Factories;
+using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Presentation.Middleware;
 

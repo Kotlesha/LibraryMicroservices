@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common.Pagination.Parameters;
+﻿namespace Shared.Components.Pagination.Parameters;
 
 internal class RequestConstants
 {

@@ -1,8 +1,8 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Application.Abstractions.Services;
-using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Entities;
 using Shared.CleanArchitecture.Domain.Repositories.Base;
+using Shared.Components.Results;
 
 namespace Shared.CleanArchitecture.Application.Services;
 
@@ -19,9 +19,9 @@ public abstract class BaseService<TEntity, TEntityToAdd>(
         IEnumerable<Guid> entityIds, 
         CancellationToken cancellationToken = default)
     {
-        var uniqueEntityIds = entityIds.
-            Distinct().
-            ToList();
+        var uniqueEntityIds = entityIds
+            .Distinct()
+            .ToList();
 
         var entities = await _repository.GetExistingEntitiesByIdsAsync(
             uniqueEntityIds, cancellationToken);

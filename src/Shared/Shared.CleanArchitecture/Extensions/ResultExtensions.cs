@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Presentation.Factories;
+using Shared.Components.Results;
 
-namespace Shared.CleanArchitecture.Common.Extensions;
+namespace Shared.CleanArchitecture.Extensions;
 
 public static class ResultExtensions
 {

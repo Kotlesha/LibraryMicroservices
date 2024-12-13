@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Common.Components.Errors;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Presentation.Helpers;
+using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Presentation.Factories;
 

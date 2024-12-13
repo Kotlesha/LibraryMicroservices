@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Shared.CleanArchitecture.Common.Pagination.Parameters;
+namespace Shared.Components.Pagination.Parameters;
 
 public class RequestParametersValidator : AbstractValidator<RequestParameters>
 {

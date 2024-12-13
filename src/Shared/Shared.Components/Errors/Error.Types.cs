@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common.Components.Errors;
+﻿namespace Shared.Components.Errors;
 
 public partial class Error
 {
