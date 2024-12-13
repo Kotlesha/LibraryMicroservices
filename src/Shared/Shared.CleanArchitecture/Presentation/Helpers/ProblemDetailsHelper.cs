@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.CleanArchitecture.Common.Components.Errors;
+using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Presentation.Helpers;
 

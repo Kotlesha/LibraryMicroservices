@@ -1,4 +1,4 @@
-﻿namespace Shared.CleanArchitecture.Common.Pagination.Parameters;
+﻿namespace Shared.Components.Pagination.Parameters;
 
 public abstract class RequestParameters
 {
@@ -9,7 +9,7 @@ public abstract class RequestParameters
     {
         get => _pageSize;
 
-        set => _pageSize = value > RequestConstants.maxPageSize 
+        set => _pageSize = value > RequestConstants.maxPageSize
             ? RequestConstants.maxPageSize : value;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.CleanArchitecture.Common.Components.Errors;
+using Shared.Components.Errors;
 using System.Diagnostics;
 
 namespace Shared.CleanArchitecture.Presentation.Extensions;

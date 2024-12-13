@@ -1,5 +1,5 @@
-﻿using Shared.CleanArchitecture.Common.Components.Results;
-using Shared.CleanArchitecture.Domain.Entities;
+﻿using Shared.CleanArchitecture.Domain.Entities;
+using Shared.Components.Results;
 
 namespace Shared.CleanArchitecture.Application.Abstractions.Services;
 
