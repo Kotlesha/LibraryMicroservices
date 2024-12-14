@@ -7,4 +7,5 @@ public interface IBookRepository : IRepository<Book>
 {
     Task<Book> GetBookByTitleAsync(string title, 
         CancellationToken cancellationToken = default);
+
 }
