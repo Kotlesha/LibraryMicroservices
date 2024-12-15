@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Components.Errors;
 using System.Diagnostics;
 
 namespace Shared.Components.ExceptionHandling.Extensions;
@@ -36,7 +37,7 @@ public static class ProblemDetailsExtensions
     }
 
     public static ProblemDetails WithValidationErrors(this ProblemDetails problemDetails,
-        IDictionary<string, string[]>? errors)
+        IEnumerable<Error> errors)
     {
         problemDetails.Extensions["errors"] = errors;
         return problemDetails;

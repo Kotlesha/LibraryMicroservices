@@ -30,7 +30,7 @@ public class GlobalExceptionHandlerMiddleware(
                 ValidationException validationException =>
                     ProblemDetailsFactory
                         .CreateProblemDetails(Error.Validation())
-                        .WithValidationErrors(validationException.Errors.ToDictionary()),
+                        .WithValidationErrors(validationException.Errors.ToErrorList()),
 
                 _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
             };
