@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Shared.CleanArchitecture.Presentation.Helpers;
 using Shared.Components.Errors;
+using Shared.Components.ExceptionHandling.Helpers;
 
-namespace Shared.CleanArchitecture.Presentation.Factories;
+namespace Shared.Components.ExceptionHandling.Factories;
 
 public static class ProblemDetailsFactory
 {
@@ -19,6 +19,6 @@ public static class ProblemDetailsFactory
             }
         };
 
-        return problemDetails;            
+        return problemDetails;
     }
 }

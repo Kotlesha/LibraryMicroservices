@@ -1,4 +1,4 @@
-using Shared.CleanArchitecture.Presentation.Middleware;
+using Shared.Components.ExceptionHandling.Middleware;
 using User.API.Extensions;
 using User.Application.Extensions;
 using User.Infrastructure.Extensions;
