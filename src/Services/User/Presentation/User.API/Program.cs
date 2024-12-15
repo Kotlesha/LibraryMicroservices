@@ -1,4 +1,5 @@
 using Shared.Components.ExceptionHandling.Middleware;
+using Shared.Components.Migrations;
 using User.API.Endpoints;
 using User.API.Extensions;
 using User.Application.Extensions;
