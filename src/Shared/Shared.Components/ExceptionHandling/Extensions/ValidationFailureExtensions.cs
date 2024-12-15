@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
+using Shared.Components.ExceptionHandling.Extensions;
 
-namespace Shared.CleanArchitecture.Presentation.Extensions;
+namespace Shared.Components.ExceptionHandling.Extensions;
 
 internal static class ValidationFailureExtensions
 {

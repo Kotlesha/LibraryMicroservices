@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.CleanArchitecture.Presentation.Factories;
+using Shared.Components.ExceptionHandling.Factories;
 using Shared.Components.Results;
 
 namespace Shared.CleanArchitecture.Extensions;
