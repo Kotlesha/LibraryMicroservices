@@ -16,11 +16,15 @@ public static class MigrationExtensions
         using var scope = app.ApplicationServices.CreateScope();
         var serviceProvider = scope.ServiceProvider;
 
-        var dbContexts = serviceProvider.GetServices<DbContext>();
+        var dbContextTypes = serviceProvider.GetType()
+            .Assembly.GetTypes()
+            .Where(type => typeof(DbContext).IsAssignableFrom(type) && !type.IsAbstract);
 
-        foreach (var context in dbContexts)
+        foreach (var dbContextType in dbContextTypes)
         {
-            context.Database.Migrate();
+            var context = serviceProvider.GetService(dbContextType) as DbContext;
+
+            context?.Database.Migrate();
         }
     }
 }
