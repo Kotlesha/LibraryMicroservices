@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Features;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Components.Errors;
@@ -37,7 +38,7 @@ public static class ProblemDetailsExtensions
     }
 
     public static ProblemDetails WithValidationErrors(this ProblemDetails problemDetails, 
-        IEnumerable<Error>? errors)
+        IEnumerable<ValidationFailure>? errors)
     {
         problemDetails.Extensions["errors"] = errors;
         return problemDetails;
