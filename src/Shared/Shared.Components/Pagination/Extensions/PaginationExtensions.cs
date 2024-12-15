@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Components.Pagination;
 
-namespace Shared.Components.Extensions;
+namespace Shared.Components.Pagination.Extensions;
 
 public static class PaginationExtensions
 {
