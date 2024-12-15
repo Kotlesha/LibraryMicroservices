@@ -1,20 +1,19 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Shared.CleanArchitecture.Presentation.Extensions;
-using Shared.CleanArchitecture.Presentation.Factories;
 using Shared.Components.Errors;
+using Shared.Components.ExceptionHandling.Extensions;
+using Shared.Components.ExceptionHandling.Factories;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware;
+namespace Shared.Components.ExceptionHandling.Middleware;
 
 public class GlobalExceptionHandlerMiddleware(
-    RequestDelegate next, 
+    RequestDelegate next,
     ILogger<GlobalExceptionHandlerMiddleware> logger,
     IProblemDetailsService problemDetailsService)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
-    private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -36,7 +35,7 @@ public class GlobalExceptionHandlerMiddleware(
                 _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
             };
 
-            context.Response.StatusCode = problemDetails.Status 
+            context.Response.StatusCode = problemDetails.Status
                 ?? StatusCodes.Status500InternalServerError;
 
             await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
