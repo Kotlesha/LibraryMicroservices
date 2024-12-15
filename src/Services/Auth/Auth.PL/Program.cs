@@ -1,7 +1,8 @@
 using Auth.DAL.Extensions;
 using Auth.BLL.Extensions;
-using Shared.CleanArchitecture.Presentation.Middleware;
 using Auth.PL.Extensions;
+using Shared.Components.ExceptionHandling.Middleware;
+using Shared.Components.Migrations;
 
 namespace Auth.PL;
 
