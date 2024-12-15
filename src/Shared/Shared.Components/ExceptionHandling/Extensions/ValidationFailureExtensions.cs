@@ -15,7 +15,7 @@ internal static class ValidationFailureExtensions
 
         return validationFailures.Select(
             vF => Error.Validation(
-                code: vF.ErrorCode,
+                code: vF.PropertyName,
                 message: vF.ErrorMessage));
     }
 }
