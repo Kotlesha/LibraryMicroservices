@@ -3,6 +3,7 @@ using Shared.Components.Migrations;
 using User.API.Endpoints;
 using User.API.Extensions;
 using User.Application.Extensions;
+using User.Infrastructure.Context;
 using User.Infrastructure.Extensions;
 
 namespace User.API;
@@ -26,7 +27,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.ApplyMigrations();
+            app.ApplyMigrations<UserDbContext>();
         }
 
         app.MapUserEndpoints();
