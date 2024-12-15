@@ -16,15 +16,21 @@ public static class MigrationExtensions
         using var scope = app.ApplicationServices.CreateScope();
         var serviceProvider = scope.ServiceProvider;
 
-        var dbContextTypes = serviceProvider.GetType()
-            .Assembly.GetTypes()
-            .Where(type => typeof(DbContext).IsAssignableFrom(type) && !type.IsAbstract);
+        // Ищем все зарегистрированные сервисы, наследующиеся от DbContext
+        var dbContextTypes = app.ApplicationServices.GetService<IServiceCollection>()
+            ?.Where(descriptor => typeof(DbContext).IsAssignableFrom(descriptor.ServiceType))
+            .Select(descriptor => descriptor.ServiceType)
+            .Distinct();
+
+        if (dbContextTypes == null || !dbContextTypes.Any())
+        {
+            throw new InvalidOperationException("No DbContext instances found in the DI container.");
+        }
 
         foreach (var dbContextType in dbContextTypes)
         {
-            var context = serviceProvider.GetService(dbContextType) as DbContext;
-
-            context?.Database.Migrate();
+            var dbContext = serviceProvider.GetService(dbContextType) as DbContext;
+            dbContext?.Database.Migrate();
         }
     }
 }
