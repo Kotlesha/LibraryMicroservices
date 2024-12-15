@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0215eee8-a993-4218-ac0d-ae1d164aa208</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.CleanArchitecture\Shared.CleanArchitecture.csproj" />
+    <ProjectReference Include="..\Auth.BLL\Auth.BLL.csproj" />
+    <ProjectReference Include="..\Auth.DAL\Auth.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
