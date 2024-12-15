@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Presentation.Extensions;
+﻿using Shared.Components.ExceptionHandling.Extensions;
 
 namespace Auth.PL.Extensions;
 
