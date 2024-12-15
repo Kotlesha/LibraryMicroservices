@@ -3,6 +3,7 @@ using Auth.BLL.Extensions;
 using Auth.PL.Extensions;
 using Shared.Components.ExceptionHandling.Middleware;
 using Shared.Components.Migrations;
+using Auth.DAL.Context;
 
 namespace Auth.PL;
 
@@ -22,7 +23,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.ApplyMigrations();
+            app.ApplyMigrations<AccountDbContext>();
         }
 
         app.UseHttpsRedirection();
