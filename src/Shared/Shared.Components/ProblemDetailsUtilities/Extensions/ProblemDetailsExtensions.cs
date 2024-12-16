@@ -36,8 +36,8 @@ public static class ProblemDetailsExtensions
         return services;
     }
 
-    public static ProblemDetails WithErrors(this ProblemDetails problemDetails,
-        params Error[] errors)
+    public static ProblemDetails WithErrors<T>(this ProblemDetails problemDetails,
+        params T[] errors)
     {
         problemDetails.Extensions["errors"] = errors;
         return problemDetails;
