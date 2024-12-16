@@ -10,8 +10,8 @@ public partial class Error
     public static readonly Error Failure
         = new("Error.InternalServerError", "An unexpected error occurred.", ErrorType.Failure);
 
-    public static readonly Error NotUnique
-        = Conflict("Error.NotUbique", "Violation of unique constraint.");
+    public static readonly Error UniqueViolation
+        = Conflict("Error.UniqueViolation", "Violation of unique constraint.");
 
     public static Error Validation(string code, string message) => new(code, message, ErrorType.Validation);
 
