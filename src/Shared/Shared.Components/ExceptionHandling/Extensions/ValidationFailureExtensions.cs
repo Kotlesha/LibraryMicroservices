@@ -5,7 +5,7 @@ namespace Shared.Components.ExceptionHandling.Extensions;
 
 internal static class ValidationFailureExtensions
 {
-    internal static IEnumerable<Error> ToErrorList(
+    internal static Error[] ToErrorArray(
         this IEnumerable<ValidationFailure>? validationFailures)
     {
         if (validationFailures is null)
@@ -13,9 +13,11 @@ internal static class ValidationFailureExtensions
             return [];
         }
 
-        return validationFailures.Select(
-            vF => Error.Validation(
-                code: vF.PropertyName,
-                message: vF.ErrorMessage));
+        return validationFailures
+            .Select(
+                vF => Error.Validation(
+                    code: vF.PropertyName,
+                    message: vF.ErrorMessage))
+            .ToArray();
     }
 }

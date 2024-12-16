@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Components.Errors;
 using Shared.Components.ExceptionHandling.Extensions;
-using Shared.Components.ExceptionHandling.Factories;
+using Shared.Components.ProblemDetailsUtilities.Extensions;
+using Shared.Components.ProblemDetailsUtilities.Factories;
 
 namespace Shared.Components.ExceptionHandling.Middleware;
 
@@ -29,10 +31,17 @@ public class GlobalExceptionHandlerMiddleware(
             {
                 ValidationException validationException =>
                     ProblemDetailsFactory
-                        .CreateProblemDetails(Error.Validation())
-                        .WithValidationErrors(validationException.Errors.ToErrorList()),
+                        .CreateProblemDetails(ErrorType.Validation)
+                        .WithErrors(validationException.Errors.ToErrorArray()),
 
-                _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
+                DbUpdateException dbUpdateException when dbUpdateException.IsUniqueIndexViolation() =>
+                    ProblemDetailsFactory
+                        .CreateProblemDetails(ErrorType.Conflict)
+                        .WithErrors(dbUpdateException.CreateUniqueIndexError()),
+
+                _ => ProblemDetailsFactory
+                        .CreateProblemDetails(ErrorType.Failure)
+                        .WithErrors(Error.Failure)
             };
 
             context.Response.StatusCode = problemDetails.Status
