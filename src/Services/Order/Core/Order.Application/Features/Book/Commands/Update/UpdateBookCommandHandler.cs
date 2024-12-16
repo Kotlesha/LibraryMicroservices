@@ -2,8 +2,8 @@
 using Order.Application.Errors;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common;
 using Shared.CleanArchitecture.Domain.Repositories;
+using Shared.Components.Results;
 
 namespace Order.Application.Features.Book.Commands.Update;
 

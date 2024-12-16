@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Domain.Repositories;
+﻿using Shared.CleanArchitecture.Domain.Repositories.Base;
 
 namespace Order.Domain.Repositories;
 

@@ -1,5 +1,5 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common;
+using Shared.Components.Results;
 
 namespace Order.Application.Features.Book.Commands.Delete;
 

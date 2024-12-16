@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Order.Application.DTOs.ResponseDTOs;
 using Order.Application.Errors;
-using Order.Application.Features.Book.Queries.GetById;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common;
+using Shared.Components.Results;
 
 namespace Order.Application.Features.Book.Queries.GetByTitle;
 

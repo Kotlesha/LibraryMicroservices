@@ -1,6 +1,4 @@
 ﻿using Order.Domain.Enums;
-using Order.Domain.Errors;
-using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Order.Domain.Entities;
@@ -15,6 +13,10 @@ public sealed class Order : AggregateRoot
 
     private readonly List<Book> _books = [];
     public IReadOnlyList<Book> Books => _books.AsReadOnly();
+
+    public void AddBookToOrder(Book book) => AddEntity(book, _books);
+
+    public void RemoveBookFromOrder(Book book) => RemoveEntity(book, _books); 
 
     private Order(Guid Id, Guid userId, decimal totalCost, Status status) : base(Id)
     {
@@ -35,43 +37,6 @@ public sealed class Order : AggregateRoot
     protected override void Validate()
     {
         ArgumentOutOfRangeException.ThrowIfNegative(TotalCost, nameof(TotalCost));
-    }
-
-    private bool HasBook(Book book) => _books.Any(b => b.Id.Equals(book.Id));
-
-    public Result AddBookToOrder(Book book)
-    {
-        ArgumentNullException.ThrowIfNull(book, nameof(book));
-
-        if (!book.IsAvailable)
-        {
-            return Result.Failure(DomainErrors.Order.BookNotAvailable);
-        }
-
-        if (HasBook(book))
-        {
-            return Result.Failure(DomainErrors.Order.BookAlreadyExists);
-        }
-
-        _books.Add(book);
-        TotalCost += book.Price;
-
-        return Result.Success();
-    }
-
-    public Result RemoveBookFromOrder(Book book)
-    {
-        ArgumentNullException.ThrowIfNull(book, nameof(book));
-
-        if (!HasBook(book))
-        {
-            return Result.Failure(DomainErrors.Order.BookNotFound);
-        }
-
-        _books.Remove(book);
-        TotalCost -= book.Price;
-
-        return Result.Success();
     }
 
     public void CancelOrder()

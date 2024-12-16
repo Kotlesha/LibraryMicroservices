@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Common;
+﻿using Shared.Components.Errors;
 
 namespace Order.Application.Errors;
 
@@ -6,11 +6,7 @@ public static partial class ApplicationErrors
 {
     public static class Book
     {
-        public static readonly Error AlreadyExistsWithThatTitle = new(
-            code: "Book.AlreadyExistsWithThatTitle",
-            message: "Book with this name is already exists");
-
-        public static readonly Error NotFound = new(
+        public static readonly Error NotFound = Error.NotFound(
            code: "Book.NotFound",
            message: "Book doesn't exist");
 

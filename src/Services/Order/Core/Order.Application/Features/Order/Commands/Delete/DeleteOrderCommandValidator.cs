@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Order.Application.Features.Order.Commands.Delete
+﻿namespace Order.Application.Features.Order.Commands.Delete
 {
     internal class DeleteOrderCommandValidator
     {
