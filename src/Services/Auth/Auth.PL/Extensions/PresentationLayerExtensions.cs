@@ -1,4 +1,4 @@
-﻿using Shared.Components.ExceptionHandling.Extensions;
+﻿using Shared.Components.ProblemDetailsUtilities.Extensions;
 
 namespace Auth.PL.Extensions;
 
