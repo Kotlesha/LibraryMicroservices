@@ -9,7 +9,7 @@ public sealed class Order : AggregateRoot
     public DateTime CreatedTimeUtc { get; private set; }
     public decimal TotalCost { get; private set; }
     public Status Status { get; private set; }
-    public DateTime CanceledTimeUtc {  get; private set; }
+    public DateTime? CanceledTimeUtc {  get; private set; }
 
     private readonly List<Book> _books = [];
     public IReadOnlyList<Book> Books => _books.AsReadOnly();
