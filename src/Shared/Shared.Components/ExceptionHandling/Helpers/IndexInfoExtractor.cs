@@ -4,7 +4,7 @@ namespace Shared.Components.ExceptionHandling.Helpers;
 
 internal static class IndexInfoExtractor
 {
-    private static readonly Regex indexRegex = new(@"IX_([^ ]+)", RegexOptions.Compiled);
+    private static readonly Regex indexRegex = new(@"IX_([A-Za-z0-9_]+)", RegexOptions.Compiled);
 
     public static (string TableName, string FieldName) Extract(string sqlExceptionMessage)
     {
