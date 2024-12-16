@@ -8,6 +8,4 @@ public interface IOrderRepository : IEntityBatchRepository<Order>
 {
     Task<IEnumerable<Order>> GetOrdersByUserIdAsync(Guid userId, 
         CancellationToken cancellationToken = default);
-    Task<IEnumerable<Order>> GetOrderByDateAsync(DateOnly Date, 
-        CancellationToken cancellationToken = default);
 }
