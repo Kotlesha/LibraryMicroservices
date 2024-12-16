@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components.Results;
 using User.Application.Abstractions.Services;
 using User.Application.Errors;
 using User.Application.Features.User.Queries.ResponseDTOs;

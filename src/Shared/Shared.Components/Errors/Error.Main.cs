@@ -1,12 +1,20 @@
-﻿namespace Shared.CleanArchitecture.Common;
+﻿using System.Text.Json.Serialization;
 
-public class Error(string code, string message) : IEquatable<Error>
+namespace Shared.Components.Errors;
+
+public partial class Error : IEquatable<Error>
 {
-    public static readonly Error None = new(string.Empty, string.Empty);
-    public static readonly Error NullValue = new("Error.NullValue", "The specified result value is null.");
+    [JsonIgnore]
+    public ErrorType Type { get; }
+    public string Code { get; }
+    public string Message { get; }
 
-    public string Code { get; } = code;
-    public string Message { get; } = message;
+    private Error(string code, string message, ErrorType type)
+    {
+        Code = code;
+        Message = message;
+        Type = type;
+    }
 
     public static implicit operator string(Error error) => error.Code;
 

@@ -1,17 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.CleanArchitecture.Application.Exceptions;
-using Shared.CleanArchitecture.Presentation.ProblemDetailsTypes;
+using Shared.CleanArchitecture.Presentation.Extensions;
+using Shared.CleanArchitecture.Presentation.Factories;
+using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Presentation.Middleware;
 
 public class GlobalExceptionHandlerMiddleware(
-    RequestDelegate next,
-    ILogger<GlobalExceptionHandlerMiddleware> logger)
+    RequestDelegate next, 
+    ILogger<GlobalExceptionHandlerMiddleware> logger,
+    IProblemDetailsService problemDetailsService)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
+    private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -21,18 +24,27 @@ public class GlobalExceptionHandlerMiddleware(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex,
-                "Exception occurred: {Message}", ex.Message);
+            _logger.LogError(ex, "Exception occurred: {Message}", ex.Message);
 
-            var instance = context.Request.Path;
+            var problemDetails = ex switch
+            {
+                ValidationException validationException =>
+                    ProblemDetailsFactory
+                        .CreateProblemDetails(Error.Validation())
+                        .WithValidationErrors(validationException.Errors),
 
-            ProblemDetails problemDetails = ex is ValidationException validationException ?
-                new ValidationErrorProblemDetails(instance, validationException.Errors) :
-                new InternalServerErrorProblemDetails(instance);
+                _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
+            };
 
-            context.Response.StatusCode = (int)problemDetails.Status;
+            context.Response.StatusCode = problemDetails.Status 
+                ?? StatusCodes.Status500InternalServerError;
 
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                Exception = ex,
+                HttpContext = context,
+                ProblemDetails = problemDetails
+            });
         }
     }
 }

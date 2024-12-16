@@ -1,9 +1,11 @@
 ﻿using Shared.CleanArchitecture.Domain.Entities;
 using System.Linq.Expressions;
 
-namespace Shared.CleanArchitecture.Domain.Repositories;
+namespace Shared.CleanArchitecture.Domain.Repositories.Base;
 
-public interface IRepository<T> : IRepository<T, Guid> where T : AggregateRoot<Guid>;
+public interface IRepository<T> :
+    IRepository<T, Guid>
+    where T : AggregateRoot<Guid>;
 
 public interface IRepository<T, Tkey> where T : AggregateRoot<Tkey>
 {

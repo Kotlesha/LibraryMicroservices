@@ -1,4 +1,6 @@
-﻿namespace Shared.CleanArchitecture.Common;
+﻿using Shared.Components.Errors;
+
+namespace Shared.Components.Results;
 
 public class Result<TValue> : Result
 {

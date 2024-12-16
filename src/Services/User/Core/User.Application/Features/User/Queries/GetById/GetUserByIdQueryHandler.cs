@@ -1,5 +1,5 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Messaging;
-using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components.Results.Result;
 using User.Application.Abstractions.Services;
 using User.Application.Features.User.Queries.ResponseDTOs;
 

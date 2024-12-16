@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
-using Shared.CleanArchitecture.Common;
+using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Application.Behaviours;
 
-public sealed class ValidationPipelineBehaviour<TRequest, TResponse>
-    (IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest, IRequest<TResponse>
+public sealed class ValidationPipelineBehaviour<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IBaseRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
@@ -25,7 +25,7 @@ public sealed class ValidationPipelineBehaviour<TRequest, TResponse>
         var errors = validationFailures
             .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
-            .Select(validationFailure => new Error(
+            .Select(validationFailure => Error.Validation(
                 validationFailure.PropertyName,
                 validationFailure.ErrorMessage))
             .ToArray();

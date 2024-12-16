@@ -1,6 +1,6 @@
 ﻿using Order.Domain.Enums;
 using Order.Domain.Errors;
-using Shared.CleanArchitecture.Common;
+using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Entities;
 
 namespace Order.Domain.Entities;
