@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Shared.Components.Errors;
+using Shared.Components.ExceptionHandling.Helpers;
 
 namespace Shared.Components.ExceptionHandling.Extensions;
 

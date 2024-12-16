@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Shared.Components.ExceptionHandling.Extensions;
+namespace Shared.Components.ExceptionHandling.Helpers;
 
 internal static class IndexInfoExtractor
 {
