@@ -13,7 +13,7 @@ public interface IRepository<T, Tkey> where T : AggregateRoot<Tkey>
     Task RemoveAsync(T entity, CancellationToken cancellationToken = default);
     Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
 
-    Task<T> GetByIdAsync(Tkey Id, CancellationToken cancellationToken = default);
+    Task<T?> GetByIdAsync(Tkey Id, CancellationToken cancellationToken = default);
     Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
     Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
 }
