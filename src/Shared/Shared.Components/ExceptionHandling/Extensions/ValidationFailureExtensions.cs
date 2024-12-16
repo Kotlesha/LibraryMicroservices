@@ -9,7 +9,7 @@ internal static class ValidationFailureExtensions
     {
         if (validationFailures is null)
         {
-            return [];
+            return new Dictionary<string, string[]>();
         }
 
         return validationFailures
