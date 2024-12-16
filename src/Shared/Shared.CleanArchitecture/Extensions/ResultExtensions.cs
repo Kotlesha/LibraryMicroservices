@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.Components.ExceptionHandling.Factories;
+using Shared.Components.ProblemDetailsUtilities.Extensions;
+using Shared.Components.ProblemDetailsUtilities.Factories;
 using Shared.Components.Results;
 
 namespace Shared.CleanArchitecture.Extensions;
@@ -13,7 +14,10 @@ public static class ResultExtensions
             throw new InvalidOperationException();
         }
 
-        var problemDetails = ProblemDetailsFactory.CreateProblemDetails(result.Error);
+        var problemDetails = ProblemDetailsFactory
+            .CreateProblemDetails(result.Error.Type)
+            .WithErrors(result.Error);
+
         return TypedResults.Problem(problemDetails);
     }
 }
