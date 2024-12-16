@@ -25,15 +25,15 @@ internal static class DbUpdateExceptionExtensions
 
             if (string.IsNullOrEmpty(tableName) && string.IsNullOrEmpty(fieldName))
             {
-                return Error.NotUnique;
+                return Error.UniqueViolation;
             }
 
             return Error.Conflict(
-                code: Error.NotUnique.Code,
-                message: "{tableName} with such {fieldName} already exists.");
+                code: Error.UniqueViolation.Code,
+                message: $"{tableName} with such {fieldName} already exists.");
         }
 
-        return Error.NotUnique;
+        return Error.UniqueViolation;
     }
 }
 
