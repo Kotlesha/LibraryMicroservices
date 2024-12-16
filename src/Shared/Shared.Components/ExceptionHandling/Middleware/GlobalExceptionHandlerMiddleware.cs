@@ -32,7 +32,7 @@ public class GlobalExceptionHandlerMiddleware(
                 ValidationException validationException =>
                     ProblemDetailsFactory
                         .CreateProblemDetails(ErrorType.Validation)
-                        .WithErrors(validationException.Errors.ToErrorArray()),
+                        .WithErrors(validationException.Errors.ToDictionary()),
 
                 DbUpdateException dbUpdateException when dbUpdateException.IsUniqueIndexViolation() =>
                     ProblemDetailsFactory

@@ -1,11 +1,10 @@
 ﻿using FluentValidation.Results;
-using Shared.Components.Errors;
 
 namespace Shared.Components.ExceptionHandling.Extensions;
 
 internal static class ValidationFailureExtensions
 {
-    internal static Error[] ToErrorArray(
+    internal static IDictionary<string, string[]> ToDictionary(
         this IEnumerable<ValidationFailure>? validationFailures)
     {
         if (validationFailures is null)
@@ -14,10 +13,9 @@ internal static class ValidationFailureExtensions
         }
 
         return validationFailures
-            .Select(
-                vF => Error.Validation(
-                    code: vF.PropertyName,
-                    message: vF.ErrorMessage))
-            .ToArray();
+            .GroupBy(vF => vF.PropertyName)
+            .ToDictionary(
+                p => p.Key, 
+                p => p.Select(p => p.ErrorMessage).ToArray());
     }
 }
