@@ -4,6 +4,9 @@ using Auth.PL.Extensions;
 using Shared.Components.ExceptionHandling.Middleware;
 using Shared.Components.Migrations;
 using Auth.DAL.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Auth.PL;
 
@@ -16,6 +19,9 @@ public class Program
         builder.Services.AddDataAccessLayer(builder.Configuration);
         builder.Services.AddBusinessLogicLayer();
         builder.Services.AddPresentationLayer();
+
+        builder.Services.ConfigureJWT(builder.Configuration);
+        builder.Services.AddAuthorization();
 
         var app = builder.Build();
 

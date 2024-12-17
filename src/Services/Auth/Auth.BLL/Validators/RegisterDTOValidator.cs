@@ -1,5 +1,5 @@
 ﻿using Auth.BLL.Constants.Passwords;
-using Auth.BLL.DTOs;
+using Auth.BLL.DTOs.RequestDTOs;
 using FluentValidation;
 
 namespace Auth.BLL.Validators;

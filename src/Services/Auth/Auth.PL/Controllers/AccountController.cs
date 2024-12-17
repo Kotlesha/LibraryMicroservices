@@ -1,5 +1,6 @@
-﻿using Auth.BLL.DTOs;
+﻿using Auth.BLL.DTOs.RequestDTOs;
 using Auth.BLL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Extensions;
 
@@ -37,10 +38,14 @@ public class AccountController(IAccountService accountService) : ControllerBase
         return Results.Ok();
     }
 
-    //[Authorize]
-    //[HttpGet("/profile")]
-    //public async Task<IResult> GetUserProfile()
-    //{
-    //    var user = 
-    //}
+    [Authorize]
+    [HttpGet("/profile")]
+    public async Task<IResult> GetAccountProfile()
+    {
+        var result = await _accountService.GetAccountProfile();
+
+        return result.IsSuccess ? 
+            Results.Ok(result.Value) :
+            result.ToProblemDetails();
+    }
 }

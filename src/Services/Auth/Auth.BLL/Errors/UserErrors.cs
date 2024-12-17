@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Shared.Components.Errors;
+﻿using Shared.Components.Errors;
 
 namespace Auth.BLL.Errors;
 
@@ -9,11 +8,7 @@ internal static class UserErrors
         code: "Login.InvalidPasswordOrEmail",
         message: "Invalid password or email");
 
-    internal static Error LoginValidationFailure(string errors) => Error.Validation(
-        code: "Login.LoginValidationFailure",
-        message: errors);
-
-    internal static Error RegisterValidationFailure(string errors) => Error.Validation(
-        code: "Login.RegisterValidationFailure",
-        message: errors);
+    internal static Error NotFound = Error.NotFound(
+        code: "GetAccountProfile.AccountNotFound",
+        message: "Account not found");
 }

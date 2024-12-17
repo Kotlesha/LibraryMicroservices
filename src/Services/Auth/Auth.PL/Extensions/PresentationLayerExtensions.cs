@@ -1,4 +1,6 @@
-﻿using Shared.Components.ProblemDetailsUtilities.Extensions;
+﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
+using Shared.CleanArchitecture.Presentation.Providers;
+using Shared.Components.ProblemDetailsUtilities.Extensions;
 
 namespace Auth.PL.Extensions;
 
@@ -8,8 +10,10 @@ public static class PresentationLayerExtensions
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGenWithAuth();
         services.AddExtendedProblemDetails();
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserIdProvider, UserIdProvider>();
 
         return services;
     }
