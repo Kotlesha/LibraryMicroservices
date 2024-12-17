@@ -2,6 +2,7 @@
 using Order.Application.Errors;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.Components.Results;
 
@@ -14,16 +15,29 @@ internal class CreateOrderCommandHandler(
     IOrderRepository orderRepository,
     IBookRepository bookRepository,
     IMapper mapper,
-    IUnitOfWork unitOfWork) : ICommandHandler<CreateOrderCommand, Result<Guid>>
+    IUnitOfWork unitOfWork, 
+    IUserIdProvider userIdProvider) : ICommandHandler<CreateOrderCommand, Result<Guid>>
 {
     private readonly IOrderRepository _orderRepository = orderRepository;
     private readonly IBookRepository _bookRepository = bookRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IUserIdProvider _userIdProvider = userIdProvider;
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = _mapper.Map<Order>(request.OrderDTO);
+        var userId = _userIdProvider.GetAuthUserId();
+
+        if (!Guid.TryParse(userId, out Guid id)) 
+        {
+            //return Result.Failure()
+        }
+
+
+        var order = /*_mapper.Map<Order>(request.OrderDTO);*/
+            Order.Create(
+                id,
+                request.OrderDTO.TotalCost);
 
         var books = new List<Book>();
 

@@ -1,6 +1,6 @@
 ﻿namespace Order.Application.DTOs.ResponseDTOs
 {
-    public class BookResponseDTO(
+    public sealed record BookResponseDTO(
         Guid Id,
         string Title,
         decimal Price,

@@ -18,7 +18,11 @@ public static partial class ApplicationErrors
              code: "Order.NotFound",
              message: "Order doesn't exist");
 
-        public static readonly Error NotBelongToUser = Error.NotFound(
+        public static readonly Error NotBelongToUser = Error.Conflict(
+             code: "Order.NotBelong",
+             message: "This order doesn't belong to the user");
+
+        public static readonly Error NotBelongToUser = Error.Conflict(
              code: "Order.NotBelong",
              message: "This order doesn't belong to the user");
     }

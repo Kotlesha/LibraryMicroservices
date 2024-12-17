@@ -13,7 +13,5 @@ internal class BookProfile : Profile
                 dto.Title,
                 dto.Price,
                 true));
-
-
     }
 }
