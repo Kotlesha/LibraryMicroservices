@@ -3,7 +3,6 @@ using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.Components.Results;
 using User.Application.Abstractions.Services;
-using User.Application.Errors;
 using User.Domain.Repositories;
 
 namespace User.Application.Features.User.Commands.Create;
@@ -23,22 +22,6 @@ internal class CreateUserCommandHandler(
 
     public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var isApplicationUserIdExist = await _userService.GetUserByIdAsync(
-            request.ApplicationUserId, cancellationToken);
-
-        if (isApplicationUserIdExist.IsSuccess)
-        {
-            return Result.Failure<Guid>(ApplicationErrors.User.ApplicationUserIdAlreadyExists);
-        }
-
-        var isEmailExist = await _userService.GetUserByEmailAsync(
-            request.Email, cancellationToken);
-
-        if (isEmailExist.IsSuccess) 
-        {
-            return Result.Failure<Guid>(ApplicationErrors.User.ApplicationEmailAlreadyExists);
-        }
-
         var user = _mapper.Map<User>(request);
 
         await _userRepository.AddUserAsync(user, cancellationToken);

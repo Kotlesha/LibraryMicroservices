@@ -2,7 +2,6 @@
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.Components.Results;
 using User.Application.Abstractions.Services;
-using User.Application.Errors;
 using User.Application.Features.User.Queries.ResponseDTOs;
 
 namespace User.Application.Features.User.Queries.GetAuth;
@@ -16,13 +15,7 @@ internal class GetAuthUserQueryHandler(
 
     public async Task<Result<UserDTO>> Handle(GetAuthUserQuery request, CancellationToken cancellationToken)
     {
-        var userId = _userIdProvider.GetAuthUserId();
-
-        if (!Guid.TryParse(userId, out Guid Id))
-        {
-            return Result.Failure<UserDTO>(ApplicationErrors.User.InvalidUserIdFromat);
-        }
-
-        return await _userService.GetUserByIdAsync(Id, cancellationToken);
+        var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
+        return await _userService.GetUserByIdAsync(userId, cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 using Shared.Components.ExceptionHandling.Middleware;
+using Shared.Components.Jwt;
 using Shared.Components.Migrations;
 using User.API.Endpoints;
 using User.API.Extensions;
@@ -18,8 +19,8 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
-        builder.Services.AddAuthorization(); 
-        builder.Services.AddAuthentication();
+        builder.Services.ConfigureJWT(builder.Configuration);
+        builder.Services.AddAuthorization();
 
         var app = builder.Build();
 
