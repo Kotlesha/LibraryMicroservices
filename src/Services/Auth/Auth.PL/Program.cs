@@ -4,9 +4,7 @@ using Auth.PL.Extensions;
 using Shared.Components.ExceptionHandling.Middleware;
 using Shared.Components.Migrations;
 using Auth.DAL.Context;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Shared.Components.Jwt;
 
 namespace Auth.PL;
 

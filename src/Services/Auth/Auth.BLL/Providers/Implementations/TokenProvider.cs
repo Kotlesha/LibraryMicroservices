@@ -1,19 +1,20 @@
 ﻿using Auth.BLL.Providers.Interfaces;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Components.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace Auth.BLL.Providers.Implementations;
 
-internal class TokenProvider(IConfiguration configuration) : ITokenProvider
+internal class TokenProvider(IOptions<JwtOptions> options) : ITokenProvider
 {
-    private readonly IConfiguration _configuration = configuration;
+    private readonly JwtOptions _options = options.Value;
 
     public string GenerateToken(Guid userId)
     {
-        string secretKey = _configuration["Jwt:Secret"]!;
+        string secretKey = _options.Secret;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -25,10 +26,10 @@ internal class TokenProvider(IConfiguration configuration) : ITokenProvider
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString())
             ]),
             Expires = DateTime.UtcNow.AddMinutes(
-                _configuration.GetValue<int>("Jwt:ExpirationInMinutes")),
+                _options.ExpirationInMinutes),
             SigningCredentials = credentials,
-            Audience = _configuration["Jwt:Audience"],
-            Issuer = _configuration["Jwt:Issuer"]
+            Audience = _options.Audience,
+            Issuer = _options.Issuer
         };
 
         var handler = new JsonWebTokenHandler();

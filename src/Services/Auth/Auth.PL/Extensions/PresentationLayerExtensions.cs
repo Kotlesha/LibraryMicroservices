@@ -1,6 +1,7 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
 using Shared.Components.ProblemDetailsUtilities.Extensions;
+using Shared.Components.Swagger;
 
 namespace Auth.PL.Extensions;
 
