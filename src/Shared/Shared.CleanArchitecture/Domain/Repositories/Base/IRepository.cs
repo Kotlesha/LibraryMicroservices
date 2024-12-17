@@ -9,11 +9,10 @@ public interface IRepository<T> :
 
 public interface IRepository<T, Tkey> where T : AggregateRoot<Tkey>
 {
-    Task AddAsync(T entity, CancellationToken cancellationToken = default);
-    Task RemoveAsync(T entity, CancellationToken cancellationToken = default);
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
-
-    Task<T> GetByIdAsync(Tkey Id, CancellationToken cancellationToken = default);
-    Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
-    Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
+    void Add(T entity);
+    void Remove(T entity);
+    void Update(T entity);
+    Task<T?> GetByIdAsync(Guid id);
+    IQueryable<T> GetAll();
+    IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
 }

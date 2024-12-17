@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using Shared.Components.ExceptionHandling.Extensions;
 
 namespace Shared.Components.ExceptionHandling.Extensions;
 
@@ -16,7 +15,7 @@ internal static class ValidationFailureExtensions
         return validationFailures
             .GroupBy(vF => vF.PropertyName)
             .ToDictionary(
-                vF => vF.Key,
-                vF => vF.Select(vF => vF.ErrorMessage).ToArray());
+                p => p.Key, 
+                p => p.Select(p => p.ErrorMessage).ToArray());
     }
 }

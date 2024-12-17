@@ -9,6 +9,9 @@ public sealed class UserIdProvider(
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-    public string? GetAuthUserId()
-        => _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    public string GetAuthUserId()
+    {
+        var userId = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return userId ?? throw new InvalidOperationException("Can't find userId");
+    }
 }
