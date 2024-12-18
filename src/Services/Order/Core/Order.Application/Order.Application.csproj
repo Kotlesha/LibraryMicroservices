@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Order\Commands\Update\" />
-    <Folder Include="Features\Order\Commands\Update\Cancel\" />
+    <Compile Remove="Features\Order\Commands\Update\Cancel\**" />
+    <EmbeddedResource Remove="Features\Order\Commands\Update\Cancel\**" />
+    <None Remove="Features\Order\Commands\Update\Cancel\**" />
   </ItemGroup>
 
   <ItemGroup>

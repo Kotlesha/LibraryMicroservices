@@ -3,7 +3,7 @@ using Shared.CleanArchitecture.Domain.Repositories.Base;
 
 namespace Order.Domain.Repositories;
 
-public interface IBookRepository : IRepository<Book>
+public interface IBookRepository : IEntityBatchRepository<Book>
 {
     Task<Book> GetBookByTitleAsync(string title, 
         CancellationToken cancellationToken = default);
