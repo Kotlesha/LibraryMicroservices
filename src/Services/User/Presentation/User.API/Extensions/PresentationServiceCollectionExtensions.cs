@@ -13,7 +13,7 @@ public static class PresentationServiceCollectionExtensions
         services.AddScoped<IUserIdProvider, UserIdProvider>();
 
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGenWithAuth();
+        services.AddSwaggerGen();
         services.AddExtendedProblemDetails();
 
         return services;

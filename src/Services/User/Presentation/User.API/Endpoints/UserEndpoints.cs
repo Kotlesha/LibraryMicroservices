@@ -7,7 +7,6 @@ using User.Application.Features.User.Queries.GetAuth;
 using User.Application.Features.User.Queries.GetById;
 using User.Application.Features.User.Queries.RequestDTOs;
 using Shared.CleanArchitecture.Extensions;
-using Microsoft.AspNetCore.Authorization;
 
 namespace User.API.Endpoints;
 
@@ -32,8 +31,7 @@ public static class UserEndpoints
         return app;
     }
 
-    [Authorize]
-    //[ExcludeFromDescription]
+    [ExcludeFromDescription]
     private static async Task<IResult> CreateUser(
         [FromBody] CreateUserCommand command,
         ISender sender,
@@ -52,7 +50,6 @@ public static class UserEndpoints
         return result.ToProblemDetails();
     }
 
-    [Authorize]
     private static async Task<IResult> GetAllUsers(
         ISender sender,
         [AsParameters] UserParameters parameters,
@@ -74,7 +71,6 @@ public static class UserEndpoints
         return Results.NoContent();
     }
 
-    [Authorize]
     private static async Task<IResult> GetAuthUser(
         ISender sender,
         CancellationToken cancellationToken)
@@ -87,7 +83,6 @@ public static class UserEndpoints
             result.ToProblemDetails();
     }
 
-    [Authorize]
     private static async Task<IResult> GetUserById(
         Guid applicationUserId,
         ISender sender,

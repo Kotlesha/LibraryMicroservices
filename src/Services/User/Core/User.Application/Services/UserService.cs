@@ -14,21 +14,6 @@ internal class UserService(
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<UserDTO>> GetUserByEmailAsync(
-        string email, 
-        CancellationToken cancellationToken = default)
-    {
-        var user = await _userRepository.GetUserByEmailAsync(email, cancellationToken);
-
-        if (user is null)
-        {
-            return Result.Failure<UserDTO>(ApplicationErrors.User.NotFound);
-        }
-
-        var userDTO = _mapper.Map<UserDTO>(user);
-        return Result.Success(userDTO);
-    }
-
     public async Task<Result<UserDTO>> GetUserByIdAsync(
         Guid userId, 
         CancellationToken cancellationToken = default)

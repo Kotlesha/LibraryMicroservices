@@ -19,9 +19,6 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
-        builder.Services.ConfigureJWT(builder.Configuration);
-        builder.Services.AddAuthorization();
-
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -34,9 +31,6 @@ public class Program
         app.MapUserEndpoints();
 
         app.UseHttpsRedirection();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
 
         app.UseStatusCodePages();
 

@@ -7,7 +7,4 @@ internal interface IUserService
 {
     Task<Result<UserDTO>> GetUserByIdAsync(Guid userId, 
         CancellationToken cancellationToken = default);
-
-    Task<Result<UserDTO>> GetUserByEmailAsync(string email,
-        CancellationToken cancellationToken = default);
 }
