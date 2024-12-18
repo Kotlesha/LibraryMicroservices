@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Components.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Auth.BLL.Providers.Implementations;
@@ -35,4 +36,7 @@ internal class TokenProvider(IOptions<JwtOptions> options) : ITokenProvider
         var handler = new JsonWebTokenHandler();
         return handler.CreateToken(tokenDescriptor);
     }
+
+
+    public string GenerateRefreshToken() => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 }

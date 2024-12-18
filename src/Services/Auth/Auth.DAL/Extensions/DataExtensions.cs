@@ -14,6 +14,7 @@ public static class DataExtensions
         IConfiguration configuration)
     {
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddDbContext<AccountDbContext>(options =>

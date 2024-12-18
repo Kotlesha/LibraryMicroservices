@@ -18,6 +18,7 @@ public static class BusinessLogicLayerExtensions
         services.AddSingleton<ITokenProvider, TokenProvider>();
 
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
         ValidatorOptions.Global.LanguageManager.Enabled = false;
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);

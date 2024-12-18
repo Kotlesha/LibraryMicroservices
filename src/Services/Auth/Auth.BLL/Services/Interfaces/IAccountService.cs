@@ -6,7 +6,7 @@ namespace Auth.BLL.Services.Interfaces;
 
 public interface IAccountService
 {
-    Task<Result<string>> Login(LoginDTO loginDTO);
+    Task<Result<AuthDTO>> Login(LoginDTO loginDTO);
     Task<Result> Register(RegisterDTO registerDTO);
     Task<Result<AccountDTO>> GetAccountProfile();
 }

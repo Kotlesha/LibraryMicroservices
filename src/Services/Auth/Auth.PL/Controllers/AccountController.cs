@@ -17,25 +17,17 @@ public class AccountController(IAccountService accountService) : ControllerBase
     {
         var result = await _accountService.Login(loginDTO);
 
-        if (result.IsFailure)
-        {
-            return result.ToProblemDetails();
-        }
-
-        return TypedResults.Ok(result.Value);
+        return result.IsSuccess ?
+            Results.Ok(result.Value) :
+            result.ToProblemDetails();
     }
+
 
     [HttpPost("/register")]
     public async Task<IResult> Register(RegisterDTO registerDTO)
     {
         var result = await _accountService.Register(registerDTO);
-
-        if (result.IsFailure)
-        {
-            return result.ToProblemDetails();
-        }
-
-        return Results.Ok();
+        return result.IsSuccess ? Results.Ok() : result.ToProblemDetails();
     }
 
     [Authorize]
