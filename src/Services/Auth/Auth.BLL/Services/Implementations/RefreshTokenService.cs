@@ -5,7 +5,6 @@ using Auth.BLL.Providers.Interfaces;
 using Auth.BLL.Services.Interfaces;
 using Auth.DAL.Repositories.Implementations;
 using Auth.DAL.Repositories.Interfaces;
-using FluentValidation;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.Components.Results;
 
@@ -13,21 +12,17 @@ namespace Auth.BLL.Services.Implementations;
 
 public class RefreshTokenService(
     IRefreshTokenRepository refreshTokenRepository,
-    IValidator<LoginWithRefreshTokenDTO> validator,
     ITokenProvider tokenProvider,
     IUserIdProvider userIdProvider,
     IUnitOfWork unitOfWork) : IRefreshTokenService
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
-    private readonly IValidator<LoginWithRefreshTokenDTO> _validator = validator;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly IUserIdProvider _userIdProvider = userIdProvider;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Result<AuthDTO>> LoginWithRefreshToken(LoginWithRefreshTokenDTO loginWithRefreshTokenDTO)
     {
-        _validator.ValidateAndThrow(loginWithRefreshTokenDTO);
-
         var refreshToken = await _refreshTokenRepository
             .GetRefreshTokenByTokenAsync(loginWithRefreshTokenDTO.RefreshToken);
 

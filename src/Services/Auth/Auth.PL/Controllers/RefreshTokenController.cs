@@ -12,7 +12,7 @@ public class RefreshTokenController(IRefreshTokenService refreshTokenService) : 
 {
     private readonly IRefreshTokenService _refreshTokenService = refreshTokenService;
 
-    [HttpPost("/loginWithRefreshToken")]
+    [HttpPost("/login-with-refresh-token")]
     public async Task<IResult> LoginWithRefreshToken(LoginWithRefreshTokenDTO loginWithRefreshTokenDTO)
     {
         var result = await _refreshTokenService.LoginWithRefreshToken(loginWithRefreshTokenDTO);
@@ -23,7 +23,7 @@ public class RefreshTokenController(IRefreshTokenService refreshTokenService) : 
     }
 
     [Authorize]
-    [HttpPost("/revokeRefreshTokens/{accountId:guid}")]
+    [HttpPost("/revoke/{accountId:guid}")]
     public async Task<IResult> RevokeRefreshTokens(Guid accountId)
     {
         var result = await _refreshTokenService.RevokeAccountTokens(accountId);

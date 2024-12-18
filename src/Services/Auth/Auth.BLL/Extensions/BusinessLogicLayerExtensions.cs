@@ -20,7 +20,10 @@ public static class BusinessLogicLayerExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
+        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+        ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
         ValidatorOptions.Global.LanguageManager.Enabled = false;
+
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
 
         return services;

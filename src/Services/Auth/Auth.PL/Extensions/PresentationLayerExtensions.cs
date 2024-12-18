@@ -1,4 +1,5 @@
-﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
+﻿using Auth.PL.Filters;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
 using Shared.Components.ProblemDetailsUtilities.Extensions;
 using Shared.Components.Swagger;
@@ -9,7 +10,11 @@ public static class PresentationLayerExtensions
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            options.Filters.Add(typeof(GlobalValidationFilter));
+        });
+        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGenWithAuth();
         services.AddExtendedProblemDetails();

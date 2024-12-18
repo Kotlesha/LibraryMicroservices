@@ -16,7 +16,6 @@ internal class RegisterDTOValidator : AbstractValidator<RegisterDTO>
             .NotEmpty();
 
         RuleFor(rd => rd.Password)
-            .NotEmpty()
             .Length(PasswordRestrictions.MinimumLength, PasswordRestrictions.MaximumLength)
             .Matches(PasswordRestrictions.UppercaseLetter)
                 .WithMessage(PasswordErrorMessages.UppercaseLetter)
