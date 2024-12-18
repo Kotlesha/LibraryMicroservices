@@ -6,4 +6,4 @@ public sealed record UserDTO(
     string Patronymic,
     DateOnly BirthDate,
     string Email,
-    Guid ApplicationUserId);
+    Guid AccountId);

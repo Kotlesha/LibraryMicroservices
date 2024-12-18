@@ -25,13 +25,13 @@ public static class UserEndpoints
         endpoints.MapGet("/me", GetAuthUser)
             .WithName(nameof(GetAuthUser));
 
-        endpoints.MapGet("{applicationUserId:guid}", GetUserById)
+        endpoints.MapGet("{accountId:guid}", GetUserById)
             .WithName(nameof(GetUserById));
 
         return app;
     }
 
-    [ExcludeFromDescription]
+    //[ExcludeFromDescription]
     private static async Task<IResult> CreateUser(
         [FromBody] CreateUserCommand command,
         ISender sender,
@@ -84,12 +84,12 @@ public static class UserEndpoints
     }
 
     private static async Task<IResult> GetUserById(
-        Guid applicationUserId,
+        Guid accountId,
         ISender sender,
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(
-            new GetUserByIdQuery(applicationUserId),
+            new GetUserByIdQuery(accountId),
             cancellationToken);
 
         return result.IsSuccess ?

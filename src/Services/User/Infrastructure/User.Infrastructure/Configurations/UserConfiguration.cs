@@ -41,7 +41,7 @@ internal class UserConfiguration : BaseEntityConfiguration<User>
             .IsUnique();
 
         builder
-            .HasIndex(u => u.ApplicationUserId)
+            .HasIndex(u => u.AccountId)
             .IsUnique();
     }
 }

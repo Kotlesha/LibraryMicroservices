@@ -10,10 +10,7 @@ internal class UserRepository(UserDbContext userDbContext) : IUserRepository
 {
     private readonly UserDbContext _userDbContext = userDbContext;
 
-    public async Task AddUserAsync(User user, CancellationToken cancellationToken = default)
-    {
-        await _userDbContext.AddAsync(user, cancellationToken);
-    }
+    public void AddUser(User user) => _userDbContext.Users.Add(user);
 
     public IQueryable<User> GetAllUsers() => _userDbContext.Users;
 
@@ -26,13 +23,13 @@ internal class UserRepository(UserDbContext userDbContext) : IUserRepository
                 cancellationToken);
     }
 
-    public async Task<User?> GetUserByIdAsync(Guid applicationUserId, CancellationToken cancellationToken = default)
+    public async Task<User?> GetUserByIdAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
         return await _userDbContext
             .Users
             .AsNoTracking()
             .FirstOrDefaultAsync(
-                u => u.ApplicationUserId.Equals(applicationUserId), 
+                u => u.AccountId.Equals(accountId), 
                 cancellationToken);
     }
 }
