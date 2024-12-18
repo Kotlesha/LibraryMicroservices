@@ -33,7 +33,7 @@ public static class UserEndpoints
     }
 
     [Authorize]
-    [ExcludeFromDescription]
+    //[ExcludeFromDescription]
     private static async Task<IResult> CreateUser(
         [FromBody] CreateUserCommand command,
         ISender sender,
