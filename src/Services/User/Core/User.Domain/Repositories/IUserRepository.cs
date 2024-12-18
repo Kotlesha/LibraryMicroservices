@@ -4,10 +4,10 @@ using User = Entities.User;
 
 public interface IUserRepository
 {
-    Task AddUserAsync(User user, 
+    void AddUser(User user);
+    Task<User?> GetUserByIdAsync(Guid accountId,
         CancellationToken cancellationToken = default);
-    Task<User?> GetUserByIdAsync(Guid applicationUserId,
+    Task<User?> GetUserByEmailAsync(string email,
         CancellationToken cancellationToken = default);
-    Task<IEnumerable<User>> GetAllUsersAsync(
-        CancellationToken cancellationToken = default);
+    IQueryable<User> GetAllUsers();
 }

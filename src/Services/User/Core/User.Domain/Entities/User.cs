@@ -9,7 +9,7 @@ public sealed class User : AggregateRoot
     public string Patronymic { get; private set; }
     public DateOnly? BirthDate { get; private set; }
     public string Email { get; private set; }
-    public Guid ApplicationUserId { get; private set; }
+    public Guid AccountId { get; private set; }
 
     private User(
         Guid id, 
@@ -18,14 +18,14 @@ public sealed class User : AggregateRoot
         string patronymic, 
         DateOnly? birthDate, 
         string email, 
-        Guid applicationUserId) : base(id)
+        Guid accountId) : base(id)
     {
         Name = name;
         Surname = surname;
         Patronymic = patronymic;
         BirthDate = birthDate;
         Email = email;
-        ApplicationUserId = applicationUserId;
+        AccountId = accountId;
     }
 
     public static User Create(
@@ -34,7 +34,7 @@ public sealed class User : AggregateRoot
         string patronymic,
         DateOnly? birthDate,
         string email,
-        Guid applicationUserId)
+        Guid accountId)
     {
         var user = new User(
             Guid.NewGuid(), 
@@ -43,7 +43,7 @@ public sealed class User : AggregateRoot
             patronymic, 
             birthDate, 
             email,
-            applicationUserId);
+            accountId);
 
         user.Validate();
 

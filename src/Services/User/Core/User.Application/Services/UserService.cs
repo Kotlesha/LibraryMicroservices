@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Shared.CleanArchitecture.Common.Components.Results;
+using Shared.Components.Results;
 using User.Application.Abstractions.Services;
 using User.Application.Errors;
 using User.Application.Features.User.Queries.ResponseDTOs;
@@ -14,7 +14,8 @@ internal class UserService(
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<UserDTO>> GetUserByIdAsync(Guid userId, 
+    public async Task<Result<UserDTO>> GetUserByIdAsync(
+        Guid userId, 
         CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetUserByIdAsync(userId, cancellationToken);
