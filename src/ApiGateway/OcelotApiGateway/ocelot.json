@@ -1,0 +1,73 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/auth-api/accounts/login",
+      "UpstreamPathTemplate": "/gateway/accounts/login",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/auth-api/accounts/register",
+      "UpstreamPathTemplate": "/gateway/accounts/register",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/auth-api/accounts/profile",
+      "UpstreamPathTemplate": "/gateway/accounts/profile",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/auth-api/refresh-tokens/login-with-refresh-token",
+      "UpstreamPathTemplate": "/gateway/refresh-tokens/login-with-refresh-token",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/auth-api/refresh-tokens/revoke/{accountId}",
+      "UpstreamPathTemplate": "/gateway/refresh-tokens/revoke/{accountId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7073
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5003"
+  }
+}

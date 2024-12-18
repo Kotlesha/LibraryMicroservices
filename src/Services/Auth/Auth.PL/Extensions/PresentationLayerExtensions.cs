@@ -10,11 +10,6 @@ public static class PresentationLayerExtensions
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {
-        services.AddControllers(options =>
-        {
-            options.Filters.Add(typeof(GlobalValidationFilter));
-        });
-        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGenWithAuth();
         services.AddExtendedProblemDetails();

@@ -7,11 +7,11 @@ public class PasswordHasherProvider : IPasswordHasherProvider
 {
     public string GetPasswordHash(string password)
     {
-        return HashProvider.EnhancedHashPassword(password);
+        return HashProvider.HashPassword(password);
     }
 
     public bool VerifyPasswords(string password, string passwordHash)
     {
-        return HashProvider.EnhancedVerify(password, passwordHash);
+        return HashProvider.Verify(password, passwordHash);
     }
 }

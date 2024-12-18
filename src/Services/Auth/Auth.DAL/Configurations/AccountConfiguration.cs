@@ -22,7 +22,8 @@ internal class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder
             .Property(u => u.Email)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(AccountConstants.EmailMaxLength);
 
         builder
             .Property(u => u.HashPassword)

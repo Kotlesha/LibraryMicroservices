@@ -38,7 +38,7 @@ public class Program
         app.UseStatusCodePages();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
-        app.MapControllers();
+        app.MapEndpoints();
 
         app.Run();
     }

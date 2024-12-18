@@ -18,7 +18,7 @@ internal class AccountRepository(AccountDbContext accountDbContext) : IAccountRe
             .Accounts
             .AsNoTracking()
             .FirstOrDefaultAsync(
-                u => u.Email.Equals(email),
+                u => u.Email == email,
                 cancellationToken); 
     }
 
@@ -28,7 +28,7 @@ internal class AccountRepository(AccountDbContext accountDbContext) : IAccountRe
             .Accounts
             .AsNoTracking()
             .FirstOrDefaultAsync(
-                u => u.Id.Equals(accountId),
+                u => u.Id == accountId,
                 cancellationToken);
     }
 }

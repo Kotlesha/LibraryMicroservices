@@ -1,5 +1,6 @@
 ﻿using Auth.BLL.Constants.Passwords;
 using Auth.BLL.DTOs.RequestDTOs;
+using Auth.DAL.Constants;
 using FluentValidation;
 
 namespace Auth.BLL.Validators;
@@ -10,7 +11,8 @@ internal class RegisterDTOValidator : AbstractValidator<RegisterDTO>
     {
         RuleFor(rd => rd.Email)
             .EmailAddress()
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(AccountConstants.EmailMaxLength);
 
         RuleFor(rd => rd.Password)
             .NotEmpty();

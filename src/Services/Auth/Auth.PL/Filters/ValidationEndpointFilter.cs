@@ -1,24 +1,23 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Auth.PL.Filters;
 
-public class GlobalValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFilter
+public class ValidationEndpointFilter(IServiceProvider serviceProvider) : IEndpointFilter
 {
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        foreach (var argument in context.ActionArguments)
+        foreach (var argument in context.Arguments)
         {
-            if (argument.Value is null) continue;
+            if (argument is null) continue;
 
-            var validatorType = typeof(IValidator<>).MakeGenericType(argument.Value.GetType());
+            var validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType());
             var validator = _serviceProvider.GetService(validatorType) as IValidator;
 
             if (validator is not null)
             {
-                var validationContext = new ValidationContext<object>(argument.Value);
+                var validationContext = new ValidationContext<object>(argument);
                 var validationResult = await validator.ValidateAsync(validationContext);
 
                 if (!validationResult.IsValid)
@@ -28,6 +27,6 @@ public class GlobalValidationFilter(IServiceProvider serviceProvider) : IAsyncAc
             }
         }
 
-        await next();
+        return await next(context);
     }
 }

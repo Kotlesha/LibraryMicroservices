@@ -44,7 +44,7 @@ public class RefreshTokenService(
     {
         var id = Guid.Parse(_userIdProvider.GetAuthUserId());
 
-        if (!id.Equals(accountId))
+        if (accountId != id)
         {
             return Result.Failure(RefreshTokenErrors.AccessDenied);
         }
