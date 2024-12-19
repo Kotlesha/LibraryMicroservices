@@ -15,7 +15,7 @@ public static class JwtExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddJwtSettings(configuration);
 
@@ -39,6 +39,7 @@ public static class JwtExtensions
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
         return services;
     }
 }
