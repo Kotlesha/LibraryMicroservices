@@ -23,12 +23,12 @@ public class Program
 
         var app = builder.Build();
 
-        //if (app.Environment.IsDevelopment())
-        //{
-        //    app.UseSwagger();
-        //    app.UseSwaggerUI();
-        //    app.ApplyMigrations<AccountDbContext>();
-        //}
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            //app.ApplyMigrations<AccountDbContext>();
+        }
 
         app.MapEndpoints();
 

@@ -2,6 +2,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using OcelotApiGateway.Extensions;
 using Shared.Components.Jwt;
+using Shared.Components.Swagger;
 
 namespace OcelotApiGateway;
 
@@ -12,6 +13,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         builder.Services.ConfigureJWT(builder.Configuration);
         builder.Services.AddAuthorization();
@@ -20,8 +22,14 @@ public class Program
 
         builder.Configuration.AddJsonFile("configuration.json", optional: false, reloadOnChange: true);
         builder.Services.AddOcelot();
+        builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
         var app = builder.Build();
+
+        app.UseSwaggerForOcelotUI(options =>
+        {
+            options.PathToSwaggerGenerator = "/swagger/docs";
+        });
 
         app.UseHttpsRedirection();
 
