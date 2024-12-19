@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auth.DAL.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20241218003013_ThirdMigration")]
-    partial class ThirdMigration
+    [Migration("20241219225538_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace Auth.DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HashPassword")
                         .IsRequired()

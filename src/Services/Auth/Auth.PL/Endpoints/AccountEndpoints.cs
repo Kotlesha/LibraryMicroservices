@@ -1,7 +1,6 @@
 ﻿using Auth.BLL.DTOs.RequestDTOs;
 using Auth.BLL.Services.Interfaces;
 using Auth.PL.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.CleanArchitecture.Extensions;
 
@@ -51,7 +50,8 @@ public static class AccountEndpoints
     }
 
     private static async Task<IResult> GetAccountProfile(
-        IAccountService accountService)
+        IAccountService accountService,
+                HttpContext httpContext)
     {
         var result = await accountService.GetAccountProfile();
 

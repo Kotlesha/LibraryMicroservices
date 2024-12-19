@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Shared.Components.ExceptionHandling.Middleware;
 using Shared.Components.Jwt;
 using Shared.Components.Migrations;
-using User.API.Endpoints;
+using Shared.Components.Swagger;
 using User.API.Extensions;
 using User.Application.Extensions;
 using User.Infrastructure.Context;
@@ -19,21 +20,26 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
+        builder.Services.ConfigureJWT(builder.Configuration);
+        builder.Services.AddAuthorization();
+
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            app.ApplyMigrations<UserDbContext>();
-        }
+        //if (app.Environment.IsDevelopment())
+        //{
+        //    app.UseSwagger();
+        //    app.UseSwaggerUI();
+        //    app.ApplyMigrations<UserDbContext>();
+        //}
 
-        app.MapUserEndpoints();
+        app.MapEndpoints();
 
         app.UseHttpsRedirection();
 
-        app.UseStatusCodePages();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
+        app.UseStatusCodePages();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
         app.Run();

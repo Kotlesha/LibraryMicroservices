@@ -20,18 +20,20 @@ public static class UserEndpoints
             .WithName(nameof(CreateUser));
 
         endpoints.MapGet("/", GetAllUsers)
-            .WithName(nameof(GetAllUsers));
+            .WithName(nameof(GetAllUsers))
+            .RequireAuthorization();
 
         endpoints.MapGet("/me", GetAuthUser)
-            .WithName(nameof(GetAuthUser));
+            .WithName(nameof(GetAuthUser))
+            .RequireAuthorization();
 
         endpoints.MapGet("{accountId:guid}", GetUserById)
-            .WithName(nameof(GetUserById));
+            .WithName(nameof(GetUserById))
+            .RequireAuthorization();
 
         return app;
     }
 
-    //[ExcludeFromDescription]
     private static async Task<IResult> CreateUser(
         [FromBody] CreateUserCommand command,
         ISender sender,

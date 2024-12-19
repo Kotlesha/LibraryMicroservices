@@ -22,7 +22,7 @@ internal class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(u => u.Email)
             .EmailAddress();
 
-        RuleFor(u => u.ApplicationUserId)
+        RuleFor(u => u.AccountId)
             .NotEmpty();
     }
 }

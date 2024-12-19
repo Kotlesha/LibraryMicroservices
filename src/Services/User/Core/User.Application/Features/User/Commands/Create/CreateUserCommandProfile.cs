@@ -15,6 +15,6 @@ internal class CreateUserCommandProfile : Profile
                 cmd.Patronymic,
                 cmd.BirthDate,
                 cmd.Email,
-                cmd.ApplicationUserId));
+                cmd.AccountId));
     }
 }

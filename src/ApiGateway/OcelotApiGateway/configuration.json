@@ -65,9 +65,54 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       }
+    },
+    {
+      "DownstreamPathTemplate": "/users-api/users/",
+      "UpstreamPathTemplate": "/gateway/users/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/users-api/users/me",
+      "UpstreamPathTemplate": "/gateway/users/me",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/users-api/users/{accountId}",
+      "UpstreamPathTemplate": "/gateway/users/{accountId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:7230"
+    "BaseUrl": "http://localhost:7260"
   }
 }

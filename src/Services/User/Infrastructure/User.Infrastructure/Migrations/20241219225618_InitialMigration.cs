@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace User.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateUserDb : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,24 +20,36 @@ namespace User.Infrastructure.Migrations
                     Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Patronymic = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_AccountId",
+                table: "User",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
         }
     }
 }

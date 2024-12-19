@@ -9,4 +9,4 @@ public sealed record CreateUserCommand(
     string Patronymic,
     DateOnly? BirthDate,
     string Email,
-    Guid ApplicationUserId) : ICommand<Result<Guid>>;
+    Guid AccountId) : ICommand<Result<Guid>>;
