@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using global::Order.Domain.Repositories;
+using Order.Domain.Repositories;
 using Order.Application.Errors;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
-using Shared.CleanArchitecture.Presentation.Providers;
 using Shared.Components.Results;
 
 namespace Order.Application.Features.Order.Commands.Update;
+
+using Book = Domain.Entities.Book;
 
 using Order = Domain.Entities.Order;
 
@@ -28,12 +29,7 @@ internal class UpdateOrderCommandHandler(
     {
         var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken);
 
-        var userId = _userIdProvider.GetAuthUserId();
-
-        if (!Guid.TryParse(userId, out Guid id))
-        {
-            //return Result.Failure()
-        }
+        var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
 
         if (order is null) 
         {
@@ -42,17 +38,35 @@ internal class UpdateOrderCommandHandler(
 
         var newOrder = _mapper.Map<Order>(request.OrderDTO);
 
-        var books = await _bookRepository.GetExistingEntitiesByIdsAsync(request.OrderDTO.BooksIds, cancellationToken);
+        var books = new List<Book>();
 
-        if(books.Count() > request.OrderDTO.BooksIds.Count())
+        foreach (var bookid in request.OrderDTO.BooksIds)
         {
-            return Result.Failure(ApplicationErrors.Order.NotAllBooksFound);
-        }
 
-        var unavailableBooks = books.Where(b => !b.IsAvailable).ToList();
-        if (unavailableBooks.Any())
-        {
-            return Result.Failure(ApplicationErrors.Order.NotAllBooksIsAvailable);
+            var book = await _bookRepository.GetByIdAsync(bookid, cancellationToken);
+
+            if (book is null)
+            {
+                return Result.Failure(ApplicationErrors.Book.NotFound);
+            }
+
+            if (!book.IsAvailable)
+            {
+                return Result.Failure<Guid>(ApplicationErrors.Order.NotAvailable);
+            }
+
+            //if (books.Count() > request.OrderDTO.BooksIds.Count())
+            //{
+            //    return Result.Failure(ApplicationErrors.Order.NotAllBooksFound);
+            //}
+
+            //var unavailableBooks = books.Where(b => !b.IsAvailable).ToList();
+            //if (unavailableBooks.Any())
+            //{
+            //    return Result.Failure(ApplicationErrors.Order.NotAllBooksIsAvailable);
+            //}
+
+            
         }
 
         order.UpdateBooks(books);

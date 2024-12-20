@@ -1,9 +1,7 @@
-﻿using Order.Domain.Entities;
-using Order.Domain.Enums;
-
-namespace Order.Application.DTOs.ResponseDTOs;
-
+﻿namespace Order.Application.DTOs.ResponseDTOs;
 public sealed record OrderResponseDTO(
+    Guid OrderId,
+    DateTime CreatedTimeUtc,
     decimal TotalCost,
-    Status Status,
-    IEnumerable<Book> Books);
+    string Status,
+    List<BookResponseDTO> Books);

@@ -1,6 +1,4 @@
-﻿
-using AutoMapper;
-using Order.Application.Errors;
+﻿using AutoMapper;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Domain.Repositories;

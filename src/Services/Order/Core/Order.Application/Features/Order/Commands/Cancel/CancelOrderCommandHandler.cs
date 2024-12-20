@@ -1,5 +1,4 @@
 ﻿using Order.Application.Errors;
-using Order.Application.Features.Order.Cancel;
 using Order.Domain.Enums;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;

@@ -41,27 +41,24 @@ internal class CreateOrderCommandHandler(
 
         var books = new List<Book>();
 
-        foreach (var bookid in request.OrderDTO.BooksIds) 
+
+        foreach (var bookid in request.OrderDTO.BooksIds)
         {
             var book = await _bookRepository.GetByIdAsync(bookid, cancellationToken);
 
-            if (book is not null)
+            if (book is null)
             {
-                books.Add(book);
+                return Result.Failure<Guid>(ApplicationErrors.Order.NotFound);
             }
+
+            if (!book.IsAvailable)
+            {
+                return Result.Failure<Guid>(ApplicationErrors.Order.NotAvailable);
+            }
+
+            books.Add(book);
         }
 
-        if (request.OrderDTO.BooksIds.Count() != books.Count)
-        {
-            return Result.Failure<Guid>(ApplicationErrors.Order.NonExistentIds);
-        }
-
-        var availableBooks = books.Where(book => book.IsAvailable).ToList();
-
-        if (request.OrderDTO.BooksIds.Count() != availableBooks.Count)
-        {
-            return Result.Failure<Guid>(ApplicationErrors.Order.NotAvailable);
-        }
 
         foreach (var book in books)
         {
