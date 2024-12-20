@@ -1,0 +1,23 @@
+services:
+  auth.pl:
+    image: ${DOCKER_REGISTRY-}authpl
+    build:
+      context: .
+      dockerfile: src/Services/Auth/Auth.PL/Dockerfile
+    ports:
+      - "5105:5105"
+      - "7073:7073"
+    depends_on:
+      - auth.db 
+
+  auth.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: account-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=11111!Aa
+      - MSSQL_DB=AccountDb
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./containers/account-db:/var/opt/mssql/data

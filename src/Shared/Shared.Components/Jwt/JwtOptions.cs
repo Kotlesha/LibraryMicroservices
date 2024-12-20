@@ -6,4 +6,5 @@ public class JwtOptions
     public string Issuer { get; init; }
     public string Audience { get; init; }
     public int ExpirationInMinutes { get; init; }
+    public int RefreshTokenExpirationInDays { get; init; }
 }

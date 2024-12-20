@@ -5,7 +5,9 @@ using Auth.BLL.Providers.Interfaces;
 using Auth.BLL.Services.Interfaces;
 using Auth.DAL.Repositories.Implementations;
 using Auth.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Options;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
+using Shared.Components.Jwt;
 using Shared.Components.Results;
 
 namespace Auth.BLL.Services.Implementations;
@@ -14,11 +16,13 @@ public class RefreshTokenService(
     IRefreshTokenRepository refreshTokenRepository,
     ITokenProvider tokenProvider,
     IUserIdProvider userIdProvider,
+    IOptions<JwtOptions> options,
     IUnitOfWork unitOfWork) : IRefreshTokenService
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly IUserIdProvider _userIdProvider = userIdProvider;
+    private readonly JwtOptions jwtOptions = options.Value;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Result<AuthDTO>> LoginWithRefreshToken(LoginWithRefreshTokenDTO loginWithRefreshTokenDTO)
@@ -34,7 +38,7 @@ public class RefreshTokenService(
         string accessToken = _tokenProvider.GenerateToken(refreshToken.AccountId);
 
         refreshToken.Token = _tokenProvider.GenerateRefreshToken();
-        refreshToken.ExpiresOnUtc = DateTime.UtcNow.AddDays(7);
+        refreshToken.ExpiresOnUtc = DateTime.UtcNow.AddDays(jwtOptions.RefreshTokenExpirationInDays);
 
         await _unitOfWork.SaveChangesAsync();
         return new AuthDTO(accessToken, refreshToken.Token);

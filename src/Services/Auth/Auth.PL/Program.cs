@@ -18,7 +18,7 @@ public class Program
         builder.Services.AddBusinessLogicLayer();
         builder.Services.AddPresentationLayer();
 
-        builder.Services.ConfigureJWT(builder.Configuration);
+        builder.Services.AddJwtAuthentication(builder.Configuration);
         builder.Services.AddAuthorization();
 
         var app = builder.Build();
@@ -27,7 +27,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            //app.ApplyMigrations<AccountDbContext>();
+            app.ApplyMigrations<AccountDbContext>();
         }
 
         app.MapEndpoints();

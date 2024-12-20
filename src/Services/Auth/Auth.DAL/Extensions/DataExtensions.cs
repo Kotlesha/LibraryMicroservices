@@ -19,7 +19,7 @@ public static class DataExtensions
 
         services.AddDbContext<AccountDbContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("AccoundDbConnectionString")));
+                configuration.GetConnectionString("AccoundDbConnectionStringDocker")));
 
         return services;
     }

@@ -20,7 +20,7 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
-        builder.Services.ConfigureJWT(builder.Configuration);
+        builder.Services.AddJwtAuthentication(builder.Configuration);
         builder.Services.AddAuthorization();
 
         var app = builder.Build();

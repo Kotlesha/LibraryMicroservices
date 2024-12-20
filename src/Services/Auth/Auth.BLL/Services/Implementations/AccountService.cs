@@ -6,7 +6,9 @@ using Auth.BLL.Services.Interfaces;
 using Auth.DAL.Models;
 using Auth.DAL.Repositories.Implementations;
 using Auth.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Options;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
+using Shared.Components.Jwt;
 using Shared.Components.Results;
 
 namespace Auth.BLL.Services.Implementations;
@@ -17,6 +19,7 @@ public class AccountService(
     IPasswordHasherProvider passwordsProvider,
     ITokenProvider tokenProvider,
     IUserIdProvider userIdProvider,
+    IOptions<JwtOptions> options,
     IUnitOfWork unitOfWork) : IAccountService
 {
     private readonly IAccountRepository _accountRepository = accountRepository;
@@ -24,6 +27,7 @@ public class AccountService(
     private readonly IPasswordHasherProvider _passwordProvider = passwordsProvider;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly IUserIdProvider _userIdProvider = userIdProvider;
+    private readonly JwtOptions jwtOptions = options.Value;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Result<AuthDTO>> Login(LoginDTO loginDTO)
@@ -48,7 +52,7 @@ public class AccountService(
         var refreshToken = new RefreshToken {
             Id = Guid.NewGuid(),
             Token = _tokenProvider.GenerateRefreshToken(),
-            ExpiresOnUtc = DateTime.UtcNow.AddDays(7),
+            ExpiresOnUtc = DateTime.UtcNow.AddDays(jwtOptions.RefreshTokenExpirationInDays),
             AccountId = account.Id
         };
 
