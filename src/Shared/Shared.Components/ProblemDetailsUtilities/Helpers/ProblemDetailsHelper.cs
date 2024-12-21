@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Components.Errors;
 
-namespace Shared.CleanArchitecture.Presentation.Helpers;
+namespace Shared.Components.ProblemDetailsUtilities.Helpers;
 
 public static class ProblemDetailsHelper
 {

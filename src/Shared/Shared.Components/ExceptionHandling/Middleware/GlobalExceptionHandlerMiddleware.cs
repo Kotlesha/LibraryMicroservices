@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.CleanArchitecture.Application.Exceptions;
-using Shared.CleanArchitecture.Presentation.Extensions;
-using Shared.CleanArchitecture.Presentation.Factories;
 using Shared.Components.Errors;
+using Shared.Components.ExceptionHandling.Extensions;
+using Shared.Components.ProblemDetailsUtilities.Extensions;
+using Shared.Components.ProblemDetailsUtilities.Factories;
 
-namespace Shared.CleanArchitecture.Presentation.Middleware;
+namespace Shared.Components.ExceptionHandling.Middleware;
 
 public class GlobalExceptionHandlerMiddleware(
-    RequestDelegate next, 
+    RequestDelegate next,
     ILogger<GlobalExceptionHandlerMiddleware> logger,
     IProblemDetailsService problemDetailsService)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionHandlerMiddleware> _logger = logger;
-    private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -30,13 +31,20 @@ public class GlobalExceptionHandlerMiddleware(
             {
                 ValidationException validationException =>
                     ProblemDetailsFactory
-                        .CreateProblemDetails(Error.Validation())
-                        .WithValidationErrors(validationException.Errors),
+                        .CreateProblemDetails(ErrorType.Validation)
+                        .WithErrors(validationException.Errors.ToDictionary()),
 
-                _ => ProblemDetailsFactory.CreateProblemDetails(Error.Failure)
+                DbUpdateException dbUpdateException when dbUpdateException.IsUniqueIndexViolation() =>
+                    ProblemDetailsFactory
+                        .CreateProblemDetails(ErrorType.Conflict)
+                        .WithErrors(dbUpdateException.CreateUniqueIndexError()),
+
+                _ => ProblemDetailsFactory
+                        .CreateProblemDetails(ErrorType.Failure)
+                        .WithErrors(Error.Failure)
             };
 
-            context.Response.StatusCode = problemDetails.Status 
+            context.Response.StatusCode = problemDetails.Status
                 ?? StatusCodes.Status500InternalServerError;
 
             await problemDetailsService.TryWriteAsync(new ProblemDetailsContext

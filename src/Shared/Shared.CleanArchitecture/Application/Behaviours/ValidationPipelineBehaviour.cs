@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using Shared.Components.Errors;
 
 namespace Shared.CleanArchitecture.Application.Behaviours;
 
@@ -25,14 +24,12 @@ public sealed class ValidationPipelineBehaviour<TRequest, TResponse>(
         var errors = validationFailures
             .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
-            .Select(validationFailure => Error.Validation(
-                validationFailure.PropertyName,
-                validationFailure.ErrorMessage))
+            .Select(validationFailure => validationFailure)
             .ToArray();
 
-        if (errors.Any())
+        if (errors.Length != 0)
         {
-            throw new Exceptions.ValidationException(errors);
+            throw new ValidationException(errors);
         }
 
         var response = await next();
