@@ -1,4 +1,5 @@
 ﻿namespace Order.Application.DTOs.ResponseDTOs;
+
 public sealed record OrderResponseDTO(
     Guid OrderId,
     DateTime CreatedTimeUtc,

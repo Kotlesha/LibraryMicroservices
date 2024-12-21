@@ -8,6 +8,5 @@ internal class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
     {
         RuleFor(c => c.BookId)
             .NotEmpty();
-
     }
 }

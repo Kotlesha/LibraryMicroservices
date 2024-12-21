@@ -4,4 +4,4 @@ using Shared.Components.Results;
 
 namespace Order.Application.Features.Order.Queries.GetByUserId;
 
-public sealed record GetOrdersByUserIdQuery(Guid UserId) : IQuery<Result<OrderResponseDTO>>;
+public sealed record GetOrdersByUserIdQuery() : IQuery<IEnumerable<OrderResponseDTO>>;

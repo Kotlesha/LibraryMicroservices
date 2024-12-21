@@ -26,18 +26,10 @@ internal class CreateOrderCommandHandler(
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var userId = _userIdProvider.GetAuthUserId();
+        var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
 
-        if (!Guid.TryParse(userId, out Guid id)) 
-        {
-            //return Result.Failure()
-        }
-
-
-        var order = /*_mapper.Map<Order>(request.OrderDTO);*/
-            Order.Create(
-                id,
-                request.OrderDTO.TotalCost);
+        var order = Order.Create(
+                userId);
 
         var books = new List<Book>();
 

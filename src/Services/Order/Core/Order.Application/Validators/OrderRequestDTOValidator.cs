@@ -12,8 +12,5 @@ internal class OrderRequestDTOValidator : AbstractValidator<OrderRequestDTO>
 
         RuleFor(o => o.BooksIds)
             .NotEmpty();
-
-        RuleFor(o => o.TotalCost)
-            .GreaterThanOrEqualTo(decimal.Zero);
     }
 }

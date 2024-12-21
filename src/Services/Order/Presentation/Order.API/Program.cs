@@ -1,4 +1,3 @@
-
 namespace Order.API;
 
 public class Program
