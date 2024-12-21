@@ -14,7 +14,7 @@ internal class GetAllBooksQueryHandler(
 
     public async Task<IEnumerable<BookResponseDTO>> Handle(GetAllBooksQuery request, CancellationToken cancellationToken)
     {
-        var books = await _bookRepository.GetAllAsync(cancellationToken);
+        var books = _bookRepository.GetAll();
         return _mapper.Map<IEnumerable<BookResponseDTO>>(books);
     }
 }

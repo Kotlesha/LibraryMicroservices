@@ -16,7 +16,7 @@ internal class GetBookByIdQueryHandler(
 
     public async Task<Result<BookResponseDTO>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.GetByIdAsync(request.BookId, cancellationToken);
+        var book = await _bookRepository.GetByIdAsync(request.BookId);
 
         if (book is null)
         {

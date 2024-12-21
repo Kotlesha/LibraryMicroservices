@@ -36,7 +36,7 @@ internal class CreateOrderCommandHandler(
 
         foreach (var bookid in request.OrderDTO.BooksIds)
         {
-            var book = await _bookRepository.GetByIdAsync(bookid, cancellationToken);
+            var book = await _bookRepository.GetByIdAsync(bookid);
 
             if (book is null)
             {
@@ -57,7 +57,7 @@ internal class CreateOrderCommandHandler(
             order.AddBookToOrder(book);
         }
         
-        await _orderRepository.AddAsync(order, cancellationToken);
+        _orderRepository.Add(order);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return order.Id;

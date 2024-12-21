@@ -7,7 +7,8 @@ using Shared.Components.Results;
 namespace Order.Application.Features.Book.Commands.Create;
 
 using Book = Domain.Entities.Book;
-internal class CreateBookCommandHandler(IBookRepository bookRepository,
+internal class CreateBookCommandHandler(
+    IBookRepository bookRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork): ICommandHandler<CreateBookCommand, Result<Guid>>
 {
@@ -19,7 +20,7 @@ internal class CreateBookCommandHandler(IBookRepository bookRepository,
     {
         var book = _mapper.Map<Book>(request.BookDTO);
 
-        await _bookRepository.AddAsync(book, cancellationToken);
+        _bookRepository.Add(book);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return book.Id;

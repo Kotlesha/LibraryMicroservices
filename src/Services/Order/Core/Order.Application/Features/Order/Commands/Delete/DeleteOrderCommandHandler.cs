@@ -18,7 +18,7 @@ internal class DeleteOrderCommandHandler(
 
     public async Task<Result> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken);
+        var order = await _orderRepository.GetByIdAsync(request.OrderId);
 
         if (order is null) 
         {
@@ -32,7 +32,7 @@ internal class DeleteOrderCommandHandler(
             return Result.Failure(ApplicationErrors.Order.NotBelongToUser);
         }
 
-        await _orderRepository.RemoveAsync(order, cancellationToken);
+        _orderRepository.Remove(order);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

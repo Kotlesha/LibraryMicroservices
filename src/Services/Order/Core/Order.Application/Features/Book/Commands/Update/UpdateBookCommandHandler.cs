@@ -20,7 +20,7 @@ internal class UpdateBookCommandHandler(
 
     public async Task<Result> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.GetByIdAsync(request.BookId, cancellationToken);
+        var book = await _bookRepository.GetByIdAsync(request.BookId);
 
         if (book is null)
         {
@@ -30,7 +30,7 @@ internal class UpdateBookCommandHandler(
         var newBook = _mapper.Map<Book>(request.BookDTO);
         book.Update(newBook);
 
-        await _bookRepository.UpdateAsync(book, cancellationToken);
+        _bookRepository.Update(book);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

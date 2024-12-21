@@ -27,7 +27,7 @@ internal class UpdateOrderCommandHandler(
 
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken);
+        var order = await _orderRepository.GetByIdAsync(request.OrderId);
 
         var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
 
@@ -43,7 +43,7 @@ internal class UpdateOrderCommandHandler(
         foreach (var bookid in request.OrderDTO.BooksIds)
         {
 
-            var book = await _bookRepository.GetByIdAsync(bookid, cancellationToken);
+            var book = await _bookRepository.GetByIdAsync(bookid);
 
             if (book is null)
             {
@@ -71,7 +71,7 @@ internal class UpdateOrderCommandHandler(
 
         order.UpdateBooks(books);
 
-        await _orderRepository.UpdateAsync(order, cancellationToken);
+        _orderRepository.Update(order);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
