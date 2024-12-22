@@ -5,12 +5,8 @@ using Shared.CleanArchitecture.Infrastructure.Repositories;
 
 namespace Order.Infrastructure.Repositories;
 
-internal class BookRepository : Repository<Book>, IBookRepository
+internal class BookRepository(DbContext dbContext) : Repository<Book>(dbContext), IBookRepository
 {
-    public BookRepository(DbContext dbContext) : base(dbContext)
-    {
-    }
-
     public async Task<Book> GetBookByTitleAsync(
         string title,
         CancellationToken cancellationToken = default)

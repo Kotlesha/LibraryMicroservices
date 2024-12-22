@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Domain.Repositories;
 using Order.Infrastructure.Contexts;
+using Order.Infrastructure.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.CleanArchitecture.Infrastructure.Repositories;
@@ -17,8 +19,6 @@ public static class InfrastructureServiceCollectionExtensions
             options.UseSqlServer(
                 configuration.GetConnectionString("OrderDbConnectionString")));
 
-        //services.AddScoped<IUserRepository, UserRepository>();
-
         services.AddScoped<IUnitOfWork>(
             provider =>
             {
@@ -26,6 +26,9 @@ public static class InfrastructureServiceCollectionExtensions
                 var userIdProvider = provider.GetRequiredService<IUserIdProvider>();
                 return new UnitOfWork(userDbContext, userIdProvider);
             });
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
 
         return services;
     }

@@ -7,12 +7,8 @@ namespace Order.Infrastructure.Repositories;
 
 using Order = Domain.Entities.Order;
 
-internal class OrderRepository : Repository<Order>, IOrderRepository
+internal class OrderRepository(OrderDbContext dbContext) : Repository<Order>(dbContext), IOrderRepository
 {
-    public OrderRepository(OrderDbContext dbContext) : base(dbContext)
-    {
-    }
-
     public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(
         Guid userId,
         CancellationToken cancellationToken = default)
@@ -21,5 +17,4 @@ internal class OrderRepository : Repository<Order>, IOrderRepository
             .Include(o => o.Books)
             .ToListAsync(cancellationToken);
     }
-
 }

@@ -20,7 +20,7 @@ internal class OrderConfiguration : BaseEntityConfiguration<Order>
            .IsRequired();
 
         builder
-            .HasIndex(o => o.UserId);
+           .HasIndex(o => o.UserId);
 
         builder
            .Property(o => o.CreatedTimeUtc)
@@ -31,12 +31,12 @@ internal class OrderConfiguration : BaseEntityConfiguration<Order>
            .IsRequired();
 
         builder
-            .Property(o => o.Status)
-            .IsRequired()
-            .HasConversion<string>();
+           .Property(o => o.Status)
+           .IsRequired()
+           .HasConversion<string>();
 
         builder
-            .HasMany(b => b.Books)
-            .WithMany(o => o.Orders);
+           .HasMany(b => b.Books)
+           .WithMany(o => o.Orders);
     }
 }

@@ -15,8 +15,8 @@ internal class BookConfiguration : BaseEntityConfiguration<Book>
         builder.ToTable(TableNames.Book);
 
         builder
-            .Property(b => b.Title)
-            .IsRequired();
+           .Property(b => b.Title)
+           .IsRequired();
 
         builder
            .Property(b => b.Price)
