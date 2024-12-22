@@ -35,6 +35,23 @@ public sealed class Book : AggregateRoot
         Price = book.Price;  
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Book other)
+        {
+            return false;
+        }
+
+        return Id == other.Id &&
+               Title == other.Title &&
+               Price == other.Price;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Title, Price);
+    }
+
     public void MakeAvailable() => IsAvailable = true;
     public void MakeUnAvailable() => IsAvailable = false;
 
