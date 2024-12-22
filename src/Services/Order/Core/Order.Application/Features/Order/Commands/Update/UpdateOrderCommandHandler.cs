@@ -1,11 +1,10 @@
-﻿using AutoMapper;
+﻿using Order.Application.Errors;
+using Order.Application.Services;
 using Order.Domain.Repositories;
-using Order.Application.Errors;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.Components.Results;
-using Order.Application.Services;
 
 namespace Order.Application.Features.Order.Commands.Update;
 

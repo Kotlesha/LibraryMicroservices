@@ -4,6 +4,6 @@ using Shared.Components.Results;
 
 namespace Order.Application.Features.Book.Queries.GetByTitle;
 
-public sealed record GetBookByTitleQuery(string title) : IQuery<Result<BookResponseDTO>>;
+public sealed record GetBookByTitleQuery(string Title) : IQuery<Result<BookResponseDTO>>;
 
 

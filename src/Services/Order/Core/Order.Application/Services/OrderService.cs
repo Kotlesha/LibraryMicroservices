@@ -5,14 +5,9 @@ using Shared.Components.Results;
 
 namespace Order.Application.Services;
 
-internal class OrderService : IOrderService
+internal class OrderService(IBookRepository bookRepository) : IOrderService
 {
-    private readonly IBookRepository _bookRepository;
-
-    public OrderService(IBookRepository bookRepository)
-    {
-        _bookRepository = bookRepository;
-    }
+    private readonly IBookRepository _bookRepository = bookRepository;
 
     public async Task<Result<List<Book>>> ValidateAndRetrieveBooksAsync(
         IEnumerable<Guid> bookIds,

@@ -33,6 +33,5 @@ public static partial class ApplicationErrors
         public static readonly Error AlreadyCancelled = Error.BadRequest(
              code: "Order.AlreadyCancelled",
              message: "This order has already been cancelled");
-
     }
 }
