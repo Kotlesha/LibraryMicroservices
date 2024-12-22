@@ -27,7 +27,7 @@ internal class DeleteOrderCommandHandler(
 
         var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
 
-        if (userId == order.UserId)
+        if (userId != order.UserId)
         {
             return Result.Failure(ApplicationErrors.Order.NotBelongToUser);
         }

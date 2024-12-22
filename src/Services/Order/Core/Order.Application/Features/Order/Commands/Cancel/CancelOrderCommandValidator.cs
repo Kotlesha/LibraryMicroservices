@@ -9,8 +9,5 @@ internal class CancelOrderCommandValidator : AbstractValidator<CancelOrderComman
     {
         RuleFor(c => c.OrderId)
             .NotEmpty();
-
-        RuleFor(c => c.OrderDTO)
-            .SetValidator(new OrderRequestDTOValidator());
     }
 }

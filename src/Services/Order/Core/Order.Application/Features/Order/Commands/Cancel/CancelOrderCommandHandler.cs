@@ -34,8 +34,6 @@ internal class CancelOrderCommandHandler(
         }
 
         order.CancelOrder();
-
-
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

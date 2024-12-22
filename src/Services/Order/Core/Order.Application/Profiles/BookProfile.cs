@@ -3,6 +3,7 @@ using Order.Application.DTOs.RequestDTOs;
 using Order.Application.DTOs.ResponseDTOs;
 
 namespace Order.Application.Profiles;
+
 using Book = Domain.Entities.Book;
 
 internal class BookProfile : Profile
@@ -14,6 +15,7 @@ internal class BookProfile : Profile
                 dto.Title,
                 dto.Price,
                 true));
+
         CreateMap<Book, BookResponseDTO>();
     }
 }

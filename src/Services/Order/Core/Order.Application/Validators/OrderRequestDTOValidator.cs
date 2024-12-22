@@ -7,10 +7,10 @@ internal class OrderRequestDTOValidator : AbstractValidator<OrderRequestDTO>
 {
     public OrderRequestDTOValidator()
     {
-        RuleForEach(x => x.BooksIds)
+        RuleFor(o => o.BooksIds)
             .NotEmpty();
 
-        RuleFor(o => o.BooksIds)
+        RuleForEach(o => o.BooksIds)
             .NotEmpty();
     }
 }

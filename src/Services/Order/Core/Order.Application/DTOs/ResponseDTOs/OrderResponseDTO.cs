@@ -5,4 +5,5 @@ public sealed record OrderResponseDTO(
     DateTime CreatedTimeUtc,
     decimal TotalCost,
     string Status,
+    DateTime CanceledTimeUtc,
     List<BookResponseDTO> Books);

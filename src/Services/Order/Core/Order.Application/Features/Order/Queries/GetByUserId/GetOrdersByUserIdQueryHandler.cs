@@ -3,7 +3,6 @@ using Order.Application.DTOs.ResponseDTOs;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
-using Shared.Components.Results;
 
 namespace Order.Application.Features.Order.Queries.GetByUserId;
 
@@ -20,7 +19,6 @@ internal class GetOrdersByUserIdQueryHandler(
     {
         var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
         var order = await _orderRepository.GetOrdersByUserIdAsync(userId, cancellationToken);
-        var resultOrder = _mapper.Map<IEnumerable<OrderResponseDTO>>(order);
-        return resultOrder;
+        return _mapper.Map<IEnumerable<OrderResponseDTO>>(order);
     }
 }

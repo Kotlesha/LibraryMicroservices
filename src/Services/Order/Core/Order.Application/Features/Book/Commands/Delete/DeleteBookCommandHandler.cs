@@ -15,7 +15,7 @@ internal class DeleteBookCommandHandler(
 
     public async Task<Result> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
     {
-       var book = await _bookRepository.GetByIdAsync(request.BookId);
+        var book = await _bookRepository.GetByIdAsync(request.BookId);
 
         if (book is null) 
         {
@@ -23,7 +23,7 @@ internal class DeleteBookCommandHandler(
         }
 
         _bookRepository.Remove(book);
-        await  _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

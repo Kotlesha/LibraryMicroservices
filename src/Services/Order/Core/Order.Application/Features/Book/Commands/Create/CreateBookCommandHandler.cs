@@ -7,6 +7,7 @@ using Shared.Components.Results;
 namespace Order.Application.Features.Book.Commands.Create;
 
 using Book = Domain.Entities.Book;
+
 internal class CreateBookCommandHandler(
     IBookRepository bookRepository,
     IMapper mapper,
@@ -25,5 +26,4 @@ internal class CreateBookCommandHandler(
 
         return book.Id;
     }
-
 }
