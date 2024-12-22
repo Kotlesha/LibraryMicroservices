@@ -2,5 +2,5 @@
 
 public interface IUserIdProvider
 {
-    string? GetAuthUserId();
+    string GetAuthUserId();
 }

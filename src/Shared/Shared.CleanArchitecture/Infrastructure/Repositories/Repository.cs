@@ -5,63 +5,27 @@ using System.Linq.Expressions;
 
 namespace Shared.CleanArchitecture.Infrastructure.Repositories;
 
-public abstract class Repository<T> : IRepository<T> 
+public abstract class Repository<T>(DbContext dbContext) : IRepository<T> 
     where T : AggregateRoot
 {
-    private readonly DbContext _dbContext;
+    private readonly DbContext _dbContext = dbContext;
 
-    protected Repository(DbContext dbContext) => _dbContext = dbContext;
+    public IQueryable<T> GetAll() => _dbContext.Set<T>().AsNoTracking();
 
-    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+    public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)
     {
-        await _dbContext
-            .Set<T>()
-            .AddAsync(
-                entity, 
-                cancellationToken);
+        return _dbContext.Set<T>().Where(expression).AsNoTracking();
     }
 
-    public Task RemoveAsync(T entity, CancellationToken cancellationToken = default)
+    public void Add(T entity) => _dbContext.Set<T>().Add(entity);
+
+    public void Update(T entity) => _dbContext.Set<T>().Update(entity);
+
+    public void Remove(T entity) => _dbContext.Set<T>().Remove(entity);
+
+    public async Task<T?> GetByIdAsync(Guid id)
     {
-        _dbContext
-            .Set<T>()
-            .Remove(entity);
-
-        return Task.CompletedTask;
-    }
-
-    public Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
-    {
-        _dbContext
-            .Set<T>()
-            .Update(entity);
-
-        return Task.CompletedTask;
-    }
-
-    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        return await _dbContext
-            .Set<T>()
-            .ToListAsync(cancellationToken);
-    }
-
-    public async Task<T?> GetByIdAsync(Guid Id, CancellationToken cancellationToken = default)
-    {
-        return await _dbContext
-            .Set<T>()
-            .FirstOrDefaultAsync(
-                ag => ag.Id.Equals(Id),
-                cancellationToken);
-    }
-
-    public async Task<IEnumerable<T>> GetByPredicateAsync(
-        Expression<Func<T, bool>> predicate, 
-        CancellationToken cancellationToken = default)
-    {
-        return await _dbContext
-            .Set<T>()
-            .Where(predicate)
-            .ToListAsync(cancellationToken);
+        return await GetByCondition(ar => ar.Id.Equals(id))
+            .FirstOrDefaultAsync();
     }
 }

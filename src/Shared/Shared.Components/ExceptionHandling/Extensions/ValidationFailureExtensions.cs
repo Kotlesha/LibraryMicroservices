@@ -1,21 +1,21 @@
 ﻿using FluentValidation.Results;
-using Shared.Components.Errors;
 
 namespace Shared.Components.ExceptionHandling.Extensions;
 
 internal static class ValidationFailureExtensions
 {
-    internal static IEnumerable<Error> ToErrorList(
+    internal static IDictionary<string, string[]> ToDictionary(
         this IEnumerable<ValidationFailure>? validationFailures)
     {
         if (validationFailures is null)
         {
-            return [];
+            return new Dictionary<string, string[]>();
         }
 
-        return validationFailures.Select(
-            vF => Error.Validation(
-                code: vF.PropertyName,
-                message: vF.ErrorMessage));
+        return validationFailures
+            .GroupBy(vF => vF.PropertyName)
+            .ToDictionary(
+                p => p.Key, 
+                p => p.Select(p => p.ErrorMessage).ToArray());
     }
 }
