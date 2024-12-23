@@ -1,60 +1,43 @@
-﻿using AutoMapper;
-using Order.Application.Errors;
+using Order.Application.Services;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
+using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.Components.Results;
 
 namespace Order.Application.Features.Order.Commands.Create;
 
 using Book = Domain.Entities.Book;
-using Order = Domain.Entities.Order;
 
 internal class CreateOrderCommandHandler(
     IOrderRepository orderRepository,
-    IBookRepository bookRepository,
-    IMapper mapper,
-    IUnitOfWork unitOfWork) : ICommandHandler<CreateOrderCommand, Result<Guid>>
+    IOrderService orderService,
+    IUnitOfWork unitOfWork,
+    IUserIdProvider userIdProvider) : ICommandHandler<CreateOrderCommand, Result<Guid>>
 {
     private readonly IOrderRepository _orderRepository = orderRepository;
-    private readonly IBookRepository _bookRepository = bookRepository;
-    private readonly IMapper _mapper = mapper;
+    private readonly IOrderService _orderService = orderService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IUserIdProvider _userIdProvider = userIdProvider;
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = _mapper.Map<Order>(request.OrderDTO);
+        var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
+        var order = Order.Create(userId);
 
-        var books = new List<Book>();
+        var result = await _orderService.ValidateAndRetrieveBooksAsync(request.OrderDTO.BooksIds, cancellationToken);
 
-        foreach (var bookid in request.OrderDTO.BooksIds) 
+        if (result.IsFailure)
         {
-            var book = await _bookRepository.GetByIdAsync(bookid, cancellationToken);
-
-            if (book is not null)
-            {
-                books.Add(book);
-            }
+            return Result.Failure<Guid>(result.Error);
         }
 
-        if (request.OrderDTO.BooksIds.Count() != books.Count)
-        {
-            return Result.Failure<Guid>(ApplicationErrors.Order.NonExistentIds);
-        }
-
-        var availableBooks = books.Where(book => book.IsAvailable).ToList();
-
-        if (request.OrderDTO.BooksIds.Count() != availableBooks.Count)
-        {
-            return Result.Failure<Guid>(ApplicationErrors.Order.NotAvailable);
-        }
-
-        foreach (var book in books)
+        foreach (var book in result.Value)
         {
             order.AddBookToOrder(book);
         }
-        
-        await _orderRepository.AddAsync(order, cancellationToken);
+
+        _orderRepository.Add(order);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return order.Id;

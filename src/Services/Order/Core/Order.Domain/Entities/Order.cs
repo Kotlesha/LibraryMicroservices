@@ -1,5 +1,6 @@
 ﻿using Order.Domain.Enums;
 using Shared.CleanArchitecture.Domain.Entities;
+using Shared.CleanArchitecture.Domain.Helpers;
 
 namespace Order.Domain.Entities;
 
@@ -32,6 +33,16 @@ public sealed class Order : AggregateRoot
         order.Validate();
 
         return order;
+    }
+
+
+    public void UpdateBooks(IEnumerable<Book> books)
+    {
+        EntityUpdater.UpdateRelatedEntities(
+            _books,
+            books,
+            AddBookToOrder,
+            RemoveBookFromOrder);
     }
 
     protected override void Validate()

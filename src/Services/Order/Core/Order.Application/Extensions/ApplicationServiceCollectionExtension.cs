@@ -1,5 +1,6 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Application.Services;
 using Shared.CleanArchitecture.Application.Behaviours;
 using System.Reflection;
 
@@ -10,6 +11,8 @@ public static class ApplicationServiceCollectionExtension
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
+
+        services.AddScoped<IOrderService, OrderService>();
 
         services.AddMediatR(configuration =>
         {

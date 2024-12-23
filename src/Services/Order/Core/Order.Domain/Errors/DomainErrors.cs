@@ -1,4 +1,4 @@
-﻿using Shared.Components.Errors;
+using Shared.Components.Errors;
 
 namespace Order.Domain.Errors;
 

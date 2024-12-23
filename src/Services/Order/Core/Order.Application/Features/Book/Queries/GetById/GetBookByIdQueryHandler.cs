@@ -23,7 +23,6 @@ internal class GetBookByIdQueryHandler(
             return Result.Failure<BookResponseDTO>(ApplicationErrors.Book.NotFound);
         }
 
-        var resultBook = _mapper.Map<BookResponseDTO>(book);
-        return resultBook;
+        return _mapper.Map<BookResponseDTO>(book);
     }
 }
