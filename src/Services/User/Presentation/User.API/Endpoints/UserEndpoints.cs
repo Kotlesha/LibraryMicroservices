@@ -34,6 +34,7 @@ public static class UserEndpoints
         return app;
     }
 
+    [ExcludeFromDescription]
     private static async Task<IResult> CreateUser(
         [FromBody] CreateUserCommand command,
         ISender sender,
