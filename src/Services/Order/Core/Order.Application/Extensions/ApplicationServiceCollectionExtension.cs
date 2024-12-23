@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Application.Abstractions.Services;
 using Order.Application.Services;
 using Shared.CleanArchitecture.Application.Behaviours;
 using System.Reflection;

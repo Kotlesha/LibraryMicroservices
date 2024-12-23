@@ -1,5 +1,5 @@
-﻿using Order.Application.Errors;
-using Order.Application.Services;
+﻿using Order.Application.Abstractions.Services;
+using Order.Application.Errors;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;

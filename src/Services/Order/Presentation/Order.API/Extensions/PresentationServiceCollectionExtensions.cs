@@ -1,6 +1,6 @@
 ﻿using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Presentation.Providers;
-using Shared.Components.ExceptionHandling.Extensions;
+using Shared.Components.ProblemDetailsUtilities.Extensions;
 
 namespace Order.API.Extensions;
 

@@ -1,7 +1,7 @@
 ﻿using Order.Domain.Entities;
 using Shared.Components.Results;
 
-namespace Order.Application.Services;
+namespace Order.Application.Abstractions.Services;
 
 public interface IOrderService
 {
