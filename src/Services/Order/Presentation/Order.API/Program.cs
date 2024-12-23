@@ -3,8 +3,8 @@ using Shared.Components.Migrations;
 using Order.API.Endpoints;
 using Order.API.Extensions;
 using Order.Application.Extensions;
-using Order.Infrastructure.Context;
 using Order.Infrastructure.Extensions;
+using Order.Infrastructure.Contexts;
 
 namespace Order.API;
 
@@ -31,6 +31,7 @@ public class Program
         }
 
         app.MapOrderEndpoints();
+        app.MapBookEndpoints();
 
         app.UseHttpsRedirection();
 
