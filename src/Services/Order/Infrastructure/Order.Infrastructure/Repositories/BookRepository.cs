@@ -8,11 +8,18 @@ namespace Order.Infrastructure.Repositories;
 
 internal class BookRepository(OrderDbContext dbContext) : Repository<Book>(dbContext), IBookRepository
 {
+    public async Task<Book?> GetBookByIdAsync(
+        Guid bookId, 
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
+    }
+
     public async Task<Book?> GetBookByTitleAsync(
         string title,
         CancellationToken cancellationToken = default)
     {
-        return await GetByCondition(b => b.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase))
+        return await GetByCondition(b => b.Title.ToLower().Contains(title.ToLower()))
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

@@ -17,22 +17,22 @@ public static class BookEndpoints
     {
         var endpoints = app.MapGroup("books");
 
-        endpoints.MapPost("/create", CreateBook)
+        endpoints.MapPost("/", CreateBook)
             .WithName(nameof(CreateBook));
 
-        endpoints.MapPost("/delete", DeleteBook)
+        endpoints.MapDelete("/{bookId:guid}", DeleteBook)
             .WithName(nameof(DeleteBook));
 
-        endpoints.MapPost("/update", UpdateBook)
+        endpoints.MapPut("/", UpdateBook)
             .WithName(nameof(UpdateBook));
 
-        endpoints.MapGet("/get/{bookId:guid}", GetBookById)
+        endpoints.MapGet("/{bookId:guid}", GetBookById)
             .WithName(nameof(GetBookById));
 
-        endpoints.MapGet("/all", GetAllBooks)
+        endpoints.MapGet("/", GetAllBooks)
             .WithName(nameof(GetAllBooks));
 
-        endpoints.MapGet("/search", GetBookByTitle)
+        endpoints.MapGet("/{title}", GetBookByTitle)
             .WithName(nameof(GetBookByTitle));
 
         return app;
@@ -49,11 +49,11 @@ public static class BookEndpoints
     }
 
     private static async Task<IResult> DeleteBook(
-        [FromBody] DeleteBookCommand command,
+        [FromRoute] Guid bookId,
         ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(command, cancellationToken);
+        var result = await sender.Send(new DeleteBookCommand(bookId), cancellationToken);
 
         return result.IsSuccess ?
             Results.Ok() :
@@ -73,7 +73,7 @@ public static class BookEndpoints
     }
 
     private static async Task<IResult> GetBookById(
-        Guid bookId,
+        [FromRoute] Guid bookId,
         ISender sender,
         CancellationToken cancellationToken)
     {
@@ -85,7 +85,7 @@ public static class BookEndpoints
     }
 
     private static async Task<IResult> GetBookByTitle(
-        [FromQuery] string title,
+        [FromRoute] string title,
         ISender sender,
         CancellationToken cancellationToken)
     {

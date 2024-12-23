@@ -3,5 +3,5 @@
 public enum Status
 {
     Active,
-    Canceled
+    Cancelled
 }

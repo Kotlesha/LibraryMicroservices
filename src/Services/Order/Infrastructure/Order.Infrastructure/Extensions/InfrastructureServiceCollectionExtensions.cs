@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Order.Domain.Repositories;
 using Order.Infrastructure.Contexts;
 using Order.Infrastructure.Repositories;
@@ -16,9 +17,11 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
        IConfiguration configuration)
     {
-        services.AddDbContext<OrderDbContext>(options =>
+        services.AddDbContext<OrderDbContext>(options => {
             options.UseSqlServer(
-                configuration.GetConnectionString("OrderDbConnectionString")));
+                configuration.GetConnectionString("OrderDbConnectionString"));
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+        });
 
         services.AddScoped<IUnitOfWork>(
             provider =>

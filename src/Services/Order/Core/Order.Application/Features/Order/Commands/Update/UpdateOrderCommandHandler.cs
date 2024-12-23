@@ -1,5 +1,6 @@
 ﻿using Order.Application.Abstractions.Services;
 using Order.Application.Errors;
+using Order.Domain.Enums;
 using Order.Domain.Repositories;
 using Shared.CleanArchitecture.Application.Abstractions.Messaging;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
@@ -21,7 +22,7 @@ internal class UpdateOrderCommandHandler(
 
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetByIdAsync(request.OrderId);
+        var order = await _orderRepository.GetOrderByIdAsync(request.OrderId, cancellationToken);
         var userId = Guid.Parse(_userIdProvider.GetAuthUserId());
 
         if (order is null)
@@ -32,6 +33,11 @@ internal class UpdateOrderCommandHandler(
         if (order.UserId != userId)
         {
             return Result.Failure(ApplicationErrors.Order.NotBelongToUser);
+        }
+
+        if (order.Status == Status.Cancelled)
+        {
+            return Result.Failure(ApplicationErrors.Order.UnableToUpdate);
         }
 
         var result = await _orderService.ValidateAndRetrieveBooksAsync(request.OrderDTO.BooksIds, cancellationToken);

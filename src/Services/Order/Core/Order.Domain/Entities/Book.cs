@@ -9,7 +9,7 @@ public sealed class Book : AggregateRoot
     public bool IsAvailable { get; private set; }
 
     private readonly List<Order> _orders = [];
-    public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
+    public IReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
     private Book(Guid id, string title, decimal price, bool isAvailable) : base(id)
     {
@@ -24,6 +24,11 @@ public sealed class Book : AggregateRoot
         book.Validate();
 
         return book;
+    }
+
+    public void AddOrderToBook(Order order)
+    {
+        _orders.Add(order);
     }
 
     public void Update(Book book)

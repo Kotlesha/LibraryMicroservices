@@ -14,17 +14,20 @@ public sealed class Order : AggregateRoot
     public DateTime? CanceledTimeUtc { get; private set; }
 
     private readonly List<Book> _books = [];
-    public IReadOnlyList<Book> Books => _books.AsReadOnly();
+    public IReadOnlyCollection<Book> Books => _books.AsReadOnly();
 
     public void AddBookToOrder(Book book)
     {
-        AddEntity(book, _books);
+        _books.Add(book);
+        //book.AddOrderToBook(this);
+
         TotalCost += book.Price;
         Count++;
     }
 
     public void RemoveBookFromOrder(Book book) 
-    {   RemoveEntity(book, _books);
+    {   
+        _books.Remove(book);
         TotalCost -= book.Price;
         Count--;
     }
@@ -63,7 +66,7 @@ public sealed class Order : AggregateRoot
 
     public void CancelOrder()
     {
-        Status = Status.Canceled;
+        Status = Status.Cancelled;
         CanceledTimeUtc = DateTime.UtcNow;
     }
 }

@@ -12,8 +12,8 @@ public static class MigrationExtensions
         using var scope = app.ApplicationServices.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<TContext>();
-
-        if (context.Database.HasPendingModelChanges())
+        
+        if (context.Database.GetPendingMigrations().Any())
         {
             context.Database.Migrate();
         }

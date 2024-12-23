@@ -18,7 +18,7 @@ internal class OrderService(IBookRepository bookRepository) : IOrderService
 
         foreach (var bookId in bookIds)
         {
-            var book = await _bookRepository.GetByIdAsync(bookId);
+            var book = await _bookRepository.GetBookByIdAsync(bookId, cancellationToken);
 
             if (book is null)
             {

@@ -9,6 +9,13 @@ using Order = Domain.Entities.Order;
 
 internal class OrderRepository(OrderDbContext dbContext) : Repository<Order>(dbContext), IOrderRepository
 {
+    public async Task<Order?> GetOrderByIdAsync(Guid orderId, CancellationToken cancellationToken)
+    {
+        return await dbContext.Orders
+            .Include(o => o.Books)
+            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+    }
+
     public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(
         Guid userId,
         CancellationToken cancellationToken = default)

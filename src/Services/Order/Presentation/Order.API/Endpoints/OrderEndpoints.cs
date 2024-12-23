@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Order.Application.DTOs.RequestDTOs;
+using Order.Application.Features.Order.Commands.Cancel;
 using Order.Application.Features.Order.Commands.Create;
 using Order.Application.Features.Order.Commands.Delete;
 using Order.Application.Features.Order.Commands.Update;
@@ -15,16 +16,19 @@ public static class OrderEndpoints
     {
         var endpoints = app.MapGroup("orders");
 
-        endpoints.MapPost("/create", CreateOrder)
+        endpoints.MapPost("/", CreateOrder)
             .WithName(nameof(CreateOrder));
 
-        endpoints.MapPost("/delete", DeleteOrder)
+        endpoints.MapDelete("/{orderId:guid}", DeleteOrder)
             .WithName(nameof(DeleteOrder));
 
-        endpoints.MapPost("/update", UpdateOrder)
+        endpoints.MapPatch("/{orderId:guid}", CancelOrder)
+            .WithName(nameof(CancelOrder));
+
+        endpoints.MapPut("/", UpdateOrder)
             .WithName(nameof(UpdateOrder));
 
-        endpoints.MapGet("/get", GetOrdersByUserId)
+        endpoints.MapGet("/", GetOrdersByUserId)
             .WithName(nameof(GetOrdersByUserId));
 
         return app;
@@ -41,11 +45,11 @@ public static class OrderEndpoints
     }
 
     private static async Task<IResult> DeleteOrder(
-        [FromBody] DeleteOrderCommand command,
+        [FromRoute] Guid orderId,
         ISender sender,
         CancellationToken cancellationToken)
     {
-        var result = await sender.Send(command, cancellationToken);
+        var result = await sender.Send(new DeleteOrderCommand(orderId), cancellationToken);
 
         return result.IsSuccess ?
             Results.Ok() :
@@ -58,6 +62,18 @@ public static class OrderEndpoints
         CancellationToken cancellationToken)
     {
         var result = await sender.Send(command, cancellationToken);
+
+        return result.IsSuccess ?
+            Results.Ok() :
+            result.ToProblemDetails();
+    }
+
+    private static async Task<IResult> CancelOrder(
+        [FromRoute] Guid orderId,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new CancelOrderCommand(orderId), cancellationToken);
 
         return result.IsSuccess ?
             Results.Ok() :

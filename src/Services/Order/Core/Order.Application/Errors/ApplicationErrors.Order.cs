@@ -22,16 +22,12 @@ public static partial class ApplicationErrors
              code: "Order.NotBelong",
              message: "This order doesn't belong to the user");
 
-        public static readonly Error NotAllBooksFound = Error.NotFound(
-             code: "Order.NotAllBooksFound",
-             message: "Not all books in the order were found");
-
-        public static readonly Error NotAllBooksIsAvailable = Error.BadRequest(
-             code: "Order.NotAllBooksIsAvailable",
-             message: "Not all books in the order were available");
-
         public static readonly Error AlreadyCancelled = Error.BadRequest(
              code: "Order.AlreadyCancelled",
              message: "This order has already been cancelled");
+
+        public static readonly Error UnableToUpdate = Error.Conflict(
+             code: "Order.UnableToUpdate",
+             message: "You can't update this order, because it has already been cancelled");
     }
 }
