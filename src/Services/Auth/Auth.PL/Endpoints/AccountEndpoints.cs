@@ -27,6 +27,7 @@ public static class AccountEndpoints
         return app;
     }
 
+    [ExcludeFromDescription]
     private static async Task<IResult> Login(
         [FromBody] LoginDTO loginDTO,
         IAccountService accountService)

@@ -1,8 +1,8 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using OcelotApiGateway.Extensions;
+using Serilog;
 using Shared.Components.Jwt;
-using Shared.Components.Swagger;
 
 namespace OcelotApiGateway;
 
@@ -11,6 +11,9 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseSerilog((context, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(context.Configuration));
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -26,21 +29,18 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseSwaggerForOcelotUI(options =>
-        {
-            options.PathToSwaggerGenerator = "/swagger/docs";
-        });
-
         app.UseHttpsRedirection();
+
+        app.UseSerilogRequestLogging();
 
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseStatusCodePages();
 
-        await app.UseOcelot();
+        app.UseSwaggerForOcelotUI();
 
-        //app.UseStatusCodePages();
+        await app.UseOcelot();
 
         app.Run();
     }

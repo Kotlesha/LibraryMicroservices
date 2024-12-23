@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Shared.CleanArchitecture\Shared.CleanArchitecture.csproj" />
     <ProjectReference Include="..\..\..\Shared\Shared.Components\Shared.Components.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Messaging\Shared.Messaging.csproj" />
     <ProjectReference Include="..\Auth.DAL\Auth.DAL.csproj" />
   </ItemGroup>
 

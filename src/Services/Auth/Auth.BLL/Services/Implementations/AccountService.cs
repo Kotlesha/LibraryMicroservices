@@ -6,10 +6,12 @@ using Auth.BLL.Services.Interfaces;
 using Auth.DAL.Models;
 using Auth.DAL.Repositories.Implementations;
 using Auth.DAL.Repositories.Interfaces;
+using MassTransit;
 using Microsoft.Extensions.Options;
 using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.Components.Jwt;
 using Shared.Components.Results;
+using Shared.Messaging.Messages.Account;
 
 namespace Auth.BLL.Services.Implementations;
 
@@ -20,6 +22,7 @@ public class AccountService(
     ITokenProvider tokenProvider,
     IUserIdProvider userIdProvider,
     IOptions<JwtOptions> options,
+    IPublishEndpoint publishEndpoint,
     IUnitOfWork unitOfWork) : IAccountService
 {
     private readonly IAccountRepository _accountRepository = accountRepository;
@@ -27,6 +30,7 @@ public class AccountService(
     private readonly IPasswordHasherProvider _passwordProvider = passwordsProvider;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly IUserIdProvider _userIdProvider = userIdProvider;
+    private readonly IPublishEndpoint _publishEndpoint = publishEndpoint;
     private readonly JwtOptions jwtOptions = options.Value;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
@@ -75,6 +79,15 @@ public class AccountService(
 
         _accountRepository.AddAccount(account);
         await _unitOfWork.SaveChangesAsync();
+
+        await _publishEndpoint.Publish(
+            new AccountCreatedEvent(
+                account.Id,
+                registerDTO.Name,
+                registerDTO.Surname,
+                registerDTO.Patronymic,
+                registerDTO.BirthDate,
+                registerDTO.Email));
 
         return Result.Success();
     }

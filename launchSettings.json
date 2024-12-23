@@ -4,7 +4,9 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "auth.pl": "StartDebugging"
+        "auth.pl": "StartDebugging",
+        "user.api": "StartDebugging",
+        "ocelotapigateway": "StartDebugging"
       }
     }
   }

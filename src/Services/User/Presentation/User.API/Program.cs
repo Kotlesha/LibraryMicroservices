@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Serilog;
 using Shared.Components.ExceptionHandling.Middleware;
 using Shared.Components.Jwt;
-using Shared.Components.Migrations;
-using Shared.Components.Swagger;
 using User.API.Extensions;
 using User.Application.Extensions;
-using User.Infrastructure.Context;
 using User.Infrastructure.Extensions;
 
 namespace User.API;
@@ -16,7 +13,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddApplication();
+        builder.Host.UseSerilog((context, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+        builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
@@ -29,12 +29,13 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            //app.ApplyMigrations<UserDbContext>();
         }
 
         app.MapEndpoints();
 
         app.UseHttpsRedirection();
+
+        app.UseSerilogRequestLogging();
 
         app.UseAuthentication();
         app.UseAuthorization();

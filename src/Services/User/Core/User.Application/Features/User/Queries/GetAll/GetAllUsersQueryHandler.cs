@@ -9,8 +9,7 @@ using Shared.Components.Pagination.Extensions;
 namespace User.Application.Features.User.Queries.GetAll;
 
 internal class GetAllUsersQueryHandler(
-    IUserRepository userRepository, 
-    IMapper mapper) : 
+    IUserRepository userRepository, IMapper mapper) : 
     IQueryHandler<GetAllUsersQuery, (IEnumerable<UserDTO> users, MetaData metaData)>
 {
     private readonly IUserRepository _userRepository = userRepository;
@@ -24,8 +23,7 @@ internal class GetAllUsersQueryHandler(
             .OrderBy(u => u.Name)
             .ApplySearch(request.Parameters.SearchTerm?.ToLower())
             .ApplyPagination(
-                request.Parameters.PageNumber,
-                request.Parameters.PageSize,
+                request.Parameters,
                 cancellationToken);
 
         return (

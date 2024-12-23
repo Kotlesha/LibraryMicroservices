@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using User.Domain.Constants;
 
 namespace User.Application.Features.User.Commands.Create;
 
@@ -8,16 +7,13 @@ internal class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     public CreateUserCommandValidator()
     {
         RuleFor(u => u.Name)
-            .NotEmpty()
-            .MaximumLength(UserConstants.NameMaxLength);
+            .NotEmpty();
 
         RuleFor(u => u.Surname)
-            .NotEmpty()
-            .MaximumLength(UserConstants.SurnameMaxLength);
+            .NotEmpty();
 
         RuleFor(u => u.Patronymic)
-            .NotEmpty()
-            .MaximumLength(UserConstants.PatronymicMaxLength);
+            .NotEmpty();
 
         RuleFor(u => u.Email)
             .EmailAddress();

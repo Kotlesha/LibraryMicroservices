@@ -5,19 +5,82 @@ services:
       context: .
       dockerfile: src/Services/Auth/Auth.PL/Dockerfile
     ports:
-      - "5105:5105"
-      - "7073:7073"
+      - "5105:5105"   
+      - "7073:7073"  
+    volumes:
+      - ./certificates:/https:ro 
     depends_on:
-      - auth.db 
+      - auth.db
 
   auth.db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: account-db
+    container_name: AccountDb
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=11111!Aa
-      - MSSQL_DB=AccountDb
     ports:
       - "1433:1433"
     volumes:
       - ./containers/account-db:/var/opt/mssql/data
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: src/Services/User/Presentation/User.API/Dockerfile
+    ports:
+      - "5218:5218"
+      - "7270:7270"
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - user.db
+
+  user.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: UserDb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=11111!Aa
+    ports:
+      - "1434:1433"
+    volumes:
+      - ./containers/user-db:/var/opt/mssql/data
+
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: src/ApiGateway/OcelotApiGateway/Dockerfile
+    ports:
+      - "5290:5290"
+      - "7260:7260"
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - user.api
+      - auth.pl
+    
+  ocelot.seq:
+    image: datalust/seq:latest
+    container_name: Ocelot.Seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 8081:80
+
+  auth-mq:
+    image: rabbitmq:management
+    container_name: Auth.RabbitMq
+    hostname: auth-mq
+    volumes:
+      - ./containers/queue/data/:/var/lib/rabbitmq
+      - ./containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  certificates:
+    driver: local

@@ -9,6 +9,15 @@ internal class RegisterDTOValidator : AbstractValidator<RegisterDTO>
 {
     public RegisterDTOValidator()
     {
+        RuleFor(rd => rd.Name)
+            .NotEmpty();
+
+        RuleFor(rd => rd.Surname)
+            .NotEmpty();
+
+        RuleFor(rd => rd.Patronymic)
+            .NotEmpty();
+
         RuleFor(rd => rd.Email)
             .EmailAddress()
             .NotEmpty()

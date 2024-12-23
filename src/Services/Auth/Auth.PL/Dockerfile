@@ -2,11 +2,15 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
+USER root
 WORKDIR /app
 EXPOSE 5105
 EXPOSE 7073
 
+COPY certificates /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
+USER app
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -18,7 +22,7 @@ COPY ["src/Shared/Shared.Components/Shared.Components.csproj", "src/Shared/Share
 COPY ["src/Services/Auth/Auth.BLL/Auth.BLL.csproj", "src/Services/Auth/Auth.BLL/"]
 COPY ["src/Services/Auth/Auth.DAL/Auth.DAL.csproj", "src/Services/Auth/Auth.DAL/"]
 RUN dotnet restore "./src/Services/Auth/Auth.PL/Auth.PL.csproj"
-COPY . .
+COPY . . 
 WORKDIR "/src/src/Services/Auth/Auth.PL"
 RUN dotnet build "./Auth.PL.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
@@ -30,5 +34,7 @@ RUN dotnet publish "./Auth.PL.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app/publish . 
 ENTRYPOINT ["dotnet", "Auth.PL.dll"]
+
+ENTRYPOINT ["sh", "-c", "dotnet ef database update && dotnet Auth.PL.dll"]
