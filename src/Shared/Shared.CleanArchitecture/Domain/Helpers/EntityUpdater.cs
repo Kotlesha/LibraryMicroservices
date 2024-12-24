@@ -8,26 +8,23 @@ public static class EntityUpdater
         IEnumerable<TEntity> currentEntities,
         IEnumerable<TEntity> newEntities,
         Action<TEntity> addEntity,
-        Action<TEntity> removeEntity)
-        where TEntity : AggregateRoot
+        Action<TEntity> removeEntity) where TEntity : AggregateRoot
     {
         var currentEntityIds = currentEntities.Select(e => e.Id).ToHashSet();
         var newEntityIds = newEntities.Select(e => e.Id).ToHashSet();
 
-        foreach (var entity in currentEntities)
+        var entitiesToRemove = currentEntities.Where(e => !newEntityIds.Contains(e.Id)).ToList();
+        var entitiesToAdd = newEntities.Where(e => !currentEntityIds.Contains(e.Id)).ToList();
+
+        foreach (var entity in entitiesToRemove)
         {
-            if (!newEntityIds.Contains(entity.Id))
-            {
-                removeEntity(entity);
-            }
+            removeEntity(entity);
         }
 
-        foreach (var entity in newEntities)
+        foreach (var entity in entitiesToAdd)
         {
-            if (!currentEntityIds.Contains(entity.Id))
-            {
-                addEntity(entity);
-            }
+            addEntity(entity);
         }
     }
+
 }

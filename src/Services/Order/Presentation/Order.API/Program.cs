@@ -1,36 +1,49 @@
+using Shared.Components.ExceptionHandling.Middleware;
+using Order.API.Extensions;
+using Order.Application.Extensions;
+using Order.Infrastructure.Extensions;
+using Serilog;
+using Shared.Components.Jwt;
 
-namespace Order.API
+namespace Order.API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseSerilog((context, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+        builder.Services.AddApplication();
+        builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddPresentation();
+
+        builder.Services.AddJwtAuthentication(builder.Configuration);
+        builder.Services.AddAuthorization();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+
+        app.MapEndpoints();
+
+        app.UseHttpsRedirection();
+        app.UseSerilogRequestLogging();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseStatusCodePages();
+
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+        app.Run();
     }
 }
+

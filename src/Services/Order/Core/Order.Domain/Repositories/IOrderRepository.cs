@@ -1,4 +1,4 @@
-﻿using Shared.CleanArchitecture.Domain.Repositories;
+﻿using Shared.CleanArchitecture.Domain.Repositories.Base;
 
 namespace Order.Domain.Repositories;
 
@@ -6,8 +6,8 @@ using Order = Entities.Order;
 
 public interface IOrderRepository : IRepository<Order>
 {
-    Task<IEnumerable<Order>> GetOrdersByUserIdAsync(Guid userId, 
+    Task<Order?> GetOrderByIdAsync(Guid orderId,
         CancellationToken cancellationToken = default);
-    Task<IEnumerable<Order>> GetOrderByDateAsync(DateOnly Date, 
+    Task<IEnumerable<Order>> GetOrdersByUserIdAsync(Guid userId, 
         CancellationToken cancellationToken = default);
 }

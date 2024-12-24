@@ -122,6 +122,22 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "SwaggerKey": "UsersAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE", "PATCH" ],
+      "DownstreamPathTemplate": "/orders-api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order.api",
+          "Port": 7018
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "OrdersAPI"
     }
   ],
 
@@ -143,6 +159,16 @@
           "Name": "Users API",
           "Version": "v1",
           "Url": "https://user.api:7270/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "OrdersAPI",
+      "Config": [
+        {
+          "Name": "Orders API",
+          "Version": "v1",
+          "Url": "https://order.api:7018/swagger/v1/swagger.json"
         }
       ]
     }

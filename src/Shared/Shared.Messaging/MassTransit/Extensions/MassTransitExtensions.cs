@@ -30,6 +30,15 @@ public static class MassTransitExtensions
                     h.Password(configuration["MessageBroker:Password"]!);
                 });
 
+                configurator.UseMessageRetry(retryConfigurator =>
+                {
+                    retryConfigurator.Incremental(
+                        retryLimit: 5,                        
+                        initialInterval: TimeSpan.FromSeconds(10), 
+                        intervalIncrement: TimeSpan.FromSeconds(20)
+                    );
+                });
+
                 configurator.ConfigureEndpoints(context);
             });
         });

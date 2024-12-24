@@ -17,7 +17,7 @@ services:
     container_name: AccountDb
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=11111!Aa
+      - MSSQL_SA_PASSWORD=11111!Aa
     ports:
       - "1433:1433"
     volumes:
@@ -41,11 +41,41 @@ services:
     container_name: UserDb
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=11111!Aa
+      - MSSQL_SA_PASSWORD=11111!Aa
     ports:
       - "1434:1433"
     volumes:
       - ./containers/user-db:/var/opt/mssql/data
+
+  order.api:
+    image: ${DOCKER_REGISTRY-}orderapi
+    build:
+      context: .
+      dockerfile: src/Services/Order/Presentation/Order.API/Dockerfile
+    ports:
+      - "5128:5128"   
+      - "7018:7018"  
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - order.db
+
+  order.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: OrderDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1435:1433"
+    volumes:
+      - ./containers/order-db:/var/opt/mssql/data
+
+  book.cashe:
+    image: redis:latest
+    container_name: Book.Cashe
+    ports:
+      - "6379:6379" 
 
   ocelotapigateway:
     image: ${DOCKER_REGISTRY-}ocelotapigateway
@@ -60,6 +90,7 @@ services:
     depends_on:
       - user.api
       - auth.pl
+      - order.api 
     
   ocelot.seq:
     image: datalust/seq:latest

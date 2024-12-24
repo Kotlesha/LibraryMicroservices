@@ -26,6 +26,9 @@ COPY . .
 WORKDIR "/src/src/Services/Auth/Auth.PL"
 RUN dotnet build "./Auth.PL.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+WORKDIR "/src/src/Services/Auth/Auth.DAL"
+RUN dotnet ef database update --project "./Auth.DAL.csproj"
+
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
@@ -36,5 +39,3 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish . 
 ENTRYPOINT ["dotnet", "Auth.PL.dll"]
-
-ENTRYPOINT ["sh", "-c", "dotnet ef database update && dotnet Auth.PL.dll"]
