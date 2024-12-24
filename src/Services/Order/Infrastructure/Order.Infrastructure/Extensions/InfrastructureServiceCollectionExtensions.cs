@@ -9,13 +9,14 @@ using Shared.CleanArchitecture.Application.Abstractions.Providers;
 using Shared.CleanArchitecture.Domain.Repositories;
 using Shared.CleanArchitecture.Domain.Repositories.Base;
 using Shared.CleanArchitecture.Infrastructure.Repositories;
+using Shared.Messaging.MassTransit.Extensions;
 
 namespace Order.Infrastructure.Extensions;
 
 public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-       IConfiguration configuration)
+        IConfiguration configuration)
     {
         services.AddDbContext<OrderDbContext>(options => {
             options.UseSqlServer(

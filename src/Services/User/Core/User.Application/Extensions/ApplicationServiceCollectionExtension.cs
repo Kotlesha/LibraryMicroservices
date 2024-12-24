@@ -7,7 +7,6 @@ using System.Reflection;
 using User.Application.Abstractions.Services;
 using User.Application.Services;
 using Shared.Messaging.MassTransit.Extensions;
-using MassTransit;
 using User.Application.Consumers;
 
 namespace User.Application.Extensions;

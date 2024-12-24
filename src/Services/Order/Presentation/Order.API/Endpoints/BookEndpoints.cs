@@ -15,7 +15,8 @@ public static class BookEndpoints
 {
     public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder app)
     {
-        var endpoints = app.MapGroup("books");
+        var endpoints = app.MapGroup("books")
+            .ExcludeFromDescription();
 
         endpoints.MapPost("/", CreateBook)
             .WithName(nameof(CreateBook));
