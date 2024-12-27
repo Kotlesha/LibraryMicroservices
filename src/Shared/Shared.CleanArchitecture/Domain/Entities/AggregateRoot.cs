@@ -1,4 +1,5 @@
 ﻿using Shared.CleanArchitecture.Domain.Events;
+using System.Text.Json.Serialization;
 
 namespace Shared.CleanArchitecture.Domain.Entities;
 
@@ -10,6 +11,7 @@ public abstract class AggregateRoot : AggregateRoot<Guid>
 public abstract class AggregateRoot<T> : Entity<T>, IAggregateRoot<T>
 {
     private readonly List<IDomainEvent> _domainEvents = [];
+    [JsonIgnore]
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     protected AggregateRoot(T id) : base(id) { }

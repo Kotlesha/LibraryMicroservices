@@ -71,6 +71,30 @@ services:
     volumes:
       - ./containers/order-db:/var/opt/mssql/data
 
+  book.api:
+    image: ${DOCKER_REGISTRY-}bookapi
+    build:
+      context: .
+      dockerfile: src/Services/Book/Presentation/Book.API/Dockerfile
+    ports:
+      - "5073:5073"   
+      - "7120:7120"  
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - book.db
+
+  book.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: BookDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1436:1433"
+    volumes:
+      - ./containers/book-db:/var/opt/mssql/data
+
   book.cashe:
     image: redis:latest
     container_name: Book.Cashe
@@ -91,6 +115,7 @@ services:
       - user.api
       - auth.pl
       - order.api 
+      - book.api
     
   ocelot.seq:
     image: datalust/seq:latest

@@ -27,6 +27,8 @@ WORKDIR "/src/src/Services/Auth/Auth.PL"
 RUN dotnet build "./Auth.PL.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 WORKDIR "/src/src/Services/Auth/Auth.DAL"
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet ef database update --project "./Auth.DAL.csproj"
 
 # This stage is used to publish the service project to be copied to the final stage

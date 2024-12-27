@@ -28,6 +28,8 @@ WORKDIR "/src/src/Services/Order/Presentation/Order.API"
 RUN dotnet build "./Order.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 WORKDIR "/src/src/Services/Order/Infrastructure/Order.Infrastructure"
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet ef database update --project "./Order.Infrastructure.csproj"
 
 # This stage is used to publish the service project to be copied to the final stage

@@ -6,7 +6,8 @@
       "serviceActions": {
         "auth.pl": "StartDebugging",
         "user.api": "StartDebugging",
-        "ocelotapigateway": "StartDebugging"
+        "ocelotapigateway": "StartDebugging",
+        "book.api": "StartDebugging"
       }
     }
   }

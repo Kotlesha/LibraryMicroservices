@@ -34,11 +34,6 @@ public sealed class Book : AggregateRoot
         return book;
     }
 
-    public void AddOrderToBook(Order order)
-    {
-        _orders.Add(order);
-    }
-
     public void Update(Book book)
     {
         ArgumentNullException.ThrowIfNull(book, nameof(book));

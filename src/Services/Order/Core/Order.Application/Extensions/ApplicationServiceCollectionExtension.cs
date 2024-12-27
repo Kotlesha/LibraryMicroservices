@@ -32,6 +32,8 @@ public static class ApplicationServiceCollectionExtension
         });
 
         ValidatorOptions.Global.LanguageManager.Enabled = false;
+        ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
+
         services.AddValidatorsFromAssembly(assembly, includeInternalTypes : true);
 
         services.AddAutoMapper(assembly);
