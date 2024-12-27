@@ -18,17 +18,20 @@ public sealed class Book : AggregateRoot
         IsAvailable = isAvailable;
     }
 
+    public static Book Create(Guid id, string title, decimal price = 0.0m, bool isAvailable = true)
+    {
+        var book = new Book(id, title, price, isAvailable);
+        book.Validate();
+
+        return book;
+    }
+
     public static Book Create(string title, decimal price = 0.0m, bool isAvailable = true) 
     { 
         var book = new Book(Guid.NewGuid(), title, price, isAvailable);
         book.Validate();
 
         return book;
-    }
-
-    public void AddOrderToBook(Order order)
-    {
-        _orders.Add(order);
     }
 
     public void Update(Book book)

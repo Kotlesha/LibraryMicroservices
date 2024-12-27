@@ -1,71 +1,102 @@
-﻿//using Carter;
-//using Carter.OpenApi;
-//using MediatR;
-//using Microsoft.AspNetCore.Mvc;
-//using User.Application.Features.User.Commands.Create;
-//using User.Application.Features.User.Queries.GetAll;
-//using User.Application.Features.User.Queries.GetAuth;
-//using User.Application.Features.User.Queries.GetById;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using User.Application.Features.User.Commands.Create;
+using User.Application.Features.User.Queries.GetAll;
+using User.Application.Features.User.Queries.GetAuth;
+using User.Application.Features.User.Queries.GetById;
+using User.Application.Features.User.Queries.RequestDTOs;
+using Shared.CleanArchitecture.Extensions;
 
-//namespace User.API.Endpoints;
+namespace User.API.Endpoints;
 
-//public class UserEndpoints
-//{
-//    public UserEndpoints()
-//    { 
-//    }
+public static class UserEndpoints
+{
+    public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder app)
+    {
+        var endpoints = app.MapGroup("users");
 
-//    public void AddRoutes(IEndpointRouteBuilder app)
-//    {
-//        app.MapPost("/create", CreateUser);
-//        app.MapGet("/me", GetAuthUser)
-//            .Produces(StatusCodes.Status200OK)
-//            .Produces(StatusCodes.Status400BadRequest);
+        endpoints.MapPost("/create", CreateUser)
+            .WithName(nameof(CreateUser));
 
-//        app.MapGet("/{userId}", GetUserById)
-//            .Produces(StatusCodes.Status200OK)
-//            .Produces(StatusCodes.Status404NotFound);
+        endpoints.MapGet("/", GetAllUsers)
+            .WithName(nameof(GetAllUsers))
+            .RequireAuthorization();
 
-//        app.MapGet("/", GetAllUsers)
-//            .Produces(StatusCodes.Status200OK)
-//            .Produces(StatusCodes.Status204NoContent);   
-//    }
+        endpoints.MapGet("/me", GetAuthUser)
+            .WithName(nameof(GetAuthUser))
+            .RequireAuthorization();
 
-//    public async Task<IResult> CreateUser([FromBody] CreateUserCommand command, ISender sender)
-//    {
-//        var userId = await sender.Send(command);
+        endpoints.MapGet("{accountId:guid}", GetUserById)
+            .WithName(nameof(GetUserById))
+            .RequireAuthorization();
 
-//        return Results.CreatedAtRoute(
-//            nameof(GetUserById),
-//            new { userId }, 
-//            new { Id = userId } 
-//        );
-//    }
+        return app;
+    }
 
-//    public async Task<IResult> GetAuthUser(ISender sender)
-//    {
-//        var user = await sender.Send(new GetAuthUserQuery());
+    [ExcludeFromDescription]
+    private static async Task<IResult> CreateUser(
+        [FromBody] CreateUserCommand command,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(command, cancellationToken);
 
-//        return user.IsSuccess ?
-//            Results.Ok(user) :
-//            Results.BadRequest();
-//    }
+        if (result.IsSuccess)
+        {
+            return Results.CreatedAtRoute(
+                routeName: nameof(GetUserById),
+                routeValues: new { applicationUserId = result.Value },
+                result.Value);
+        }
 
-//    public async Task<IResult> GetUserById(Guid userId, ISender sender)
-//    {
-//        var user = await sender.Send(new GetUserByIdQuery(userId));
+        return result.ToProblemDetails();
+    }
 
-//        return user.IsSuccess ?
-//            Results.Ok(user.Value) :
-//            Results.NotFound(user.Error);
-//    }
+    private static async Task<IResult> GetAllUsers(
+        ISender sender,
+        [AsParameters] UserParameters parameters,
+        HttpContext httpContext,
+        CancellationToken cancellationToken)
+    {
+        var (users, metaData) = await sender.Send(
+            new GetAllUsersQuery(parameters), cancellationToken);
 
-//    public async Task<IResult> GetAllUsers(ISender sender)
-//    {
-//        var users = await sender.Send(new GetAllUsersQuery());
+        if (users.Any())
+        {
+            httpContext.Response.Headers.Append(
+                "X-Pagination",
+                JsonSerializer.Serialize(metaData));
 
-//        return users.Any() ?
-//            Results.Ok(users) :
-//            Results.NoContent();
-//    }
-//}
+            return Results.Ok(users);
+        }
+
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> GetAuthUser(
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            new GetAuthUserQuery(), cancellationToken);
+
+        return result.IsSuccess ?
+            Results.Ok(result.Value) :
+            result.ToProblemDetails();
+    }
+
+    private static async Task<IResult> GetUserById(
+        Guid accountId,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(
+            new GetUserByIdQuery(accountId),
+            cancellationToken);
+
+        return result.IsSuccess ?
+            Results.Ok(result.Value) :
+            result.ToProblemDetails();
+    }
+}

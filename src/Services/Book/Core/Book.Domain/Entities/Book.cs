@@ -1,7 +1,7 @@
 ﻿using Book.Domain.Enums;
-using Book.Domain.Errors;
-using Shared.CleanArchitecture.Common.Components.Results;
 using Shared.CleanArchitecture.Domain.Entities;
+using Shared.CleanArchitecture.Domain.Helpers;
+using System.Text.Json.Serialization;
 
 namespace Book.Domain.Entities;
 
@@ -14,21 +14,28 @@ public sealed class Book : AggregateRoot
     public bool IsAvailable { get; private set; }
     public short Pages { get; private set; }
     public AgeRating AgeRating { get; private set; }
-    public string ISBN { get; private set; }
+    public string Isbn { get; private set; }
 
     public Guid? CategoryId { get; private set; }
     public Category? Category { get; private set; }
 
-    private readonly List<Author> _authors = [];
+    [JsonInclude]
+    private List<Author> _authors = [];
+
+    [JsonIgnore]
     public IReadOnlyList<Author> Authors => _authors.AsReadOnly();
 
-    private readonly List<Genre> _genres = [];
+    [JsonInclude]
+    private List<Genre> _genres = [];
+
+    [JsonIgnore]
     public IReadOnlyList<Genre> Genres => _genres.AsReadOnly();
 
+    [JsonConstructor]
     private Book(
         Guid id, 
         string title, 
-        string description, 
+        string? description, 
         decimal price, 
         DateTime publicationDateUtc, 
         bool isAvailable,
@@ -44,13 +51,13 @@ public sealed class Book : AggregateRoot
         IsAvailable = isAvailable;
         Pages = pages;
         AgeRating = ageRating;
-        ISBN = isbn;
+        Isbn = isbn;
         CategoryId = categoryId;
     }
 
     public static Book Create(
         string title,
-        string description,
+        string? description,
         decimal price,
         short pages,
         AgeRating ageRating,
@@ -86,66 +93,35 @@ public sealed class Book : AggregateRoot
         PublicationDateUtc = book.PublicationDateUtc;
         Pages = book.Pages;
         AgeRating = book.AgeRating;
-        ISBN = book.ISBN;
+        Isbn = book.Isbn;
         CategoryId = book.CategoryId;
     }
 
     public void MakeAvailable() => IsAvailable = true;
     public void MakeUnavailable() => IsAvailable = false;
 
-    private bool HasAuthor(Author author) => _authors.Any(a => a.Id.Equals(author.Id));
-    private bool HasGenre(Genre genre) => _genres.Any(g => g.Id.Equals(genre.Id));
+    public void AddAuthorToBook(Author author) => AddEntity(author, _authors);
+    public void AddGenreToBook(Genre genre) => AddEntity(genre, _genres);
 
-    public Result AddAuthorToBook(Author author)
+    public void RemoveAuthorFromBook(Author author) => RemoveEntity(author, _authors);
+    public void RemoveGenreFromBook(Genre genre) => RemoveEntity(genre, _genres);
+
+    public void UpdateAuthors(IEnumerable<Author> authors)
     {
-        ArgumentNullException.ThrowIfNull(author, nameof(author));
-
-        if (HasAuthor(author))
-        {
-            Result.Failure(DomainErrors.Book.AuthorAlreadyExists);
-        }
-
-        _authors.Add(author);
-        return Result.Success();
+        EntityUpdater.UpdateRelatedEntities(
+            _authors,
+            authors,
+            AddAuthorToBook,
+            RemoveAuthorFromBook);
     }
 
-    public Result RemoveAuthorFromBook(Author author)
+    public void UpdateGenres(IEnumerable<Genre> genres)
     {
-        ArgumentNullException.ThrowIfNull(author, nameof(author));
-
-        if (!HasAuthor(author))
-        {
-            Result.Failure(DomainErrors.Book.AuthorNotFound);
-        }
-
-        _authors.Remove(author);
-        return Result.Success();
-    }
-
-    public Result AddGenreToBook(Genre genre)
-    {
-        ArgumentNullException.ThrowIfNull(genre, nameof(genre));
-
-        if (HasGenre(genre))
-        {
-            Result.Failure(DomainErrors.Book.GenreAlreadyExists);
-        }
-
-        _genres.Add(genre);
-        return Result.Success();
-    }
-
-    public Result RemoveGenreFromBook(Genre genre)
-    {
-        ArgumentNullException.ThrowIfNull(genre, nameof(genre));
-
-        if (!HasGenre(genre))
-        {
-            Result.Failure(DomainErrors.Book.GenreNotFound);
-        }
-
-        _genres.Remove(genre);
-        return Result.Success();
+        EntityUpdater.UpdateRelatedEntities(
+            _genres,
+            genres,
+            AddGenreToBook,
+            RemoveGenreFromBook);
     }
 
     protected override void Validate()
@@ -153,6 +129,8 @@ public sealed class Book : AggregateRoot
         ArgumentException.ThrowIfNullOrWhiteSpace(Title, nameof(Title));
         ArgumentOutOfRangeException.ThrowIfNegative(Price, nameof(Price));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(Pages, nameof(Pages));
-        ArgumentException.ThrowIfNullOrWhiteSpace(ISBN, nameof(ISBN));
+        ArgumentException.ThrowIfNullOrWhiteSpace(Isbn, nameof(Isbn));
     }
+
+    public override string ToString() => $"{Title} {Description} {Price} {Pages} {AgeRating} {Isbn} {CategoryId} {IsAvailable}";
 }

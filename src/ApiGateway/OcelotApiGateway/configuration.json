@@ -1,0 +1,250 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7260"
+  },
+
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/login",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth-api/accounts/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth.pl",
+          "Port": 7073
+        }
+      ],
+      "SwaggerKey": "AuthAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/register",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth-api/accounts/register",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth.pl",
+          "Port": 7073
+        }
+      ],
+      "SwaggerKey": "AuthAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/accounts/profile",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/auth-api/accounts/profile",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth.pl",
+          "Port": 7073
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "AuthAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/refresh-tokens/login-with-refresh-token",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth-api/refresh-tokens/login-with-refresh-token",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth.pl",
+          "Port": 7073
+        }
+      ],
+      "SwaggerKey": "AuthAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/refresh-tokens/revoke/{accountId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/auth-api/refresh-tokens/revoke/{accountId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth.pl",
+          "Port": 7073
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "AuthAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users/",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/users-api/users/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user.api",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "UserAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users/me",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/users-api/users/me",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user.api",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "UserAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users/{accountId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/users-api/users/{accountId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user.api",
+          "Port": 7270
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "UserAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/authors/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/books-api/authors/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "book.api",
+          "Port": 7120
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "BookAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/books/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/books-api/books/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "book.api",
+          "Port": 7120
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "BookAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/books-api/categories/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "book.api",
+          "Port": 7120
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "BookAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/genres/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/books-api/genres/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "book.api",
+          "Port": 7120
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "BookAPI"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET", "PUT", "DELETE", "PATCH" ],
+      "DownstreamPathTemplate": "/orders-api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order.api",
+          "Port": 7018
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "SwaggerKey": "OrderAPI"
+    }
+  ],
+
+  "SwaggerEndPoints": [
+    {
+      "Key": "AuthAPI",
+      "Config": [
+        {
+          "Name": "Auth API",
+          "Version": "v1",
+          "Url": "https://auth.pl:7073/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "UserAPI",
+      "Config": [
+        {
+          "Name": "Users API",
+          "Version": "v1",
+          "Url": "https://user.api:7270/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "OrderAPI",
+      "Config": [
+        {
+          "Name": "Orders API",
+          "Version": "v1",
+          "Url": "https://order.api:7018/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "BookAPI",
+      "Config": [
+        {
+          "Name": "Book API",
+          "Version": "v1",
+          "Url": "https://book.api:7120/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

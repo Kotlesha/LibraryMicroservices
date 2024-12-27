@@ -17,7 +17,7 @@ public static class InfrastructureServiceCollectionExtensions
     {
         services.AddDbContext<UserDbContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("UserDbConnectionString")));
+                configuration.GetConnectionString("UserDbConnectionStringDocker")));
 
         services.AddScoped<IUserRepository, UserRepository>();
 

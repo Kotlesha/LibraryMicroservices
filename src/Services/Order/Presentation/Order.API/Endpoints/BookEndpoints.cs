@@ -15,25 +15,30 @@ public static class BookEndpoints
 {
     public static IEndpointRouteBuilder MapBookEndpoints(this IEndpointRouteBuilder app)
     {
-        var endpoints = app.MapGroup("books");
+        var endpoints = app.MapGroup("orders/books");
 
         endpoints.MapPost("/", CreateBook)
-            .WithName(nameof(CreateBook));
+            .WithName(nameof(CreateBook))
+            .ExcludeFromDescription();
 
         endpoints.MapDelete("/{bookId:guid}", DeleteBook)
-            .WithName(nameof(DeleteBook));
+            .WithName(nameof(DeleteBook))
+            .ExcludeFromDescription();
 
         endpoints.MapPut("/", UpdateBook)
-            .WithName(nameof(UpdateBook));
+            .WithName(nameof(UpdateBook))
+            .ExcludeFromDescription();
 
         endpoints.MapGet("/{bookId:guid}", GetBookById)
-            .WithName(nameof(GetBookById));
+            .WithName(nameof(GetBookById))
+            .ExcludeFromDescription();
 
         endpoints.MapGet("/", GetAllBooks)
             .WithName(nameof(GetAllBooks));
 
         endpoints.MapGet("/{title}", GetBookByTitle)
-            .WithName(nameof(GetBookByTitle));
+            .WithName(nameof(GetBookByTitle))
+            .ExcludeFromDescription();
 
         return app;
     }

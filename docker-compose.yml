@@ -1,0 +1,145 @@
+services:
+  auth.pl:
+    image: ${DOCKER_REGISTRY-}authpl
+    build:
+      context: .
+      dockerfile: src/Services/Auth/Auth.PL/Dockerfile
+    ports:
+      - "5105:5105"   
+      - "7073:7073"  
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - auth.db
+
+  auth.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: AccountDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./containers/account-db:/var/opt/mssql/data
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: src/Services/User/Presentation/User.API/Dockerfile
+    ports:
+      - "5218:5218"
+      - "7270:7270"
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - user.db
+
+  user.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: UserDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1434:1433"
+    volumes:
+      - ./containers/user-db:/var/opt/mssql/data
+
+  order.api:
+    image: ${DOCKER_REGISTRY-}orderapi
+    build:
+      context: .
+      dockerfile: src/Services/Order/Presentation/Order.API/Dockerfile
+    ports:
+      - "5128:5128"   
+      - "7018:7018"  
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - order.db
+
+  order.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: OrderDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1435:1433"
+    volumes:
+      - ./containers/order-db:/var/opt/mssql/data
+
+  book.api:
+    image: ${DOCKER_REGISTRY-}bookapi
+    build:
+      context: .
+      dockerfile: src/Services/Book/Presentation/Book.API/Dockerfile
+    ports:
+      - "5073:5073"   
+      - "7120:7120"  
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - book.db
+
+  book.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: BookDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=11111!Aa
+    ports:
+      - "1436:1433"
+    volumes:
+      - ./containers/book-db:/var/opt/mssql/data
+
+  book.cashe:
+    image: redis:latest
+    container_name: Book.Cashe
+    ports:
+      - "6379:6379" 
+
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: src/ApiGateway/OcelotApiGateway/Dockerfile
+    ports:
+      - "5290:5290"
+      - "7260:7260"
+    volumes:
+      - ./certificates:/https:ro 
+    depends_on:
+      - user.api
+      - auth.pl
+      - order.api 
+      - book.api
+    
+  ocelot.seq:
+    image: datalust/seq:latest
+    container_name: Ocelot.Seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 8081:80
+
+  auth-mq:
+    image: rabbitmq:management
+    container_name: Auth.RabbitMq
+    hostname: auth-mq
+    ports:
+      - "5672:5672"  
+      - "15672:15672"  
+    volumes:
+      - ./containers/queue/data/:/var/lib/rabbitmq
+      - ./containers/queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  certificates:
+    driver: local

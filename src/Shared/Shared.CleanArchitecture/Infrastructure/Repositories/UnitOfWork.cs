@@ -35,7 +35,7 @@ public class UnitOfWork(
                     .CurrentValue = DateTime.UtcNow;
 
                 entityEntry.Property(a => a.CreatedBy)
-                    .CurrentValue = _userIdProvider.GetAuthUserId();
+                    .CurrentValue = _userIdProvider.GetAuthUserId() ?? "System";
             }
 
             if (entityEntry.State == EntityState.Modified)
@@ -44,7 +44,7 @@ public class UnitOfWork(
                     .CurrentValue = DateTime.UtcNow;
 
                 entityEntry.Property(a => a.LastModifiedBy)
-                    .CurrentValue = _userIdProvider.GetAuthUserId();
+                    .CurrentValue = _userIdProvider.GetAuthUserId() ?? "System";
             }
         }
     }

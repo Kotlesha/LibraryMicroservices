@@ -19,7 +19,6 @@ public sealed class Order : AggregateRoot
     public void AddBookToOrder(Book book)
     {
         _books.Add(book);
-        //book.AddOrderToBook(this);
 
         TotalCost += book.Price;
         Count++;
@@ -41,14 +40,13 @@ public sealed class Order : AggregateRoot
         Status = status;
     }
 
-    public static Order Create(Guid userId/*, int count, decimal totalCost = 0.0m, Status status = Status.Active*/)
+    public static Order Create(Guid userId)
     {
         var order = new Order(Guid.NewGuid(), userId);
         order.Validate();
 
         return order;
     }
-
 
     public void UpdateBooks(IEnumerable<Book> books)
     {

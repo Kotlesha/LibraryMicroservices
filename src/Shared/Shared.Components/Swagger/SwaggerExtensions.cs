@@ -20,21 +20,23 @@ public static class SwaggerExtensions
                 Scheme = JwtBearerDefaults.AuthenticationScheme,
                 BearerFormat = "JWT"
             };
+
             o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
             var securityRequirement = new OpenApiSecurityRequirement
-        {
             {
-                new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference
+                    new OpenApiSecurityScheme
                     {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = JwtBearerDefaults.AuthenticationScheme
-                    }
-                },
-                Array.Empty<string>()
-            }
-        };
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            };
             o.AddSecurityRequirement(securityRequirement);
         });
 

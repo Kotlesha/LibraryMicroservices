@@ -1,10 +1,9 @@
 using Shared.Components.ExceptionHandling.Middleware;
-using Shared.Components.Migrations;
-using Order.API.Endpoints;
 using Order.API.Extensions;
 using Order.Application.Extensions;
 using Order.Infrastructure.Extensions;
-using Order.Infrastructure.Contexts;
+using Serilog;
+using Shared.Components.Jwt;
 
 namespace Order.API;
 
@@ -14,12 +13,15 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddApplication();
+        builder.Host.UseSerilog((context, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+        builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
+        builder.Services.AddJwtAuthentication(builder.Configuration);
         builder.Services.AddAuthorization();
-        builder.Services.AddAuthentication();
 
         var app = builder.Build();
 
@@ -27,13 +29,12 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.ApplyMigrations<OrderDbContext>();
         }
 
-        app.MapOrderEndpoints();
-        app.MapBookEndpoints();
+        app.MapEndpoints();
 
         app.UseHttpsRedirection();
+        app.UseSerilogRequestLogging();
 
         app.UseAuthentication();
         app.UseAuthorization();

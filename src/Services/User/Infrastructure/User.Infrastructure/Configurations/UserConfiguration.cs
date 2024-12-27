@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.CleanArchitecture.Infrastructure.Configurations;
-using User.Domain.Constants;
+using User.Infrastructure.Constants;
 
 namespace User.Infrastructure.Configurations;
 
@@ -13,22 +14,30 @@ internal class UserConfiguration : BaseEntityConfiguration<User>
         base.Configure(builder);
 
         builder
+            .ToTable(TableNames.User);
+
+        builder
             .Property(u => u.Name)
-            .IsRequired()
-            .HasMaxLength(UserConstants.NameMaxLength);
+            .IsRequired();
 
         builder
             .Property(u => u.Surname)
-            .IsRequired()
-            .HasMaxLength(UserConstants.SurnameMaxLength);
+            .IsRequired();
 
         builder
             .Property(u => u.Patronymic)
-            .IsRequired()
-            .HasMaxLength(UserConstants.PatronymicMaxLength);
+            .IsRequired();
 
         builder
             .Property(u => u.Email)
             .IsRequired();
+
+        builder
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        builder
+            .HasIndex(u => u.AccountId)
+            .IsUnique();
     }
 }

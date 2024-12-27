@@ -1,4 +1,6 @@
+using Serilog;
 using Shared.Components.ExceptionHandling.Middleware;
+using Shared.Components.Jwt;
 using User.API.Extensions;
 using User.Application.Extensions;
 using User.Infrastructure.Extensions;
@@ -11,37 +13,35 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Host.UseSerilog((context, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(context.Configuration));
 
-        builder.Services.AddApplication();
+        builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddPresentation();
 
-        builder.Services.AddAuthorization(); 
-        builder.Services.AddAuthentication();
+        builder.Services.AddJwtAuthentication(builder.Configuration);
+        builder.Services.AddAuthorization();
 
         var app = builder.Build();
-
-        app.MapGet("/", () => "Hello world");
 
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.ApplyMigrations();
         }
+
+        app.MapEndpoints();
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+        app.UseSerilogRequestLogging();
+
         app.UseAuthentication();
+        app.UseAuthorization();
 
+        app.UseStatusCodePages();
         app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-
-        app.MapControllers();
-        //app.MapCarter();
 
         app.Run();
     }
